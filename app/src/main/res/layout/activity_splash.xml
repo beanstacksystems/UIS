@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:gravity="bottom"
+    tools:context=".ui.SplashActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="131dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/uisnobg" />
+
+        </LinearLayout>
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/fbCustomll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:background="#416BC1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_facebook"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/fbCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#416BC1"
+                android:onClick="onClickFacebookButton"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="SignIn With Facebook"
+                android:textColor="#ffffff"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/GoogleCustomll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#DD6D65"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_google_plus"
+                android:padding="10dp"/>
+
+            <Button
+                android:id="@+id/googleCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onClickGmailButton"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text=" Signin With google  "
+                android:textColor="#000"
+                android:background="#DD6D65"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/copyright"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/copyright"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/version_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/version_name"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

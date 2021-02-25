@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "148926166991",
+    "firebase_url": "https://uisdb-ffd14.firebaseio.com",
+    "project_id": "uisdb-ffd14",
+    "storage_bucket": "uisdb-ffd14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148926166991:android:6356fd1d8a61b264d984ba",
+        "android_client_info": {
+          "package_name": "com.bss.uis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "148926166991-g9g5psf1u6e51ick0e0dqeqph9mfebp5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeZP7DazfeWsIULtB06NXCdWPzHkzc3D8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "148926166991-g9g5psf1u6e51ick0e0dqeqph9mfebp5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
