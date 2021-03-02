@@ -10,6 +10,8 @@
         android:orientation="vertical"
         android:padding="20dp"
         android:id="@+id/linearlayoutAddressPopup"
+        android:background="@drawable/bg_popup_dialog"
+        android:radius="30dp"
         android:gravity="center">
         <TextView
             android:id="@+id/addressPopUpHeader"
@@ -116,8 +118,8 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/shape_layout_black"
-            android:text="Add address"
+            android:background="@drawable/bg_shape_green"
+            android:text="@string/update"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>

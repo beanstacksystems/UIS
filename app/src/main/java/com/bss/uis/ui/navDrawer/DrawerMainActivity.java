@@ -2,27 +2,21 @@ package com.bss.uis.ui.navDrawer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 
-import com.bss.uis.R;
-import com.bss.uis.model.AddressDTO;
-import com.bss.uis.model.PinAddressDTO;
-import com.bss.uis.service.APIService;
-import com.bss.uis.service.impl.APIServiceImpl;
-import com.bss.uis.ui.RegisterPatientActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import java.util.List;
+import com.bss.uis.R;
+import com.bss.uis.ui.RegisterPatientActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 
 public class DrawerMainActivity extends AppCompatActivity {
 

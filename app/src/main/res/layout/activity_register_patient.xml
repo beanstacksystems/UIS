@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/bg_shape_blue"
+                android:background="@drawable/bg_shape_orange_corner"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="15dp">
@@ -132,7 +132,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_shape_orange_corner"
-                    android:text="Address"
+                    android:text="@string/addAddress"
                     android:textColor="@color/black"
 
                     />
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:background="@drawable/bg_shape_blue"
+                android:background="@drawable/bg_shape_orange_corner"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="15dp">
@@ -261,7 +261,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_shape_blue"
+                android:background="@drawable/bg_shape_orange_corner"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="10dp">
@@ -301,8 +301,8 @@
         android:layout_height="50dp"
         android:layout_margin="15dp"
         android:layout_weight="1"
-        android:background="@drawable/shape_layout_black"
-        android:text="Add patient"
+        android:background="@drawable/bg_shape_green"
+        android:text="@string/register"
         android:textColor="@color/white"
         android:textStyle="bold" />
 </LinearLayout>

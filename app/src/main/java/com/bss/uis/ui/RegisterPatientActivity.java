@@ -1,10 +1,5 @@
 package com.bss.uis.ui;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -24,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
@@ -127,12 +127,6 @@ public class RegisterPatientActivity extends AppCompatActivity {
         linearlayout22.setMinimumWidth(getscreenwidth());
         Button scanId = address_dialogue.findViewById(R.id.scanId);
         Spinner spin = (Spinner) address_dialogue.findViewById(R.id.spinner_state);
-        ArrayAdapter aa = new ArrayAdapter(this, android.R.layout.simple_spinner_item, country);
-
-
-        spin.setAdapter(aa);
-
-
         address_dialogue.show();
     }
 

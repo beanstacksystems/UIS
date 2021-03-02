@@ -40,4 +40,8 @@
 
     <string name="search_title">Search</string>
     <string name="shelter_home">Shelter Home</string>
+    <string name="update">Update</string>
+    <string name="register">Register</string>
+    <string name="addAddress">Add Address</string>
+
 </resources>

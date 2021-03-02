@@ -2,7 +2,6 @@ package com.bss.uis.service.impl;
 
 import com.bss.uis.constant.APIConstant;
 import com.bss.uis.model.AddressDTO;
-import com.bss.uis.model.PinAddressDTO;
 import com.bss.uis.service.APIService;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.util.CustomJsonDesrializer;
