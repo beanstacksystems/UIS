@@ -6,7 +6,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/uisBlue</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@color/tomato</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
         <!-- Customize your theme here. -->
     </style>
 

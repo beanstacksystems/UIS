@@ -123,15 +123,7 @@ public class RegisterPatientActivity extends AppCompatActivity {
 
     public void openAddressPopup() {
 
-        String[] country = {"Select State", "Andhra Pradesh",
-                "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana",
-                "Himachal Pradesh",
-                "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha",
-                "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal",
-                "Andaman and Nicobar Islands", "Chandigarh", "Dadra and Nagar Haveli and Daman & Diu", "Delhi", "Jammu  Kashmir",
-                "Ladakh", "Lakshadweep",
-                "Puducherry"};
-        LinearLayout linearlayout22 = address_dialogue.findViewById(R.id.linearlayout22);
+        LinearLayout linearlayout22 = address_dialogue.findViewById(R.id.linearlayoutAddressPopup);
         linearlayout22.setMinimumWidth(getscreenwidth());
         Button scanId = address_dialogue.findViewById(R.id.scanId);
         Spinner spin = (Spinner) address_dialogue.findViewById(R.id.spinner_state);

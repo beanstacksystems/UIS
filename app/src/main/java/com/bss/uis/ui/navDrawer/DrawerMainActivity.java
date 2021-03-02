@@ -6,9 +6,12 @@ import android.view.View;
 import android.view.Menu;
 
 import com.bss.uis.R;
+import com.bss.uis.model.AddressDTO;
+import com.bss.uis.model.PinAddressDTO;
+import com.bss.uis.service.APIService;
+import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.ui.RegisterPatientActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -18,6 +21,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import java.util.List;
 
 public class DrawerMainActivity extends AppCompatActivity {
 
@@ -33,6 +38,15 @@ public class DrawerMainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                APIService apiService = new APIServiceImpl();
+//                List<AddressDTO> addressList = apiService.fetchPinData("754082");
+//                if(null == addressList||addressList.isEmpty())
+//                {
+//                    System.out.println("Empty list");
+//                    return;
+//                }
+//                for(AddressDTO addressDTO :addressList)
+//                    System.out.println(addressDTO.getBlock());
                 startActivity(new Intent(DrawerMainActivity.this, RegisterPatientActivity.class));
             }
         });

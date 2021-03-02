@@ -23,7 +23,7 @@
     <string name="city">City</string>
     <string name="district">District</string>
     <string name="street_address">Street address</string>
-    <string name="ZipPin">Zip-Pin</string>
+    <string name="ZipPin">PinCode</string>
     <string name="address">Address</string>
 
     <string name="person_details">Person Details</string>
@@ -37,4 +37,7 @@
     <string name="Social_profiles">Social profiles</string>
     <!--    <string name="copyright">\u00A9 Beanstack Systems Pvt Ltd.</string>-->
     <!--    <string name="facebook_application_id">3323999927638523</string>-->
+
+    <string name="search_title">Search</string>
+    <string name="shelter_home">Shelter Home</string>
 </resources>

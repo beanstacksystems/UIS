@@ -9,10 +9,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
-        android:id="@+id/linearlayout22"
+        android:id="@+id/linearlayoutAddressPopup"
         android:gravity="center">
         <TextView
-            android:id="@+id/copyright"
+            android:id="@+id/addressPopUpHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -93,7 +93,7 @@
 
         </LinearLayout>
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/contact_et"
+            android:id="@+id/pincode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/ZipPin"
