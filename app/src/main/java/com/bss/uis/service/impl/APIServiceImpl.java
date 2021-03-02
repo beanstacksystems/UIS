@@ -6,9 +6,9 @@ import com.bss.uis.service.APIService;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.util.CustomJsonDesrializer;
 import com.bss.uis.util.RetrofitUtil;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.GsonBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -19,11 +19,10 @@ import retrofit2.Retrofit;
 public class APIServiceImpl implements APIService{
     private APISignatureService apiSignatureService;
     @Override
-    public List<AddressDTO> fetchPinData(String pincode) {
-        final List<AddressDTO> addressDTOList = new ArrayList<>();
+    public void fetchPinData(String pincode, final TextInputEditText state, final TextInputEditText dist) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.pinApi,
         new GsonBuilder()
-                .registerTypeAdapter(AddressDTO.class, new CustomJsonDesrializer<>(ArrayList.class,"PostOffice"))
+                .registerTypeAdapter(AddressDTO.class, new CustomJsonDesrializer<>(AddressDTO.class,"PostOffice"))
                 .create());
         apiSignatureService = retrofit.create(APISignatureService.class);
         Call<List<AddressDTO>> apiCall = apiSignatureService.fetchPinData(pincode);
@@ -33,7 +32,8 @@ public class APIServiceImpl implements APIService{
                 System.out.println(response.body());
                 //In this point we got our hero list
                 //thats damn easy right ;)
-                addressDTOList.addAll(response.body());
+                state.setText(response.body().get(0).getState());
+                dist.setText(response.body().get(0).getDistrict());
                 //now we can do whatever we want with this list
             }
 
@@ -43,6 +43,5 @@ public class APIServiceImpl implements APIService{
                 System.out.println(call);
             }
         });
-        return addressDTOList;
     }
 }

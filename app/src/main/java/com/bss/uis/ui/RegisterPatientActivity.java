@@ -12,12 +12,14 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
+import com.bss.uis.service.impl.APIServiceImpl;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
 
@@ -40,15 +44,17 @@ public class RegisterPatientActivity extends AppCompatActivity {
     Button scanId,scanMedicalReports;
     CircleImageView profile_image;
     ImageView id_proof_imageview,medicalreport_imageview;
+    TextInputEditText textInputEditTextPin,textInputEditTextState,textInputEditTextDist;
     private int mYear, mMonth, mDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_patient);
-
         address_dialogue = new Dialog(this);
+        address_dialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
         address_dialogue.setContentView(R.layout.popup_address);
+        address_dialogue.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
         address_btn = findViewById(R.id.address_btn);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         scanId = findViewById(R.id.scanId);
@@ -122,12 +128,24 @@ public class RegisterPatientActivity extends AppCompatActivity {
     }
 
     public void openAddressPopup() {
-
-        LinearLayout linearlayout22 = address_dialogue.findViewById(R.id.linearlayoutAddressPopup);
-        linearlayout22.setMinimumWidth(getscreenwidth());
+        LinearLayout linearlayoutAddressPopup = address_dialogue.findViewById(R.id.linearlayoutAddressPopup);
+        linearlayoutAddressPopup.setMinimumWidth(getscreenwidth());
         Button scanId = address_dialogue.findViewById(R.id.scanId);
-        Spinner spin = (Spinner) address_dialogue.findViewById(R.id.spinner_state);
         address_dialogue.show();
+        initAddressPopUp();
+    }
+
+    private void initAddressPopUp() {
+        textInputEditTextPin = address_dialogue.findViewById(R.id.pincode);
+        textInputEditTextDist = address_dialogue.findViewById(R.id.dist);
+        textInputEditTextState = address_dialogue.findViewById(R.id.state);
+        textInputEditTextPin.addTextChangedListener(new CustomTextValidator(textInputEditTextPin){
+            @Override
+            public void validate(TextView textView, String text) {
+                if(text.length() == 6)
+                    new APIServiceImpl().fetchPinData(text,textInputEditTextState,textInputEditTextDist);
+            }
+        });
     }
 
     int getscreenheight() {

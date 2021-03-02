@@ -27,7 +27,7 @@ public class CustomJsonDesrializer<T> implements JsonDeserializer<T>
         else
             content = je.getAsJsonObject().get(mKey);
         if(content.isJsonArray())
-            return new Gson().fromJson(content.getAsJsonArray(), mClass);
+            return new Gson().fromJson(content.getAsJsonArray().get(0).getAsJsonObject(), mClass);
 
         // Deserialize it. You use a new instance of Gson to avoid infinite recursion
         // to this deserializer

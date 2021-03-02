@@ -1,9 +1,7 @@
 package com.bss.uis.service;
 
-import com.bss.uis.model.AddressDTO;
-
-import java.util.List;
+import com.google.android.material.textfield.TextInputEditText;
 
 public interface APIService {
-    List<AddressDTO> fetchPinData(String pincode);
+    void fetchPinData(String pincode, TextInputEditText state, TextInputEditText dist);
 }

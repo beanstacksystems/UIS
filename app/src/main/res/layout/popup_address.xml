@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -60,48 +61,45 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/address_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/district"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/dist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            app:boxStrokeColor="#0000FF"
+            app:boxStrokeWidth="2dp"
+            android:hint="@string/state"
             android:background="@drawable/bg_shape_orange_corner">
 
-            <Spinner
-                android:id="@+id/spinner_state"
-                style="@style/CustomAlertDialog"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center"
-                android:outlineSpotShadowColor="@color/orange"
-                android:textAlignment="center" />
-
-        </LinearLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/pincode"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="text"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
             android:hint="@string/ZipPin"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:background="@drawable/bg_shape_orange_corner">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/pincode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
