@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
 import com.bss.uis.service.impl.APIServiceImpl;
+import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
@@ -41,7 +42,7 @@ public class RegisterPatientActivity extends AppCompatActivity {
 
     Button address_btn,dateOfBirth_btn;
     Dialog address_dialogue;
-    Button scanId,scanMedicalReports;
+    Button scanId,scanMedicalReports,upDateAddbutton;
     CircleImageView profile_image;
     ImageView id_proof_imageview,medicalreport_imageview;
     TextInputEditText textInputEditTextPin,textInputEditTextState,textInputEditTextDist;
@@ -83,15 +84,18 @@ public class RegisterPatientActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
 
+                    @RequiresApi(api = VERSION_CODES.O)
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        dateOfBirth_btn.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                        dateOfBirth_btn.setText("Birth Date: "+dayOfMonth + "-" + (monthOfYear + 1)
+                                + "-" + year+" \n Age: "+ AppUtil.getAge(year, monthOfYear + 1,dayOfMonth));
+                        dateOfBirth_btn.setBackgroundResource(R.drawable.bg_shape_green);
                     }
 
 
                 }, mYear, mMonth, mDay);
-
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
     }
 
@@ -139,6 +143,8 @@ public class RegisterPatientActivity extends AppCompatActivity {
         textInputEditTextPin = address_dialogue.findViewById(R.id.pincode);
         textInputEditTextDist = address_dialogue.findViewById(R.id.dist);
         textInputEditTextState = address_dialogue.findViewById(R.id.state);
+        upDateAddbutton = address_dialogue.findViewById(R.id.upDateAddbutton);
+        upDateAddbutton.setOnClickListener(new CustomOnclickListener());
         textInputEditTextPin.addTextChangedListener(new CustomTextValidator(textInputEditTextPin){
             @Override
             public void validate(TextView textView, String text) {
@@ -214,6 +220,19 @@ public class RegisterPatientActivity extends AppCompatActivity {
             if(v == dateOfBirth_btn){
                 selectDateOfBirth();
             }
+            if(v == upDateAddbutton){
+                if(isRequiredDataFilled()){
+                    address_btn.setBackgroundResource(R.drawable.bg_shape_green);
+                    address_btn.setText("Edit Address");
+                    address_dialogue.dismiss();
+                }
+
+            }
         }
+    }
+    private boolean isRequiredDataFilled()
+    {
+        //                captureAddressDetails();
+        return true;
     }
 }

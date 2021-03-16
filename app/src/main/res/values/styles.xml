@@ -2,7 +2,7 @@
 <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/uisRed</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/uisRed</item>
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/white</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
 
@@ -12,12 +12,24 @@
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/shape_layout_white</item>
     </style>
+    <style name="TextInputLayoutStyleBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
+        <item name="boxStrokeColor">@color/uisRed</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxBackgroundColor">#fff</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
     <style name="TextInputLayoutStyle">
         <item name="boxStrokeColor">#fff</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxBackgroundColor">#fff</item>
-        <item name="android:textColorHint">@color/orange</item>
+        <item name="android:textColorHint">@color/grey</item>
         <item name="android:layout_margin">5dp</item>
+    </style>
+    <style name="hint_Style">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:gravity">center</item>
     </style>
 
 </resources>
