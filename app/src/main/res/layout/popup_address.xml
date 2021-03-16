@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -26,9 +25,9 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/outlinedTextField"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:hint="@string/street_address"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:theme="@style/TextInputLayoutStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -39,15 +38,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/Email_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:hint="@string/city"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:theme="@style/TextInputLayoutStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -61,10 +57,10 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
+            android:theme="@style/TextInputLayoutStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/district"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_height="60dp"
+            android:hint="@string/district">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dist"
@@ -76,12 +72,9 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="5dp"
-            app:boxStrokeColor="#0000FF"
-            app:boxStrokeWidth="2dp"
+            android:layout_height="60dp"
             android:hint="@string/state"
-            android:background="@drawable/bg_shape_orange_corner">
+            android:theme="@style/TextInputLayoutStyle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/state"
@@ -93,10 +86,9 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="5dp"
+            android:layout_height="60dp"
             android:hint="@string/ZipPin"
-            android:background="@drawable/bg_shape_orange_corner">
+            android:theme="@style/TextInputLayoutStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/pincode"
