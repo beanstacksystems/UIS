@@ -196,10 +196,20 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        app:strokeWidth="0dp"
+        app:strokeColor="@color/colorPrimary"
+        app:cardCornerRadius="8dp">
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextColor="@color/colorPrimary"
+        app:tabTextColor="@color/orange"
+        app:tabIndicatorGravity="stretch"
+        app:tabIndicatorColor="@color/greenlite"
+        app:tabGravity="fill"
         android:background="@color/white"
         app:tabMode="scrollable"
         tools:ignore="MissingConstraints">
@@ -225,6 +235,6 @@
             android:text="Others" />
 
     </com.google.android.material.tabs.TabLayout>
-
+    </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>
