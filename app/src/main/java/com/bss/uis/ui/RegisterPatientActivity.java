@@ -2,17 +2,20 @@ package com.bss.uis.ui;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.text.InputType;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -32,6 +35,7 @@ import com.bss.uis.constant.AppConstants;
 import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Calendar;
 
@@ -133,7 +137,7 @@ public class RegisterPatientActivity extends AppCompatActivity {
 
     public void openAddressPopup() {
         LinearLayout linearlayoutAddressPopup = address_dialogue.findViewById(R.id.linearlayoutAddressPopup);
-        linearlayoutAddressPopup.setMinimumWidth(getscreenwidth());
+        linearlayoutAddressPopup.setMinimumWidth(UIUtil.getscreenwidth(address_dialogue.getWindow()));
         Button scanId = address_dialogue.findViewById(R.id.scanId);
         address_dialogue.show();
         initAddressPopUp();
@@ -152,21 +156,41 @@ public class RegisterPatientActivity extends AppCompatActivity {
                     new APIServiceImpl().fetchPinData(text,textInputEditTextState,textInputEditTextDist);
             }
         });
+        createPinPopup(address_dialogue);
+    }
+    private void createPinPopup(Dialog address_dialogue)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(address_dialogue.getContext(),R.style.alertBoxTheme);
+        int displayWidth = UIUtil.getscreenwidth(address_dialogue.getWindow());
+        int displayHeight = UIUtil.getscreenheight(address_dialogue.getWindow());
+        final TextInputLayout textInputLayout = UIUtil.getTextInputLayout(address_dialogue.getContext(),
+                0,(int)(displayHeight*0.1f),displayWidth, InputType.TYPE_CLASS_NUMBER,"PinCode");
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        int dialogWindowWidth = displayWidth;
+        int dialogWindowHeight = (int) (displayHeight * 0.5f);
+        layoutParams.width = dialogWindowWidth;
+        layoutParams.height = dialogWindowHeight;
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick( DialogInterface dialog,int which)
+                            {
+                                textInputEditTextPin.setText(textInputLayout.getEditText().getText().toString());
+                            }
+                        });
+        builder.setNegativeButton("SKIP", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int which)
+                    {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        dialog.getWindow().setAttributes(layoutParams);
+        dialog.setView(textInputLayout);
+        dialog.show();
     }
 
-    int getscreenheight() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        return height;
-    }
-
-    int getscreenwidth() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        return width;
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

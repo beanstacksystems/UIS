@@ -19,6 +19,9 @@
         <item name="android:textColorHint">@color/grey</item>
         <item name="android:layout_margin">5dp</item>
     </style>
+    <style name="alertBoxTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@drawable/bg_popup_dialog</item>
+    </style>
     <style name="TextInputLayoutStyle">
         <item name="boxStrokeColor">#fff</item>
         <item name="boxStrokeWidth">0dp</item>
