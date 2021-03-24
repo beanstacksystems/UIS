@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:cardCornerRadius="14dp"
+        app:cardCornerRadius="30dp"
         tools:ignore="MissingConstraints">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_shape_orange_corner"
             android:orientation="vertical">
 
             <androidx.viewpager.widget.ViewPager
