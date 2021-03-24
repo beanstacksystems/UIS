@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -158,9 +159,10 @@ public class RegisterPatientActivity extends AppCompatActivity {
         });
         createPinPopup(address_dialogue);
     }
+    @RequiresApi(api = VERSION_CODES.M)
     private void createPinPopup(Dialog address_dialogue)
     {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(address_dialogue.getContext(),R.style.alertBoxTheme);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(address_dialogue.getContext(),null));
         int displayWidth = UIUtil.getscreenwidth(address_dialogue.getWindow());
         int displayHeight = UIUtil.getscreenheight(address_dialogue.getWindow());
         final TextInputLayout textInputLayout = UIUtil.getTextInputLayout(address_dialogue.getContext(),
@@ -186,6 +188,8 @@ public class RegisterPatientActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_alert_dialog);
+
         dialog.getWindow().setAttributes(layoutParams);
         dialog.setView(textInputLayout);
         dialog.show();

@@ -26,6 +26,7 @@ public class UIUtil {
         TextInputLayout textInputLayout = new TextInputLayout(object);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        editTextParams.topMargin = 20;
         textInputLayout.setHint(hint);
         TextInputEditText textInputEditText = new TextInputEditText(object);
         textInputEditText.setHeight(height);
