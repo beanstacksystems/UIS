@@ -1,12 +1,18 @@
 package com.bss.uis.ui.navDrawer.ui.home;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,11 +23,16 @@ import com.bss.uis.ui.imageSlider.ImageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private ImageView[] imageViews;
+    LinearLayout imagePanel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -31,7 +42,7 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 new ViewModelProvider(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        imagePanel = (LinearLayout) root.findViewById(R.id.imagesliderDots);
         ViewPager mViewPager = (ViewPager)root.findViewById(R.id.imgviewPagerMain);
         ImageAdapter adapterView = new ImageAdapter(getContext(),imageList);
         mViewPager.setAdapter(adapterView);
@@ -42,10 +53,48 @@ public class HomeFragment extends Fragment {
 //                textView.setText(s);
             }
         });
+        updateImageView(mViewPager,adapterView.getCount());
         return root;
     }
-    private void initializeViewComponents()
+    public void updateImageView(ViewPager imgViewPager,int length)
     {
-
+        imageViews = new ImageView[length];
+        for(int i = 0; i < length; i++){
+            imageViews[i] = new ImageView(getActivity());
+            imageViews[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.non_active_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            imagePanel.addView(imageViews[i], params);
+        }
+        initiateImageScroll(imgViewPager,length);
+    }
+    public void initiateImageScroll(final ViewPager imgViewPager,final int length)
+    {
+        final Handler handler = new Handler();
+        final Runnable Update = new Runnable() {
+            int currentImageIndex = 0;
+            @SuppressLint("ResourceAsColor")
+            public void run() {
+                if (currentImageIndex == length-1) currentImageIndex = 0;
+                else currentImageIndex++;
+                ImageView imageViewold = (ImageView)imagePanel.getChildAt((currentImageIndex==0)?length-1:currentImageIndex-1);
+                GradientDrawable bgShapePrev = (GradientDrawable)imageViewold.getDrawable().getCurrent();
+                bgShapePrev.setColor(R.color.grey);
+                bgShapePrev.setStroke(1, R.color.grey, 1, 1);
+                ImageView imageView = (ImageView)imagePanel.getChildAt(currentImageIndex);
+                GradientDrawable gd = (GradientDrawable)imageView.getDrawable().getCurrent();
+                gd.setColor(R.color.uisRed);
+                gd.setStroke(1, R.color.uisRed, 1, 1);
+                imgViewPager.setCurrentItem(currentImageIndex, true);
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(Update);
+            }
+        }, 500, 2000);
     }
 }

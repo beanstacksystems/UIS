@@ -136,14 +136,15 @@ public class RegisterPatientActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = VERSION_CODES.M)
     public void openAddressPopup() {
         LinearLayout linearlayoutAddressPopup = address_dialogue.findViewById(R.id.linearlayoutAddressPopup);
         linearlayoutAddressPopup.setMinimumWidth(UIUtil.getscreenwidth(address_dialogue.getWindow()));
         Button scanId = address_dialogue.findViewById(R.id.scanId);
-        address_dialogue.show();
         initAddressPopUp();
     }
 
+    @RequiresApi(api = VERSION_CODES.M)
     private void initAddressPopUp() {
         textInputEditTextPin = address_dialogue.findViewById(R.id.pincode);
         textInputEditTextDist = address_dialogue.findViewById(R.id.dist);
@@ -160,15 +161,15 @@ public class RegisterPatientActivity extends AppCompatActivity {
         createPinPopup(address_dialogue);
     }
     @RequiresApi(api = VERSION_CODES.M)
-    private void createPinPopup(Dialog address_dialogue)
+    private void createPinPopup(final Dialog address_dialogue)
     {
         final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(address_dialogue.getContext(),null));
         int displayWidth = UIUtil.getscreenwidth(address_dialogue.getWindow());
         int displayHeight = UIUtil.getscreenheight(address_dialogue.getWindow());
         final TextInputLayout textInputLayout = UIUtil.getTextInputLayout(address_dialogue.getContext(),
-                0,(int)(displayHeight*0.1f),displayWidth, InputType.TYPE_CLASS_NUMBER,"PinCode");
+                0,(int)(displayHeight*0.2f),displayWidth-200, InputType.TYPE_CLASS_NUMBER,"PinCode");
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        int dialogWindowWidth = displayWidth;
+        int dialogWindowWidth = displayWidth-100;
         int dialogWindowHeight = (int) (displayHeight * 0.5f);
         layoutParams.width = dialogWindowWidth;
         layoutParams.height = dialogWindowHeight;
@@ -177,6 +178,7 @@ public class RegisterPatientActivity extends AppCompatActivity {
                             public void onClick( DialogInterface dialog,int which)
                             {
                                 textInputEditTextPin.setText(textInputLayout.getEditText().getText().toString());
+                                address_dialogue.show();
                             }
                         });
         builder.setNegativeButton("SKIP", new DialogInterface.OnClickListener() {
@@ -184,12 +186,12 @@ public class RegisterPatientActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,int which)
                     {
                         dialog.dismiss();
+                        address_dialogue.show();
                     }
                 });
         AlertDialog dialog = builder.create();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_alert_dialog);
-
         dialog.getWindow().setAttributes(layoutParams);
         dialog.setView(textInputLayout);
         dialog.show();

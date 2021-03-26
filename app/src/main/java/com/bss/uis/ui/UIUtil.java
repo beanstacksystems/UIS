@@ -2,6 +2,7 @@ package com.bss.uis.ui;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Window;
@@ -10,6 +11,9 @@ import android.widget.LinearLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class UIUtil {
     public static Button getButtonWithImg(Context object, Drawable icon, String btnText, int bkg_color, int height, int width) {
@@ -49,5 +53,20 @@ public class UIUtil {
        window.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
         return width;
+    }
+    public static Drawable decodeDrawable(Context context, String name,String base64) {
+        Drawable ret = null;
+        if (!base64.equals("")) {
+            ByteArrayInputStream bais = new ByteArrayInputStream(
+                    Base64.decode(base64.getBytes(), Base64.DEFAULT));
+            ret = Drawable.createFromResourceStream(context.getResources(),
+                    null, bais, null, null);
+            try {
+                bais.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return ret;
     }
 }
