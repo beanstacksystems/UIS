@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Unity IS Strength</string>
     <string name="copyright">\u00A9 Beanstack Systems Pvt Ltd.</string>
-    <string name="facebook_application_id">3323999927638523</string>
+    <string name="facebook_application_id">737750777133213</string>
+    <string name="fb_login_protocol_scheme">fb737750777133213</string>
 
 
     <string name="splashscreen">SplashScreen</string>
