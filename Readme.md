@@ -1,6 +1,6 @@
-https://developers.facebook.com/docs/facebook-login/android
+[Facebook Login](https://developers.facebook.com/docs/facebook-login/android)
 
-https://stackoverflow.com/questions/7506392/how-to-create-android-facebook-key-hash
+[Create Android Facebook Key Hash](https://stackoverflow.com/questions/7506392/how-to-create-android-facebook-key-hash)
 
 Here is complete details (For Windows)
 
