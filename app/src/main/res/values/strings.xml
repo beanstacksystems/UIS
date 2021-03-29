@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Unity IS Strength</string>
     <string name="copyright">\u00A9 Beanstack Systems Pvt Ltd.</string>
-    <string name="facebook_application_id">737750777133213</string>
-    <string name="fb_login_protocol_scheme">fb737750777133213</string>
-
+    <string name="facebook_app_id">947730725995178</string>
+    <string name="fb_login_protocol_scheme">fb947730725995178</string>
 
     <string name="splashscreen">SplashScreen</string>
     <string name="title_activity_drawer_main">DrawerMainActivity</string>
@@ -45,5 +44,7 @@
     <string name="update">Update</string>
     <string name="register">Register</string>
     <string name="addAddress">Add Address</string>
+    <string name="googleClientId">155649183928-evv6rhcnfccgah86h3kjj2osuokfj50q.apps.googleusercontent.com</string>
+
 
 </resources>

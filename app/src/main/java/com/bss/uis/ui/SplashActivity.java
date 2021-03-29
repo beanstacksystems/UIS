@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bss.uis.R;
@@ -24,17 +25,24 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = "SplashActivity";
     private CallbackManager callbackManager;
     ImageView logoview;
@@ -49,7 +57,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.setApplicationId(getString(R.string.facebook_application_id));
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_splash);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -62,12 +71,22 @@ public class SplashActivity extends AppCompatActivity {
         GoogleCustomll = findViewById(R.id.GoogleCustomll);
         GoogleCustomll.setVisibility(View.INVISIBLE);
         fLoginBtn.setReadPermissions(Arrays.asList(EMAIL));
+        fLoginBtn.setReadPermissions(Arrays.asList("user_status"));
         logoview = findViewById(R.id.imageView);
         copyright = findViewById(R.id.copyright);
         callbackManager = CallbackManager.Factory.create();
         Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);
         logoview.startAnimation(animation);
-        fLoginBtn.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.googleClientId))
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             public void onSuccess(final LoginResult loginResult) {
                 Log.i(TAG, "onSuccess: logged in successfully");
                 GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
@@ -111,11 +130,7 @@ public class SplashActivity extends AppCompatActivity {
                 anim.setDuration(AppConstants.ANIMATION_TIMEOUT);
                 GoogleCustomll.startAnimation(anim);
                 fbCustombuttonll.startAnimation(anim2);
-              //  Intent intent = new Intent(SplashActivity.this, DrawerMainActivity.class);
-               // startActivity(intent);
-                //invoke the SecondActivity.
 
-                finish();
                 //the current activity will get finished.
             }
         }, AppConstants.SPLASH_SCREEN_TIME_OUT);
@@ -141,5 +156,24 @@ public class SplashActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                handleAccessToken(account.getIdToken(), account.getEmail(), account.getId(), account.getDisplayName(), "Google");
+            } catch (ApiException e) {
+                Log.w(TAG, "Google sign in failed", e);
+            }
+        }
     }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+//    Intent intent = new Intent(SplashActivity.this, DrawerMainActivity.class);
+//    startActivity(intent);
+//
+//    finish();
 }
