@@ -26,6 +26,15 @@
                 android:layout_height="131dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/uisnobg" />
+            <TextView
+                android:id="@+id/caption"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancerFoundation"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/uisRed"/>
 
         </LinearLayout>
 
@@ -40,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:gravity="center"
-            android:background="#416BC1"
+            android:background="@color/blue"
             android:orientation="horizontal">
 
             <ImageView
@@ -53,7 +62,7 @@
                 android:id="@+id/fbCustom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#416BC1"
+                android:background="@color/blue"
                 android:onClick="onClickFacebookButton"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
@@ -67,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:background="#DD6D65"
+            android:background="@color/orange"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -86,7 +95,7 @@
                 android:paddingRight="10dp"
                 android:text=" Signin With google  "
                 android:textColor="#000"
-                android:background="#DD6D65"
+                android:background="@color/orange"
                 android:textStyle="bold" />
         </LinearLayout>
         <LinearLayout

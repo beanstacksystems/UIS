@@ -2,6 +2,7 @@ package com.bss.uis.ui;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -46,7 +47,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     private static final String TAG = "SplashActivity";
     private CallbackManager callbackManager;
     ImageView logoview;
-    TextView copyright;
+    TextView caption,copyright;
     private LoginButton fLoginBtn;
     private static final int RC_SIGN_IN = 9001;
     private LinearLayout fbCustombuttonll, GoogleCustomll;
@@ -71,12 +72,17 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         GoogleCustomll = findViewById(R.id.GoogleCustomll);
         GoogleCustomll.setVisibility(View.INVISIBLE);
         fLoginBtn.setReadPermissions(Arrays.asList(EMAIL));
-        fLoginBtn.setReadPermissions(Arrays.asList("user_status"));
         logoview = findViewById(R.id.imageView);
         copyright = findViewById(R.id.copyright);
+        caption = findViewById(R.id.caption);
+        caption.setTypeface(Typeface.SERIF, Typeface.ITALIC);
         callbackManager = CallbackManager.Factory.create();
         Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);
+        animation.setDuration(800);
         logoview.startAnimation(animation);
+        Animation captionAnimation = AnimationUtils.loadAnimation(this, R.anim.fragment_close_exit);
+        captionAnimation.setDuration(500);
+        caption.startAnimation(captionAnimation);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.googleClientId))
                 .requestEmail()
@@ -159,9 +165,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                Log.d(TAG, "Google auth Id:" + account.getId());
                 handleAccessToken(account.getIdToken(), account.getEmail(), account.getId(), account.getDisplayName(), "Google");
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
