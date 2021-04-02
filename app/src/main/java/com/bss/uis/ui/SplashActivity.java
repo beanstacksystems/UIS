@@ -18,8 +18,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beanstack.biometric.BiometricUtils;
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
+import com.bss.uis.service.NavigationService;
+import com.bss.uis.service.UserService;
+import com.bss.uis.service.impl.NavigationServiceImpl;
+import com.bss.uis.service.impl.UserServiceImpl;
+import com.bss.uis.ui.navDrawer.DrawerMainActivity;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -33,9 +40,11 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
@@ -54,6 +63,8 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     private Button fbCustombutton, googleCustomButton;
     private GoogleApiClient googleApiClient;
     private static final String[] EMAIL = {"email", "public_profile", "user_friends"};
+    private NavigationService navigationService;
+    private UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +87,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         copyright = findViewById(R.id.copyright);
         caption = findViewById(R.id.caption);
         caption.setTypeface(Typeface.SERIF, Typeface.ITALIC);
+        updateUI();
         callbackManager = CallbackManager.Factory.create();
         Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);
         animation.setDuration(800);
@@ -127,17 +139,17 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // going to login activity
-                fbCustombuttonll.setVisibility(View.VISIBLE);
-                GoogleCustomll.setVisibility(View.VISIBLE);
-                Animation anim = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.animation);
-                anim.setDuration(AppConstants.ANIMATION_TIMEOUT);
-                Animation anim2 = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.animation);
-                anim.setDuration(AppConstants.ANIMATION_TIMEOUT);
-                GoogleCustomll.startAnimation(anim);
-                fbCustombuttonll.startAnimation(anim2);
-
-                //the current activity will get finished.
+                if(!isFacebookLoggedIn() && !isGoogleLoggedIn()){
+                    fbCustombuttonll.setVisibility(View.VISIBLE);
+                    GoogleCustomll.setVisibility(View.VISIBLE);
+                    Animation anim = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.animation);
+                    anim.setDuration(AppConstants.ANIMATION_TIMEOUT);
+                    Animation anim2 = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.animation);
+                    anim.setDuration(AppConstants.ANIMATION_TIMEOUT);
+                    GoogleCustomll.startAnimation(anim);
+                    fbCustombuttonll.startAnimation(anim2);
+                }
+                navigationService.navigate();
             }
         }, AppConstants.SPLASH_SCREEN_TIME_OUT);
 
@@ -156,7 +168,9 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     }
     private void handleAccessToken(String token, String email, String userId, String name, String source) {
         System.out.println(token);
-
+        userService = new UserServiceImpl();
+        userService.registerUser(token);
+        navigationService.navigate();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -177,8 +191,38 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
-//    Intent intent = new Intent(SplashActivity.this, DrawerMainActivity.class);
-//    startActivity(intent);
-//
-//    finish();
+    private void updateUI() {
+        if (BiometricUtils.isFingerprintAvailable(SplashActivity.this))
+            navigationService = new NavigationServiceImpl(SplashActivity.this, BioMetricActivity.class);
+        else
+            navigationService = new NavigationServiceImpl(SplashActivity.this, DrawerMainActivity.class);
+    }
+    public boolean isFacebookLoggedIn(){
+        return AccessToken.getCurrentAccessToken() != null;
+    }
+    public boolean isGoogleLoggedIn()
+    {
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+//            Log.d(TAG, "Got cached sign-in");
+//            GoogleSignInResult result = opr.get();
+//            handleSignInResult(result);
+            return true;
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+//            showProgressDialog();
+//            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+//                @Override
+//                public void onResult(GoogleSignInResult googleSignInResult) {
+//                    hideProgressDialog();
+//                    handleSignInResult(googleSignInResult);
+//                }
+//            });
+            return false;
+        }
+    }
 }

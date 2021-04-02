@@ -8,8 +8,9 @@
     <string name="title_activity_drawer_main">DrawerMainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">Unity is Strength Cancer Foundation</string>
+    <string name="nav_header_name">Test</string>
+    <string name="nav_header_email">a@b.cde</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -45,6 +46,17 @@
     <string name="register">Register</string>
     <string name="addAddress">Add Address</string>
     <string name="googleClientId">155649183928-evv6rhcnfccgah86h3kjj2osuokfj50q.apps.googleusercontent.com</string>
+
+    <string name="biometric_title">Login</string>
+    <string name="biometric_subtitle">Login to your account</string>
+    <string name="biometric_description">Place your finger on the device home button to verify your identity</string>
+    <string name="biometric_negative_button_text">CANCEL</string>
+    <string name="biometric_error_sdk_not_supported">Sdk version not supported</string>
+    <string name="biometric_error_hardware_not_supported">Device does not support biometric authentication</string>
+    <string name="biometric_error_fingerprint_not_available">Fingerprint is not registered in device</string>
+    <string name="biometric_error_permission_not_granted">Permission is not granted by user</string>
+    <string name="biometric_cancelled">Authentication cancelled by user</string>
+    <string name="biometric_success">Login Successful</string>
 
     <string name="cancerFoundation">Cancer Foundation</string>
 </resources>

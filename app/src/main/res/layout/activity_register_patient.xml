@@ -139,25 +139,24 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/bg_shape_orange_corner"
                     android:text="@string/date_of_birth"
-                    android:textColor="@color/black"
-
-                    />
-                <android.widget.Button
-                    android:id="@+id/scanId"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/shape_layout_orange"
-                    android:text="Aadhar Card/Pan card"
-                    android:textColor="#fff"/>
-
-
+                    android:textColor="@color/black"/>
                 <ImageView
-                    android:id="@+id/id_proof_imageview"
+                    android:id="@+id/id_capture_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@mipmap/ic_capture_image"/>
+                <LinearLayout
+                    android:id="@+id/id_proof_imageview_Layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="15dp">
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

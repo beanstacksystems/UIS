@@ -15,13 +15,13 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,9 +47,10 @@ public class RegisterPatientActivity extends AppCompatActivity {
 
     Button address_btn,dateOfBirth_btn;
     Dialog address_dialogue;
-    Button scanId,scanMedicalReports,upDateAddbutton;
+    Button scanMedicalReports,upDateAddbutton;
     CircleImageView profile_image;
-    ImageView id_proof_imageview,medicalreport_imageview;
+    ImageView idproofimageIcon,medicalreport_imageview;
+    LinearLayout idproofimageviewLayout;
     TextInputEditText textInputEditTextPin,textInputEditTextState,textInputEditTextDist;
     private int mYear, mMonth, mDay;
 
@@ -57,24 +58,21 @@ public class RegisterPatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_patient);
-        address_dialogue = new Dialog(this);
-        address_dialogue.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        address_dialogue.setContentView(R.layout.popup_address);
-        address_dialogue.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        address_dialogue =UIUtil.getPopupDialog(this);
         address_btn = findViewById(R.id.address_btn);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
-        scanId = findViewById(R.id.scanId);
+        idproofimageIcon = findViewById(R.id.id_capture_image);
         scanMedicalReports = findViewById(R.id.scanMedicalReports);
-        id_proof_imageview = findViewById(R.id.id_proof_imageview);
+        idproofimageviewLayout = findViewById(R.id.id_proof_imageview_Layout);
         medicalreport_imageview = findViewById(R.id.medicalreport_imageview);
         dateOfBirth_btn = findViewById(R.id.dateOfBirth_btn);
 
         dateOfBirth_btn.setOnClickListener(new CustomOnclickListener());
         profile_image.setOnClickListener(new CustomOnclickListener());
-        id_proof_imageview.setOnClickListener(new CustomOnclickListener());
         scanMedicalReports.setOnClickListener(new CustomOnclickListener());
         address_btn.setOnClickListener(new CustomOnclickListener());
-        scanId.setOnClickListener(new CustomOnclickListener());
+        idproofimageIcon.setOnClickListener(new CustomOnclickListener());
+//        idproofimageIcon.setOnClickListener(new CameraActivityListener(getApplicationContext(),address_dialogue));
         Spinner spinner_blood_group = (Spinner) findViewById(R.id.spinner_blood_group);
         ArrayAdapter bloodgrupAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, AppConstants.Blood_Groups);
         spinner_blood_group.setAdapter(bloodgrupAdapter);
@@ -140,7 +138,6 @@ public class RegisterPatientActivity extends AppCompatActivity {
     public void openAddressPopup() {
         LinearLayout linearlayoutAddressPopup = address_dialogue.findViewById(R.id.linearlayoutAddressPopup);
         linearlayoutAddressPopup.setMinimumWidth(UIUtil.getscreenwidth(address_dialogue.getWindow()));
-        Button scanId = address_dialogue.findViewById(R.id.scanId);
         initAddressPopUp();
     }
 
@@ -217,8 +214,13 @@ public class RegisterPatientActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == AppConstants.ID_SCAN_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            id_proof_imageview.setImageBitmap(photo);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+            );
+            LinearLayout dlgLayut = UIUtil.getCloseableLinearLayout(this,LinearLayout.VERTICAL, 1, -1, params.height, params.width);
+            dlgLayut.addView(UIUtil.getImageViewBitMap(this,data));
+            idproofimageviewLayout.addView(dlgLayut);
         }
 
         if (requestCode == AppConstants.MEDICAL_REPORT_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -235,18 +237,13 @@ public class RegisterPatientActivity extends AppCompatActivity {
         @RequiresApi(api = VERSION_CODES.M)
         @Override
         public void onClick(View v) {
+            if (v.getId() == R.id.id_capture_image) {
+                openScanIdCamera();
+            }
             if (v == address_btn) {
                 openAddressPopup();
             }
-            if (v == scanId) {
-                openScanIdCamera();
-            }
-            if(v ==scanMedicalReports){
-                openScanMedicalReports();
-            }
-            if(v== profile_image){
-                OpencameraForProfilePicture();
-            }
+
             if(v == dateOfBirth_btn){
                 selectDateOfBirth();
             }
@@ -265,4 +262,5 @@ public class RegisterPatientActivity extends AppCompatActivity {
         //                captureAddressDetails();
         return true;
     }
+
 }
