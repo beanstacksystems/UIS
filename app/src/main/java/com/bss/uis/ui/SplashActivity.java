@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
     private LinearLayout fbCustombuttonll, GoogleCustomll;
     private Button fbCustombutton, googleCustomButton;
     private GoogleApiClient googleApiClient;
-    private static final String[] EMAIL = {"email", "public_profile", "user_friends"};
+    private static final String[] EMAIL = {"email", "public_profile"};
     private NavigationService navigationService;
     private UserService userService;
 
@@ -97,6 +97,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         caption.startAnimation(captionAnimation);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.googleClientId))
+                .requestServerAuthCode(getString(R.string.googleClientId))
                 .requestEmail()
                 .build();
 
@@ -115,7 +116,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                             String email = object.getString("email");
                             String userId = object.getString("id");
                             String name = object.getString("name");
-                            handleAccessToken(loginResult.getAccessToken().getToken(), email, userId, name, "Facebook");
+                            handleAccessToken(loginResult.getAccessToken().getToken(), null, email, userId, name, "Facebook");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -139,7 +140,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!isFacebookLoggedIn() && !isGoogleLoggedIn()){
+//                if(!isFacebookLoggedIn() && !isGoogleLoggedIn()){
                     fbCustombuttonll.setVisibility(View.VISIBLE);
                     GoogleCustomll.setVisibility(View.VISIBLE);
                     Animation anim = AnimationUtils.loadAnimation(SplashActivity.this, R.anim.animation);
@@ -148,8 +149,9 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
                     anim.setDuration(AppConstants.ANIMATION_TIMEOUT);
                     GoogleCustomll.startAnimation(anim);
                     fbCustombuttonll.startAnimation(anim2);
-                }
-                navigationService.navigate();
+
+//                }
+//                navigationService.navigate();
             }
         }, AppConstants.SPLASH_SCREEN_TIME_OUT);
 
@@ -166,10 +168,10 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
             startActivityForResult(intent, RC_SIGN_IN);
         }
     }
-    private void handleAccessToken(String token, String email, String userId, String name, String source) {
+    private void handleAccessToken(String token, String authCode, String email, String userId, String name, String source) {
         System.out.println(token);
         userService = new UserServiceImpl();
-        userService.registerUser(token);
+        userService.registerAndAuthenticateUser(token, authCode, source);
         navigationService.navigate();
     }
     @Override
@@ -180,8 +182,10 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
                 Log.d(TAG, "Google auth Id:" + account.getId());
-                handleAccessToken(account.getIdToken(), account.getEmail(), account.getId(), account.getDisplayName(), "Google");
+
+                handleAccessToken(account.getIdToken(), account.getServerAuthCode(), account.getEmail(), account.getId(), account.getDisplayName(), "google");
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
             }

@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".context.UISApplicationContext"
@@ -28,7 +29,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.listener.CameraActivityListener"></activity>
+        <activity android:name=".ui.listener.CameraActivityListener" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
