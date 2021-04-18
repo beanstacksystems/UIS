@@ -2,8 +2,11 @@ package com.bss.uis.ui;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.util.DisplayMetrics;
@@ -77,13 +80,13 @@ public class UIUtil {
         }
         return ret;
     }
-    public static ImageView getImageViewBitMap(Context context, Intent data)
+    public static ImageView getImageViewBitMap(Context context, Bitmap bitmap)
     {
-        Bitmap photo = (Bitmap) data.getExtras().get("data");
         ImageView imageView = new ImageView(context);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(100, 100);
+        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT);
+        imageParams.setMargins(10,5,10,10);
         imageView.setLayoutParams(imageParams);
-        imageView.setImageBitmap(photo);
+        imageView.setImageBitmap(bitmap);
         return imageView;
     }
     public static LinearLayout getCloseableLinearLayout(Context context, int orientation, int index, int bgResource, int xHeight, int xWidth)
@@ -93,14 +96,14 @@ public class UIUtil {
         linearLayout.setId(index);
         if (bgResource > -1)
             linearLayout.setBackgroundResource(bgResource);
-        LinearLayout.LayoutParams paramsLinearLayout = new LinearLayout.LayoutParams(xWidth, LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams paramsLinearLayout = new LinearLayout.LayoutParams(xWidth, xHeight);
         paramsLinearLayout.setMargins(1, 1, 1, 1);
         linearLayout.setLayoutParams(paramsLinearLayout);
         LinearLayout imageLayout = new LinearLayout(context);
         imageLayout.setGravity(Gravity.RIGHT);
         ImageView imageView = new ImageView(context);
         imageView.setImageResource(R.drawable.ic_close);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(20, 20));
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(30, 30));
         imageLayout.addView(imageView);
         imageView.setOnClickListener(new OnClickListener() {
             @Override
@@ -131,5 +134,37 @@ public class UIUtil {
         dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
         return dialog;
     }
+    public static Bitmap getScaledBitmap(Bitmap bitmap,int newWidth,int newHeight)
+    {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Config.ARGB_8888);
 
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+    }
+    public static Dialog getImagePopupDialog(Context context)
+    {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.image_viewer);
+        ImageView closeImageView = dialog.findViewById(R.id.closeImageViewer);
+        closeImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        return dialog;
+    }
 }

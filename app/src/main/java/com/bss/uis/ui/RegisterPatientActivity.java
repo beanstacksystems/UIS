@@ -1,15 +1,9 @@
 package com.bss.uis.ui;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.text.InputType;
@@ -19,21 +13,19 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
 import com.bss.uis.service.impl.APIServiceImpl;
+import com.bss.uis.ui.image.ImageCaptureFragment;
 import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,10 +39,8 @@ public class RegisterPatientActivity extends AppCompatActivity {
 
     Button address_btn,dateOfBirth_btn;
     Dialog address_dialogue;
-    Button scanMedicalReports,upDateAddbutton;
+    Button upDateAddbutton;
     CircleImageView profile_image;
-    ImageView idproofimageIcon,medicalreport_imageview;
-    LinearLayout idproofimageviewLayout;
     TextInputEditText textInputEditTextPin,textInputEditTextState,textInputEditTextDist;
     private int mYear, mMonth, mDay;
 
@@ -61,18 +51,13 @@ public class RegisterPatientActivity extends AppCompatActivity {
         address_dialogue =UIUtil.getPopupDialog(this);
         address_btn = findViewById(R.id.address_btn);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
-        idproofimageIcon = findViewById(R.id.id_capture_image);
-        scanMedicalReports = findViewById(R.id.scanMedicalReports);
-        idproofimageviewLayout = findViewById(R.id.id_proof_imageview_Layout);
-        medicalreport_imageview = findViewById(R.id.medicalreport_imageview);
+        getFragment(false,R.id.id_proof_imageview_Layout);
+        getFragment(false,R.id.medicalreport_imageviewLayout);
         dateOfBirth_btn = findViewById(R.id.dateOfBirth_btn);
 
         dateOfBirth_btn.setOnClickListener(new CustomOnclickListener());
         profile_image.setOnClickListener(new CustomOnclickListener());
-        scanMedicalReports.setOnClickListener(new CustomOnclickListener());
         address_btn.setOnClickListener(new CustomOnclickListener());
-        idproofimageIcon.setOnClickListener(new CustomOnclickListener());
-//        idproofimageIcon.setOnClickListener(new CameraActivityListener(getApplicationContext(),address_dialogue));
         Spinner spinner_blood_group = (Spinner) findViewById(R.id.spinner_blood_group);
         ArrayAdapter bloodgrupAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, AppConstants.Blood_Groups);
         spinner_blood_group.setAdapter(bloodgrupAdapter);
@@ -100,38 +85,6 @@ public class RegisterPatientActivity extends AppCompatActivity {
                 }, mYear, mMonth, mDay);
         datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         datePickerDialog.show();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void OpencameraForProfilePicture() {
-
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, AppConstants.MY_CAMERA_PERMISSION_CODE);
-        } else {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, AppConstants.PROFILE_PICTURE_CAMERA_REQUEST);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void openScanMedicalReports() {
-
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, AppConstants.MY_CAMERA_PERMISSION_CODE);
-        } else {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, AppConstants.MEDICAL_REPORT_CAMERA_REQUEST);
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    public void openScanIdCamera() {
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, AppConstants.MY_CAMERA_PERMISSION_CODE);
-        } else {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, AppConstants.ID_SCAN_CAMERA_REQUEST);
-        }
     }
 
     @RequiresApi(api = VERSION_CODES.M)
@@ -195,55 +148,15 @@ public class RegisterPatientActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == AppConstants.MY_CAMERA_PERMISSION_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
-                /*Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, ID_SCAN_CAMERA_REQUEST);*/
-            } else {
-                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == AppConstants.ID_SCAN_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT
-            );
-            LinearLayout dlgLayut = UIUtil.getCloseableLinearLayout(this,LinearLayout.VERTICAL, 1, -1, params.height, params.width);
-            dlgLayut.addView(UIUtil.getImageViewBitMap(this,data));
-            idproofimageviewLayout.addView(dlgLayut);
-        }
-
-        if (requestCode == AppConstants.MEDICAL_REPORT_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            medicalreport_imageview.setImageBitmap(photo);
-        }
-        if (requestCode == AppConstants.PROFILE_PICTURE_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            profile_image.setImageBitmap(photo);
-        }
-    }
     class CustomOnclickListener implements View.OnClickListener
     {
         @RequiresApi(api = VERSION_CODES.M)
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.id_capture_image) {
-                openScanIdCamera();
-            }
             if (v == address_btn) {
                 openAddressPopup();
             }
-
             if(v == dateOfBirth_btn){
                 selectDateOfBirth();
             }
@@ -261,6 +174,15 @@ public class RegisterPatientActivity extends AppCompatActivity {
     {
         //                captureAddressDetails();
         return true;
+    }
+    public Fragment getFragment(Boolean bool,int id) {
+        Fragment fragment = new ImageCaptureFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        if (bool)
+            transaction.addToBackStack(null);
+        transaction.commit();
+        return fragment;
     }
 
 }

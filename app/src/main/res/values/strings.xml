@@ -37,6 +37,8 @@
     <string name="medical_history">Medical history</string>
     <string name="diease_name">Diease name</string>
     <string name="Social_profiles">Social profiles</string>
+    <string name="id_proof">ID-Proof</string>
+    <string name="medical_report">Medical Reports</string>
     <!--    <string name="copyright">\u00A9 Beanstack Systems Pvt Ltd.</string>-->
     <!--    <string name="facebook_application_id">3323999927638523</string>-->
 
@@ -59,4 +61,8 @@
     <string name="biometric_success">Login Successful</string>
 
     <string name="cancerFoundation">Cancer Foundation</string>
+
+    <string name="imgcapture">Capture/Upload image here.</string>
+    <string name="done">Done</string>
+
 </resources>

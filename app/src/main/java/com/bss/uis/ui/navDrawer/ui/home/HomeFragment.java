@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bss.uis.R;
-import com.bss.uis.ui.imageSlider.ImageAdapter;
+import com.bss.uis.ui.image.adapter.ScrollImageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         imagePanel = (LinearLayout) root.findViewById(R.id.imagesliderDots);
         ViewPager mViewPager = (ViewPager)root.findViewById(R.id.imgviewPagerMain);
-        ImageAdapter adapterView = new ImageAdapter(getContext(),imageList);
+        ScrollImageAdapter adapterView = new ScrollImageAdapter(getContext(),imageList);
         mViewPager.setAdapter(adapterView);
 //        final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {

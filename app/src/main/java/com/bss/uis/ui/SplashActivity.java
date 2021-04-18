@@ -173,6 +173,7 @@ public class SplashActivity extends AppCompatActivity implements GoogleApiClient
         userService = new UserServiceImpl();
         userService.registerAndAuthenticateUser(token, authCode, source);
         navigationService.navigate();
+        finish();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

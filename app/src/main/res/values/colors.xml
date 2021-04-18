@@ -14,6 +14,8 @@
     <color name="greenlite">#A5FDA9</color>
     <color name="tomato">#A5FDA9</color>
     <color name="grey">#FFE6E8E8</color>
+    <color name="codeGray">#e7e7e7</color>
+    <color name="transparent">#00000000</color>
 
 
     <color name="uisRed">#C50000</color>

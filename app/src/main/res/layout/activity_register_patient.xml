@@ -140,20 +140,24 @@
                     android:background="@drawable/bg_shape_orange_corner"
                     android:text="@string/date_of_birth"
                     android:textColor="@color/black"/>
-                <ImageView
-                    android:id="@+id/id_capture_image"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@mipmap/ic_capture_image"/>
+
                 <LinearLayout
                     android:id="@+id/id_proof_imageview_Layout"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="match_parent"
                     android:layout_margin="5dp"
+                    android:background="@drawable/bg_shape_orange_corner"
                     android:gravity="center"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@string/id_proof"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -226,24 +230,24 @@
                 </LinearLayout>
 
 
-                <android.widget.Button
-                    android:id="@+id/scanMedicalReports"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-
-                    android:background="@drawable/shape_layout_orange"
-                    android:text="medical Reports"
-                    android:textColor="#fff"
-
-                    />
-
-                <ImageView
-                    android:id="@+id/medicalreport_imageview"
+                <LinearLayout
+                    android:id="@+id/medicalreport_imageviewLayout"
+                    android:background="@drawable/bg_shape_orange_corner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/medical_report"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout

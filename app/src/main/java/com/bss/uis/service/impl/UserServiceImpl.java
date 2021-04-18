@@ -14,7 +14,7 @@ import retrofit2.Retrofit;
 
 public class UserServiceImpl implements UserService {
 
-    public static final String BASE_URL = "http://192.168.0.101:8080/";
+    public static final String BASE_URL = "http://192.168.0.106:4321/";
 
     private AuthService authService;
 
