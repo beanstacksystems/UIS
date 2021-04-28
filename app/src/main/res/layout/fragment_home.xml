@@ -229,38 +229,23 @@
         app:strokeWidth="0dp"
         app:strokeColor="@color/colorPrimary"
         app:cardCornerRadius="8dp">
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabTextColor="@color/orange"
-        app:tabIndicatorGravity="stretch"
-        app:tabIndicatorColor="@color/greenlite"
-        app:tabGravity="fill"
-        android:background="@color/white"
-        app:tabMode="scrollable"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/tabviewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.viewpager.widget.ViewPager>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/home_tabLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cancer Info" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Emergency" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Near by Hospitals" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Others" />
-
-    </com.google.android.material.tabs.TabLayout>
+            app:tabTextColor="@color/orange"
+            app:tabIndicatorGravity="stretch"
+            app:tabIndicatorColor="@color/greenlite"
+            app:tabGravity="fill"
+            android:background="@color/white"
+            app:tabMode="scrollable"
+            tools:ignore="MissingConstraints">
+        </com.google.android.material.tabs.TabLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </LinearLayout>

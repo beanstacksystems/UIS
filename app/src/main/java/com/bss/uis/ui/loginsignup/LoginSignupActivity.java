@@ -63,10 +63,10 @@ public class LoginSignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         updateUI();
-//        if(isUserHasValidToken()){
-//            navigationService.navigate();
-//            finish();
-//        }
+        if(isUserHasValidToken()){
+            navigationService.navigate();
+            finish();
+        }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_login_signup);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);

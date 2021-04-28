@@ -20,6 +20,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bss.uis.R;
 import com.bss.uis.ui.image.adapter.ScrollImageAdapter;
+import com.bss.uis.ui.tabFragment.DynamicTabFragment;
+import com.bss.uis.ui.tabFragment.TabAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayout.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private ImageView[] imageViews;
     LinearLayout imagePanel;
+    private TabLayout tabLayout;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,7 +51,6 @@ public class HomeFragment extends Fragment {
         ViewPager mViewPager = (ViewPager)root.findViewById(R.id.imgviewPagerMain);
         ScrollImageAdapter adapterView = new ScrollImageAdapter(getContext(),imageList);
         mViewPager.setAdapter(adapterView);
-//        final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -54,6 +58,28 @@ public class HomeFragment extends Fragment {
             }
         });
         updateImageView(mViewPager,adapterView.getCount());
+        tabLayout = root.findViewById(R.id.home_tabLayout);
+        List<DynamicTabFragment> tabFragList = getTabFragmentList();
+        for(DynamicTabFragment frag:tabFragList)
+            tabLayout.addTab(tabLayout.newTab().setText(frag.getTabTitle()));
+        final ViewPager tabViewPager = (ViewPager)root.findViewById(R.id.tabviewPager);
+        TabAdapter tabAdapter = new TabAdapter(getActivity().getSupportFragmentManager(),tabFragList);
+        tabViewPager.setAdapter(tabAdapter);
+        tabViewPager.setOffscreenPageLimit(1);
+        tabViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabViewPager.setCurrentItem(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(Tab tab) {
+            }
+            @Override
+            public void onTabReselected(Tab tab) {
+            }
+
+        });
         return root;
     }
     public void updateImageView(ViewPager imgViewPager,int length)
@@ -96,5 +122,14 @@ public class HomeFragment extends Fragment {
                 handler.post(Update);
             }
         }, 500, 2000);
+    }
+    private List<DynamicTabFragment> getTabFragmentList()
+    {
+        List<DynamicTabFragment> tabFragList = new ArrayList<>();
+        tabFragList.add(DynamicTabFragment.newInstance("Cancer Info","","Cancer Desc"));
+        tabFragList.add(DynamicTabFragment.newInstance("Emergency Detail","","Emergency Detail"));
+        tabFragList.add(DynamicTabFragment.newInstance("Near By Hospital","","Hospital details"));
+        tabFragList.add(DynamicTabFragment.newInstance("Others","","Others"));
+        return tabFragList;
     }
 }
