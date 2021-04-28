@@ -18,7 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.model.User;
-import com.bss.uis.ui.RegisterPatientActivity;
+import com.bss.uis.ui.registration.RegistrationActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
@@ -53,7 +53,7 @@ public class DrawerMainActivity extends AppCompatActivity {
 //                }
 //                for(AddressDTO addressDTO :addressList)
 //                    System.out.println(addressDTO.getBlock());
-                startActivity(new Intent(DrawerMainActivity.this, RegisterPatientActivity.class));
+                startActivity(new Intent(DrawerMainActivity.this, RegistrationActivity.class));
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

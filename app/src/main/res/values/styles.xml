@@ -1,18 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+<style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/uisRed</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/uisRed</item>
+        <item name="colorAccent">@color/uisBlue</item>
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/white</item>
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">true</item>
 
     </style>
-        <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-        <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@drawable/shape_layout_white</item>
     </style>
-    <style name="TextInputLayoutStyleBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
+
+    <style name="TextInputLayoutStyleBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/uisRed</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxBackgroundColor">#fff</item>
@@ -24,7 +24,16 @@
         <item name="android:typeface">normal</item>
         <item name="android:background">@drawable/bg_alert_dialog</item>
     </style>
-    <style name="TextInputLayoutStyle">
+    <style name="CustomDropDownTilStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeColor">@color/uisRed</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxBackgroundColor">#fff</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">#fff</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxBackgroundColor">#fff</item>
@@ -36,5 +45,9 @@
         <item name="android:textSize">10sp</item>
         <item name="android:gravity">center</item>
     </style>
-
+    <style name="FooterBar">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
 </resources>

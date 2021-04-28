@@ -28,8 +28,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".ui.image.SelectImageActivity"></activity>
-        <activity android:name=".ui.image.FullImageViewActivity"></activity>
+        <activity
+            android:name=".ui.loginsignup.LoginSignupActivity"
+            android:label="@string/title_activity_login_signup"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".ui.registration.RegistrationActivity" />
+        <activity android:name=".ui.image.SelectImageActivity" />
+        <activity android:name=".ui.image.FullImageViewActivity" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

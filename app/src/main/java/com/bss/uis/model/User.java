@@ -1,5 +1,7 @@
 package com.bss.uis.model;
 
+import android.net.Uri;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +14,7 @@ public class User implements Comparable<User>{
     private long mobileNo;
     private String dob;
     private String idProofNo;
+    private String userSigninType;
 
 
     @Override
@@ -20,6 +23,19 @@ public class User implements Comparable<User>{
 
         return -1;
     }
+    class FBUser extends User{
+        private final Uri picture;
+        private final String id;
+        private final String permissions;
 
+        public FBUser(Uri picture, String name, String id, String email, String permissions) {
+            this.picture = picture;
+            super.name = name;
+            this.id = id;
+            super.email = email;
+            this.permissions = permissions;
+            super.userSigninType="facebook";
+        }
+    }
 
 }

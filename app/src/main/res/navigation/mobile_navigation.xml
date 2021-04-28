@@ -19,7 +19,7 @@
         android:id="@+id/nav_shelterHome"
         android:name="com.bss.uis.ui.navDrawer.ui.shelterHome.ShelterHomeFragment"
         android:label="@string/menu_shelterHome"
-        tools:layout="@layout/fragment_shelterHome" />
+        tools:layout="@layout/fragment_shelterhome" />
     <fragment
         android:id="@+id/nav_members"
         android:name="com.bss.uis.ui.navDrawer.ui.members.MembersFragment"

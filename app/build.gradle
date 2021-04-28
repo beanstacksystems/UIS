@@ -36,6 +36,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
     def nav_version = "2.3.3"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -44,9 +45,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6]'
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.facebook.android:facebook-login:[8.1)'
+    implementation 'com.facebook.android:facebook-android-sdk:8.1.0'
 
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
@@ -67,6 +68,6 @@ dependencies {
 
     implementation project(':biometric')
     implementation project(':upipayment')
-//    implementation project(':utility')
+    implementation project(':utility')
     implementation project(':showcase')
 }
