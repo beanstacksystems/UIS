@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,8 +20,12 @@ import com.facebook.FacebookSdk;
 
 public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
-    ImageView logoview;
+    ImageView logoviewPurple,logoviewBlue,logoviewRed,logoviewYellow,logoviewOrange,logoviewGreen;
     private NavigationService navigationService;
+    TextView logoText1,logoText2,logoText3;
+    Animation logoFromRightbottom,logoFromLeftbottom,
+            logoFromRightTop,logoFromleftTop,logoFromTop,logoFrombottom;
+    Animation appTitleFade,appTitlezoomin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +36,37 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        logoview = findViewById(R.id.imageView);
-        Animation animation= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.animation);
-        animation.setDuration(1000);
-        logoview.startAnimation(animation);
+
+        logoText1 = findViewById(R.id.SplashLogoTitle1);
+        logoText2 = findViewById(R.id.SplashLogoTitle2);
+        logoText3 = findViewById(R.id.SplashLogoTitle3);
+
+        logoviewPurple = findViewById(R.id.imageViewpurple);
+        logoviewRed = findViewById(R.id.imageViewred);
+        logoviewBlue = findViewById(R.id.imageViewblue);
+        logoviewYellow = findViewById(R.id.imageViewYellow);
+        logoviewOrange = findViewById(R.id.imageVieworrange);
+        logoviewGreen = findViewById(R.id.imageViewGreen);
+
+        logoFromTop = AnimationUtils.loadAnimation(this, R.anim.fromtop);
+        logoFrombottom = AnimationUtils.loadAnimation(this, R.anim.frombottom);
+        logoFromRightTop = AnimationUtils.loadAnimation(this, R.anim.fromtoprightcorner);
+        logoFromleftTop = AnimationUtils.loadAnimation(this, R.anim.fromtopleftcorner);
+        logoFromRightbottom = AnimationUtils.loadAnimation(this, R.anim.fromrightbottomcorner);
+        logoFromLeftbottom = AnimationUtils.loadAnimation(this, R.anim.fromleftbottomcorner);
+        appTitleFade = AnimationUtils.loadAnimation(this, R.anim.textfadeout);
+        appTitlezoomin = AnimationUtils.loadAnimation(this, R.anim.textzoomin);
+
+        logoviewRed.setAnimation(logoFromleftTop);
+        logoviewPurple.setAnimation(logoFromLeftbottom);
+        logoviewOrange.setAnimation(logoFrombottom);
+        logoviewBlue.setAnimation(logoFromTop);
+        logoviewGreen.setAnimation(logoFromRightTop);
+        logoviewYellow.setAnimation(logoFromRightbottom);
+
+        logoText1.startAnimation(appTitlezoomin);
+        logoText2.startAnimation(appTitlezoomin);
+        logoText3.startAnimation(appTitlezoomin);
         updateUI();
         new Handler().postDelayed(new Runnable() {
             @Override

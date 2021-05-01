@@ -1,7 +1,7 @@
 package com.bss.uis.constant;
 
 public interface AppConstants {
-   int SPLASH_SCREEN_TIME_OUT=1800 ;
+   int SPLASH_SCREEN_TIME_OUT=3000 ;
    int ANIMATION_TIMEOUT=1000;
    int ID_SCAN_CAMERA_REQUEST = 1888;
    int MEDICAL_REPORT_CAMERA_REQUEST=1889;
