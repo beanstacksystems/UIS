@@ -80,8 +80,4 @@ public class SplashActivity extends AppCompatActivity {
     private void updateUI() {
         navigationService = new NavigationServiceImpl(SplashActivity.this, LoginSignupActivity.class);
     }
-    private boolean isUserLoggedIn()
-    {
-        return false;
-    }
 }

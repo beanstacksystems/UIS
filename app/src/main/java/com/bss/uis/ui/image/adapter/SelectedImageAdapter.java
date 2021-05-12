@@ -37,7 +37,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
 
 
     @Override
-    public  void onBindViewHolder(@NonNull SelectedImageAdapter.ViewHolder holder, final int position) {
+     public  void onBindViewHolder(@NonNull SelectedImageAdapter.ViewHolder holder, final int position) {
         Glide.with(context)
                 .load(stringArrayList.get(position))
                 .placeholder(R.color.codeGray)

@@ -67,6 +67,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayoutStyleBox"
+                    android:id="@+id/Email_etLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email">
@@ -81,6 +82,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayoutStyleBox"
+                    android:id="@+id/contactInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/contact">

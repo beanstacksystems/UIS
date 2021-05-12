@@ -16,6 +16,8 @@ public class Patient {
     private int patientId;
     @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "idproof")
+    private String idproof;
     @ColumnInfo(name = "emailId")
     private String emailId;
     @ColumnInfo(name = "contact")

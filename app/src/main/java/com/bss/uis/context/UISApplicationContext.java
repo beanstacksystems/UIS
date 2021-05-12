@@ -1,8 +1,11 @@
 package com.bss.uis.context;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.bss.uis.model.User;
+
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +15,9 @@ import lombok.Setter;
 public class UISApplicationContext extends Application {
     private static final String TAG = UISApplicationContext.class.getSimpleName();
     public static UISApplicationContext instance = null;
+    public Context context = null;
     private User user;
+    private Map<String,String> appConfigMap;
     public static UISApplicationContext getInstance() {
         if (null == instance) {
             instance = new UISApplicationContext();

@@ -25,6 +25,10 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Pattern;
 
 public class UIUtil {
     public static Button getButtonWithImg(Context object, Drawable icon, String btnText, int bkg_color, int height, int width) {
@@ -38,7 +42,7 @@ public class UIUtil {
         return button;
     }
     public static TextInputLayout getTextInputLayout(Context object, int id, int height, int width, int inputtType, String hint) {
-        TextInputLayout textInputLayout = new TextInputLayout(object);
+        TextInputLayout textInputLayout = new TextInputLayout(object,null,R.style.TextInputLayoutStyleBox);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         editTextParams.topMargin = 20;
@@ -166,5 +170,37 @@ public class UIUtil {
         });
         dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
         return dialog;
+    }
+    public static void updateButtonStatus(Button button,boolean isEnabled,int bgColor,String btnText)
+    {
+        button.setEnabled(isEnabled);
+        button.setBackgroundResource(bgColor);
+        if(null !=btnText)
+            button.setText(btnText);
+    }
+    public static boolean isContainsValidCharacter(String text)
+    {
+        String regex = "^[a-zA-Z0-9]+$";
+        Pattern textPattern = Pattern.compile(regex);
+        return textPattern.matcher(text).matches();
+    }
+    public static boolean isValidNumber(String number) {
+        String regex = "^[0-9]+$";
+        Pattern noPattern = Pattern.compile(regex);
+        return noPattern.matcher(number).matches();
+    }
+
+    public static boolean isEmailValid(String email) {
+        final Pattern EMAIL_REGEX = Pattern.compile("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", Pattern.CASE_INSENSITIVE);
+        return EMAIL_REGEX.matcher(email).matches();
+    }
+    public static Date getDate(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            return format.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

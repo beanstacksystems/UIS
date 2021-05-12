@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bluelite"
+    android:background="@color/grey"
     tools:context=".ui.tabFragment.DynamicTabFragment">
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,11 +19,16 @@
         android:gravity="left"
         android:layout_gravity="center"
         />
-    <LinearLayout
-        android:id="@+id/tabBody"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-    </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5">
+            <LinearLayout
+                android:id="@+id/tabBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </FrameLayout>

@@ -14,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beanstack.biometric.BiometricUtils;
 import com.bss.uis.R;
+import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.database.dao.ApplicationRepository;
+import com.bss.uis.database.entity.AppConfig;
 import com.bss.uis.service.NavigationService;
 import com.bss.uis.service.UserService;
 import com.bss.uis.service.impl.NavigationServiceImpl;
@@ -43,6 +46,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class LoginSignupActivity extends AppCompatActivity {
     private static final String TAG = "LoginSignupActivity";
@@ -58,12 +63,16 @@ public class LoginSignupActivity extends AppCompatActivity {
     private UserService userService;
     private static final String[] fbPermission = {"email", "public_profile"};
     private static final int RC_SIGN_IN = 9001;
+    private UISApplicationContext applicationContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        applicationContext = UISApplicationContext.getInstance();
+        applicationContext.setContext(getApplicationContext());
         updateUI();
         if(isUserHasValidToken()){
+            updateLocalDB();
             navigationService.navigate();
             finish();
         }
@@ -76,6 +85,31 @@ public class LoginSignupActivity extends AppCompatActivity {
         initGoogleSignin();
         initView();
     }
+
+    private void updateLocalDB() {
+        ApplicationRepository applicationRepository = new ApplicationRepository(applicationContext);
+        List<AppConfig> appConfigList = applicationRepository.retrieve();
+        //get RemoteDB AppConfig.
+        List<AppConfig> appConfigListRemote = null;
+        if(null == appConfigList || appConfigList.isEmpty())
+        {
+            //call DB to get Configuration and updateLocalDB
+            AppConfig appConfig = new AppConfig();
+            appConfig.setConfigKey("noOfPatients");
+            appConfig.setConfigValue("2");
+            applicationRepository.insert(appConfig);
+            updateLocalDB();
+        }
+        initAppConfig(appConfigList);
+    }
+    private void initAppConfig(List<AppConfig> appConfigList)
+    {
+        if(null == applicationContext.getAppConfigMap())
+            applicationContext.setAppConfigMap(new HashMap<String, String>());
+        for(AppConfig appConfig:appConfigList)
+            applicationContext.getAppConfigMap().put(appConfig.getConfigKey(),appConfig.getConfigValue());
+    }
+
     private void initView()
     {
         nameLayout = findViewById(R.id.name_signup);

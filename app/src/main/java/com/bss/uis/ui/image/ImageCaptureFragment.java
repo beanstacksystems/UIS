@@ -1,8 +1,11 @@
 package com.bss.uis.ui.image;
 
+import android.Manifest;
+import android.Manifest.permission;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
@@ -15,18 +18,20 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
+import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.ui.image.adapter.SelectedImageAdapter;
 import com.bss.uis.ui.image.model.ImageModel;
 
@@ -35,6 +40,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,7 +52,6 @@ import java.util.Date;
 public class ImageCaptureFragment extends Fragment {
     private String imageCaptureId;
     ImageView imageView;
-    LinearLayout imageviewLayout;
     TextView imgcapture;
     File imageFile;
     String imagePath;
@@ -52,6 +59,7 @@ public class ImageCaptureFragment extends Fragment {
     SelectedImageAdapter selectedImageAdapter;
     ArrayList<String> selectedImageList;
     String[] projection = {MediaStore.MediaColumns.DATA};
+    static Map<String, List<String>> selectedImgMap = null;
     public ImageCaptureFragment() {
         // Required empty public constructor
     }
@@ -61,6 +69,8 @@ public class ImageCaptureFragment extends Fragment {
         Bundle args = new Bundle();
         args.putString("imageCaptureId", imageCaptureId);
         fragment.setArguments(args);
+        selectedImgMap = new HashMap<String,List<String>>();
+        selectedImgMap.put(imageCaptureId,new ArrayList<String>());
         return fragment;
     }
 
@@ -79,7 +89,7 @@ public class ImageCaptureFragment extends Fragment {
         selectedImageList = new ArrayList<>();
         View view =  inflater.inflate(R.layout.fragment_image_capture, container, false);
         imageView = (ImageView) view.findViewById(R.id.id_capture_image);
-        imgcapture = (TextView) view.findViewById(R.id.id_capture_image_txt);
+//        imgcapture = (TextView) view.findViewById(R.id.id_capture_image_txt);
         selectedImageRecyclerView = view.findViewById(R.id.selected_recycler_img_view);
         imageView.setOnClickListener(new OnClickListener() {
             @Override
@@ -87,11 +97,12 @@ public class ImageCaptureFragment extends Fragment {
                 selectImage();
             }
         });
-        imageviewLayout = (LinearLayout) view.findViewById(R.id.id_imageview_Layout);
-        setSelectedImageList();
+        if (isStoragePermissionGranted())
+            setSelectedImageList();
+        checkCameraPermision();
         return view;
     }
-    private void selectImage() {
+    public void selectImage() {
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add Photo!");
@@ -165,6 +176,7 @@ public class ImageCaptureFragment extends Fragment {
         imageModel.setImage(filePath);
         imageModel.setSelected(true);
         selectedImageList.add(filePath);
+        selectedImgMap.get(imageCaptureId).add(filePath);
         selectedImageAdapter.notifyDataSetChanged();
     }
     public void setSelectedImageList() {
@@ -195,5 +207,32 @@ public class ImageCaptureFragment extends Fragment {
             addImage(filePath);
         }
     }
+    public boolean checkCameraPermision() {
+        int CAMERA_PERM = ContextCompat.checkSelfPermission(UISApplicationContext.getInstance().getContext(), permission.CAMERA);
+        if ((CAMERA_PERM != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, AppConstants.ID_SCAN_CAMERA_REQUEST);
+            return false;
+        }
+        return true;
+    }
+    public boolean isStoragePermissionGranted() {
+        int ACCESS_EXTERNAL_STORAGE = ContextCompat.checkSelfPermission(UISApplicationContext.getInstance().getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if ((ACCESS_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED)) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, AppConstants.STORAGE_PERMISSION);
+            return false;
+        }
+        return true;
+    }
 
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == AppConstants.STORAGE_PERMISSION && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            setSelectedImageList();
+        }
+    }
+    public Map<String, List<String>> getSelectedImage()
+    {
+        return selectedImgMap;
+    }
 }

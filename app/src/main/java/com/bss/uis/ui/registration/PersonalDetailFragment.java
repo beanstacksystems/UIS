@@ -8,42 +8,68 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.fragment.app.FragmentTransaction;
+
+import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
+import com.beanstack.utility.validators.AutoCompleteTextValidtor;
+import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
+import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.database.entity.Patient;
+import com.bss.uis.ui.UIUtil;
+import com.bss.uis.ui.image.ImageCaptureFragment;
+import com.bss.uis.ui.image.ProfileImageFragment;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class PersonalDetailFragment extends BaseFragment{
 
-    TextInputEditText name,email,contact,dob,gender;
+    TextInputEditText name,email,contact,dob,panadhar;
+    TextInputLayout nameInputLayout,eMailInputLayout,contactInputLayout,
+            dobInputLayout,genderLayout,panadhartxtLayout;
+    AutoCompleteTextView gender;
     DatePickerDialog picker;
     String fragmentTitle;
+    CircleImageView profile_image;
+    ImageCaptureFragment imageCaptureFragmentIdProof;
+    ProfileImageFragment profileImageFragment;
     public PersonalDetailFragment() {
         // Required empty public constructor
     }
 
-    public static PersonalDetailFragment newInstance(String fragmentTitle) {
+    public static PersonalDetailFragment newInstance(String fragmentTitle,String progressState) {
         PersonalDetailFragment fragment = new PersonalDetailFragment();
         fragment.fragmentTitle = fragmentTitle;
+        fragment.setProgressState(progressState);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_personal_detail, container, false);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         initView(fragmentView);
         return fragmentView;
     }
+
 
     @Override
     public String getFragmentTitle() {
@@ -51,14 +77,71 @@ public class PersonalDetailFragment extends BaseFragment{
     }
 
     private void initView(View fragmentView) {
+        nameInputLayout = fragmentView.findViewById(R.id.personNameLayout);
+        eMailInputLayout = fragmentView.findViewById(R.id.Email_etLayout);
+        contactInputLayout = fragmentView.findViewById(R.id.contactInputLayout);
         name = fragmentView.findViewById(R.id.personName);
+        name.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (nameInputLayout,"Name cannot be empty"));
+        name.addTextChangedListener(new CustomTextValidator(name) {
+            @Override
+            public void validate(TextView textView, String text) {
+                nameInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    nameInputLayout.setError("Name cannot be empty");
+                else if(!UIUtil.isContainsValidCharacter(text))
+                    nameInputLayout.setError("Only alphanumeric characters allowed");
+            }
+        });
         email = fragmentView.findViewById(R.id.Email_et);
+        email.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (eMailInputLayout,"Email cannot be empty"));
+        email.addTextChangedListener(new CustomTextValidator(email) {
+            @Override
+            public void validate(TextView textView, String text) {
+                eMailInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    eMailInputLayout.setError("Email cannot be empty");
+                else if(!UIUtil.isEmailValid(text))
+                    eMailInputLayout.setError("Invalid E-Mail Id");
+            }
+        });
         contact = fragmentView.findViewById(R.id.contact_et);
+        contact.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (contactInputLayout,"Mobile no cannot be empty"));
+        contact.addTextChangedListener(new CustomTextValidator(contact) {
+            @Override
+            public void validate(TextView textView, String text) {
+                contactInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    contactInputLayout.setError("Mobile no cannot be empty");
+                else if(text.length()< 10)
+                    contactInputLayout.setError("Mobile number is not Correct");
+            }
+        });
+        panadhar = fragmentView.findViewById(R.id.panAdhar);
+        panadhartxtLayout = fragmentView.findViewById(R.id.idprooftxtLayout);
+        panadhar.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (panadhartxtLayout,"Pan/Aadhar no cannot be empty"));
+        panadhar.addTextChangedListener(new CustomTextValidator(panadhar) {
+            @Override
+            public void validate(TextView textView, String text) {
+                panadhartxtLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    panadhartxtLayout.setError("Pan/Aadhar no cannot be empty");
+                else if(text.length()< 10)
+                    panadhartxtLayout.setError("Pan/Aadhar is not Correct");
+            }
+        });
+        profile_image = (CircleImageView)fragmentView.findViewById(R.id.profile_image);
+        profileImageFragment = getProfileImageFragment(false,R.id.profile_image_edit_layout);
         initDOB(fragmentView);
         initGenderView(fragmentView);
+        imageCaptureFragmentIdProof = getFragment(false,R.id.id_proof_imageview_Layout);
     }
     private void initDOB(View fragmentView) {
         dob = fragmentView.findViewById(R.id.dateOfBirth);
+        dobInputLayout = fragmentView.findViewById(R.id.dateOfBirthLayout);
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,20 +160,100 @@ public class PersonalDetailFragment extends BaseFragment{
                 picker.show();
             }
         });
+        dob.addTextChangedListener(new CustomTextValidator(dob) {
+            @Override
+            public void validate(TextView textView, String text) {
+                dobInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    dobInputLayout.setError("Date Of Birth cannot be empty");
+            }
+        });
+        dob.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (dobInputLayout,"Date Of Birth cannot be empty"));
     }
 
     private void initGenderView(View fragmentView)
     {
-        final AutoCompleteTextView genderAutoTV = fragmentView.findViewById(R.id.spinner_gender);
+        genderLayout = fragmentView.findViewById(R.id.spinner_gender_layout);
+        gender = fragmentView.findViewById(R.id.spinner_gender);
         ArrayList<String> genderValue = new ArrayList<>();
         genderValue.add("Female");
         genderValue.add("Male");
         genderValue.add("ThirdGender");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, genderValue);
-        genderAutoTV.setAdapter(adapter);
+        gender.setAdapter(adapter);
+        gender.setValidator(new AutoCompleteTextValidtor(genderLayout,genderValue));
     }
     @Override
     public boolean isValidDetails() {
-        return false;
+        String profileImagePath = profileImageFragment.getSelectedImagePath();
+        if(null ==  profileImagePath || profileImagePath.isEmpty()) {
+            Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                    getResources().getString(R.string.fillImage), Toast.LENGTH_LONG).show();
+            return false;
+        }
+//        String nameTxt = name.getText().toString();
+//        String emailTxt = email.getText().toString();
+//        String contactTxt = contact.getText().toString();
+//        String dobTxt = dob.getText().toString();
+//        String panadharTxt = panadhar.getText().toString();
+//        String genderTxt = gender.getText().toString();
+//        if(null == nameTxt ||nameTxt.isEmpty()|| null == emailTxt ||emailTxt.isEmpty()
+//                || null == contactTxt || contactTxt.isEmpty()
+//                 || null == dobTxt || dobTxt.isEmpty()
+//                   ||   null == panadharTxt || panadharTxt.isEmpty()
+//                 || null == genderTxt || genderTxt.isEmpty()){
+//            Toast.makeText(UISApplicationContext.getInstance().getContext(),
+//                    getResources().getString(R.string.fillvalue),Toast.LENGTH_LONG).show();
+//            return false;
+//        }
+//
+//        if(null != nameInputLayout.getError()||null != eMailInputLayout.getError()
+//                ||null != contactInputLayout.getError()
+//                ||null != dobInputLayout.getError()||null != genderLayout.getError())
+//            return false;
+        return true;
+    }
+
+    @Override
+    public void updateDetails(Patient patient) {
+//        patient.setName(name.getText().toString());
+//        patient.setEmailId(email.getText().toString());
+//        patient.setContact(contact.getText().toString());
+//        patient.setDob(dob.getText().toString());
+//        patient.setGender(gender.getText().toString());
+//        patient.setIdproof(panadhar.getText().toString());
+    }
+    public ImageCaptureFragment getFragment(Boolean bool, int id) {
+        ImageCaptureFragment fragment = new ImageCaptureFragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        if (bool)
+            transaction.addToBackStack(null);
+        transaction.commit();
+        return fragment;
+    }
+    public ProfileImageFragment getProfileImageFragment(Boolean bool, int id) {
+        ProfileImageFragment fragment = ProfileImageFragment.newInstance(profile_image);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        if (bool)
+            transaction.addToBackStack(null);
+        transaction.commit();
+        return fragment;
+    }
+    private String getImageStr(String filePath)
+    {
+        File file = new File(filePath);
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new String(bytes);
     }
 }

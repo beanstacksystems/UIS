@@ -1,4 +1,4 @@
-package com.bss.uis.ui;
+package com.beanstack.utility.validators;
 
 import android.text.Editable;
 import android.text.TextWatcher;

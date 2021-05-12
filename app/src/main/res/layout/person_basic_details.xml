@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:id="@+id/personbasicdetailLayout"
+        android:background="@drawable/bg_popup_dialog"
+        android:layout_margin="5dp"
+        android:radius="30dp"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/basicdetailsPopUpHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/person_details"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyleBox"
+            android:id="@+id/personName_persondetail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/person_name_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/personName_persondetail"
+                style="@style/TextInputStyleBox"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyleBox"
+            android:id="@+id/Email_etLayout_persondetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Email_et_persondetail"
+                style="@style/TextInputStyleBox" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyleBox"
+            android:id="@+id/contactInputLayout_persondetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/contact">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/contact_et_persondetail"
+                android:maxLength="10"
+                android:inputType="number"
+                style="@style/TextInputStyleBox"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyleBox"
+            android:id="@+id/idprooftxtLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/panaadhar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/panAdhar"
+                style="@style/TextInputStyleBox" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinner_occupation_layout"
+            style="@style/CustomDropDownTilStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/occupation">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/spinner_occupation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputLayoutStyleBox"
+            android:id="@+id/incomeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/income">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/incomeLayoutTxt"
+                style="@style/TextInputStyleBox"
+                android:maxLength="10"
+                android:inputType="number"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinner_gender_layout_personDetail"
+            style="@style/CustomDropDownTilStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/gender">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/spinner_gender_personDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/spinner_relation_layout"
+            style="@style/CustomDropDownTilStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/relationship">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/spinner_relations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                tools:ignore="KeyboardInaccessibleWidget" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</LinearLayout>

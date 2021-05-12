@@ -1,37 +1,39 @@
 package com.bss.uis.ui.registration;
 
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.beanstack.utility.TextWithIconHeaderView;
 import com.beanstack.utility.stepprogress.StepProgressBar;
 import com.beanstack.utility.stepprogress.StepProgressBar.StateNumber;
+import com.beanstack.utility.viewpagerutil.CustomViewPagerNoTouchNoSwipe;
+import com.beanstack.utility.viewpagerutil.ZoomOutPageTransformer;
 import com.bss.uis.R;
-import com.bss.uis.ui.viewpageranimation.ZoomOutPageTransformer;
+import com.bss.uis.database.entity.Patient;
+import com.bss.uis.ui.UIUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrationActivity extends FragmentActivity implements View.OnClickListener {
-    protected String[] descriptionData = {"Person Details", "Address", "Medical History", "Records"};
+    protected String[] descriptionData = {"Person Details", "Address", "Medical History", "Attendant"};
     TextWithIconHeaderView textWithIconHeaderView;
     protected Button nextBtn,backBtn;
     protected StepProgressBar stepProgressBar;
-
+    protected ImageView backArrow;
+    private Patient patient;
     private static final int NUM_PAGES = 5;
 
 
-    private ViewPager mPager;
+    private CustomViewPagerNoTouchNoSwipe mPager;
 
     private PagerAdapter pagerAdapter;
 
@@ -39,22 +41,32 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        patient = new Patient();
         textWithIconHeaderView = findViewById(R.id.fragmentTitle);
+        backArrow = findViewById(R.id.back);
+        backArrow.setColorFilter(R.color.black);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(0,0);
+            }
+        });
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
+        mPager = (CustomViewPagerNoTouchNoSwipe) findViewById(R.id.regpager);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        BaseFragment personalDetailFragment = PersonalDetailFragment.newInstance(getResources().getString(R.string.fragment_personDetail_title));
-        BaseFragment addressFragment = AddressFragment.newInstance(getResources().getString(R.string.fragment_address_title));
+        BaseFragment personalDetailFragment = PersonalDetailFragment.newInstance(getResources().getString(R.string.fragment_personDetail_title),"ONE");
+        BaseFragment addressFragment = AddressFragment.newInstance(getResources().getString(R.string.fragment_address_title),"TWO");
+        BaseFragment medicalFragment = MedicalHistoryFragment.newInstance(getResources().getString(R.string.fragment_medical_title),"THREE");
+        BaseFragment attendantFragment = AttendantFragment.newInstance(getResources().getString(R.string.fragment_attendant_title),"FOUR");
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(personalDetailFragment);
         fragmentList.add(addressFragment);
+        fragmentList.add(medicalFragment);
+        fragmentList.add(attendantFragment);
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(),fragmentList);
         mPager.setAdapter(pagerAdapter);
-        mPager.setOnTouchListener(new OnTouchListener() {
-            public boolean onTouch(View arg0, MotionEvent arg1) {
-                return true;
-            }
-        });
+        mPager.setPagingEnabled(false);
         initBaseView();
     }
 
@@ -73,12 +85,19 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         int state = stepProgressBar.getCurrentStateNumber();
+        ScreenSlidePagerAdapter adapter = (ScreenSlidePagerAdapter)mPager.getAdapter();
+        BaseFragment curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem());
         if(v==nextBtn)
         {
-            if(state == 1) {
-                stepProgressBar.setCurrentStateNumber(StateNumber.TWO);
+            if(curfragment.isValidDetails())
+            {
+                curfragment.updateDetails(patient);
+                curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
+                stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 updateFragmentView(mPager.getCurrentItem()+1);
             }
+           else
+               System.out.println("Not ok");
         }
         if(v==backBtn)
         {
@@ -128,14 +147,14 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
         backBtn.setOnClickListener(this);
     }
     public void updateFragmentView(int currentFragmentIndex) {
-        nextBtn.setEnabled(true);
-        backBtn.setEnabled(true);
+        UIUtil.updateButtonStatus(nextBtn,true,R.color.colorPrimary,getResources().getString(R.string.next));
+        UIUtil.updateButtonStatus(backBtn,true,R.color.colorPrimary,null);
         mPager.setCurrentItem(currentFragmentIndex,true);
         textWithIconHeaderView.setHeaderTitle(String.valueOf(mPager.getAdapter().getPageTitle(currentFragmentIndex)));
         if(currentFragmentIndex==mPager.getAdapter().getCount()-1)
-            nextBtn.setEnabled(false);
+            UIUtil.updateButtonStatus(nextBtn,true,R.color.colorPrimary,getResources().getString(R.string.submit));
         if(currentFragmentIndex==0)
-            backBtn.setEnabled(false);
+            UIUtil.updateButtonStatus(backBtn,false,R.color.colorAccent,null);
     }
 
 

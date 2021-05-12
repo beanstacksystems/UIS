@@ -1,4 +1,4 @@
-package com.bss.uis.ui.viewpageranimation;
+package com.beanstack.utility.viewpagerutil;
 
 import android.view.View;
 

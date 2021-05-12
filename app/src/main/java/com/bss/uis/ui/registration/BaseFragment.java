@@ -8,10 +8,16 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.bss.uis.R;
+import com.bss.uis.database.entity.Patient;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public abstract class BaseFragment extends Fragment {
 
+    private String progressState;
     public BaseFragment() {
         // Required empty public constructor
     }
@@ -30,5 +36,6 @@ public abstract class BaseFragment extends Fragment {
     }
     public abstract String getFragmentTitle();
     public abstract boolean isValidDetails();
+    public abstract void updateDetails(Patient patient);
 
 }

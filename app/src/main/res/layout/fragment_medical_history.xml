@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
     <ScrollView
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:orientation="vertical"
                 android:padding="15dp">
                 <TextView
-                    android:id="@+id/addressPopUpHeader"
+                    android:id="@+id/medicalPopUpHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -66,9 +66,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cancerTypetxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="fill" />
+                        style="@style/TextInputStyleBox" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,9 +78,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/dateOfidentification"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="fill" />
+                        style="@style/TextInputStyleBox" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,9 +90,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/otherdiseasetxt"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="fill" />
+                        style="@style/TextInputStyleBox" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 

@@ -11,13 +11,16 @@
         android:id="@+id/splashToplayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/footerLayout"
+        android:layout_weight="1"
+        android:layout_marginBottom="10dp"
         android:gravity="top|center"
         android:orientation="vertical">
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
                 android:gravity="center">
                 <ImageView
                     android:id="@+id/imageViewblue"
@@ -101,29 +104,28 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:text="Strength"
+                    android:layout_gravity="center|center_vertical"/>
+                <TextView
+                    android:id="@+id/caption"
+                    android:gravity="center"
+                    android:layout_marginTop="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancerFoundation"
                     android:layout_gravity="center|center_vertical"
-                    />
-
+                    android:textStyle="bold"
+                    android:textColor="@color/uisRed"/>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
-            <TextView
-                android:id="@+id/caption"
-                android:layout_margin="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cancerFoundation"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textColor="@color/uisRed"/>
 
-
-        <LinearLayout
-            android:layout_below="@id/splashToplayout"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="bottom"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <include layout="@layout/footer_layout"/>
-        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/footerLayout"
+        android:layout_below="@id/splashToplayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center|bottom"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <include layout="@layout/footer_layout"/>
     </LinearLayout>
 </LinearLayout>
