@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -33,44 +31,41 @@ import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.ui.image.adapter.SelectedImageAdapter;
-import com.bss.uis.ui.image.model.ImageModel;
+import com.bss.uis.util.AppUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ImageCaptureFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ImageCaptureFragment extends Fragment {
     private String imageCaptureId;
     ImageView imageView;
-    TextView imgcapture;
     File imageFile;
     String imagePath;
     RecyclerView selectedImageRecyclerView;
     SelectedImageAdapter selectedImageAdapter;
     ArrayList<String> selectedImageList;
+    int imageCount = 0;
     String[] projection = {MediaStore.MediaColumns.DATA};
-    static Map<String, List<String>> selectedImgMap = null;
     public ImageCaptureFragment() {
         // Required empty public constructor
     }
 
-    public static ImageCaptureFragment newInstance(String imageCaptureId) {
+    public static ImageCaptureFragment newInstance(String imageCaptureId,int imageCount) {
         ImageCaptureFragment fragment = new ImageCaptureFragment();
         Bundle args = new Bundle();
         args.putString("imageCaptureId", imageCaptureId);
         fragment.setArguments(args);
-        selectedImgMap = new HashMap<String,List<String>>();
-        selectedImgMap.put(imageCaptureId,new ArrayList<String>());
+        fragment.setImageCaptureId(imageCaptureId);
+        fragment.setImageCount(imageCount);
         return fragment;
     }
 
@@ -89,7 +84,6 @@ public class ImageCaptureFragment extends Fragment {
         selectedImageList = new ArrayList<>();
         View view =  inflater.inflate(R.layout.fragment_image_capture, container, false);
         imageView = (ImageView) view.findViewById(R.id.id_capture_image);
-//        imgcapture = (TextView) view.findViewById(R.id.id_capture_image_txt);
         selectedImageRecyclerView = view.findViewById(R.id.selected_recycler_img_view);
         imageView.setOnClickListener(new OnClickListener() {
             @Override
@@ -172,11 +166,9 @@ public class ImageCaptureFragment extends Fragment {
     }
     // add image in selectedImageList and imageList
     public void addImage(String filePath) {
-        ImageModel imageModel = new ImageModel();
-        imageModel.setImage(filePath);
-        imageModel.setSelected(true);
+        if(selectedImageList.size() == imageCount)
+            selectedImageList.remove(0);
         selectedImageList.add(filePath);
-        selectedImgMap.get(imageCaptureId).add(filePath);
         selectedImageAdapter.notifyDataSetChanged();
     }
     public void setSelectedImageList() {
@@ -187,17 +179,11 @@ public class ImageCaptureFragment extends Fragment {
     }
     // Get image file path
     public void getImageFilePath(Uri uri) {
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String absolutePathOfImage = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
-                if (absolutePathOfImage != null) {
-                    checkImage(absolutePathOfImage);
-                } else {
-                    checkImage(String.valueOf(uri));
-                }
-            }
-        }
+        String absolutePathOfImage = AppUtil.getImagePath(getActivity(),uri);//cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+        if (absolutePathOfImage != null)
+            checkImage(absolutePathOfImage);
+        else
+           checkImage(String.valueOf(uri));
     }
 
     // add image in selectedImageList and imageList
@@ -231,8 +217,8 @@ public class ImageCaptureFragment extends Fragment {
             setSelectedImageList();
         }
     }
-    public Map<String, List<String>> getSelectedImage()
+    public List<String> getSelectedImage()
     {
-        return selectedImgMap;
+        return selectedImageList;
     }
 }

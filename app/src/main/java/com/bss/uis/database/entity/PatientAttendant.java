@@ -32,6 +32,8 @@ public class PatientAttendant {
     private String occupation;
     @ColumnInfo(name = "yearlyIncome")
     private String yearlyIncome;
+    @ColumnInfo(name = "imageStr")
+    private String imageStr;
     @ColumnInfo(name = "patientId")
     private int attendantId_patientId;
 }

@@ -25,7 +25,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
-import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.ui.image.ImageCaptureFragment;
 import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -105,8 +104,8 @@ public class RegisterPatientActivity extends AppCompatActivity {
         textInputEditTextPin.addTextChangedListener(new CustomTextValidator(textInputEditTextPin){
             @Override
             public void validate(TextView textView, String text) {
-                if(text.length() == 6)
-                    new APIServiceImpl().fetchPinData(text,textInputEditTextState,textInputEditTextDist);
+//                if(text.length() == 6)
+//                    new APIServiceImpl().fetchPinData(text,textInputEditTextState,textInputEditTextDist);
             }
         });
         createPinPopup(address_dialogue);

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.bss.uis.R;
-import com.bss.uis.database.entity.Patient;
+import com.bss.uis.database.relation.PatientDetailData;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +36,7 @@ public abstract class BaseFragment extends Fragment {
     }
     public abstract String getFragmentTitle();
     public abstract boolean isValidDetails();
-    public abstract void updateDetails(Patient patient);
-
+    public abstract void updateDetails(PatientDetailData patientDetailData);
+    public void onFragmentVisible(){};
+    public void onFragmentHide(){};
 }

@@ -11,13 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
 import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
-import com.bss.uis.database.entity.Patient;
+import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.database.entity.Address;
+import com.bss.uis.database.relation.PatientDetailData;
 import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.ui.UIUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -50,13 +53,15 @@ public class AddressFragment extends BaseFragment {
         initView(fragmentView);
         return fragmentView;
     }
+
     @Override
+    public void onFragmentHide(){};
     @RequiresApi(api = VERSION_CODES.M)
-    public void onStart() {
-        super.onStart();
+    @Override
+    public void onFragmentVisible(){
         if(pin.getVisibility()==View.VISIBLE && pin.getText().toString().isEmpty())
             createPinPopup();
-    }
+    };
     @Override
     public String getFragmentTitle() {
         return fragmentTitle;
@@ -64,11 +69,35 @@ public class AddressFragment extends BaseFragment {
 
     @Override
     public boolean isValidDetails() {
+        String streettxt = streetAdd.getText().toString();
+        String cityTxt = city.getText().toString();
+        String distTxtTxt = dist.getText().toString();
+        String stateTxt = state.getText().toString();
+        String pinTxt = pin.getText().toString();
+        if(null == streettxt ||streettxt.isEmpty()|| null == cityTxt ||cityTxt.isEmpty()
+                || null == distTxtTxt || distTxtTxt.isEmpty()
+                || null == stateTxt || stateTxt.isEmpty()
+                ||   null == pinTxt || pinTxt.isEmpty()){
+            Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                    getResources().getString(R.string.fillvalue),Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(null != streetInputLayout.getError()||null != cityInputLayout.getError()
+                ||null != distInputLayout.getError()
+                ||null != stateInputLayout.getError()||null != pinLayout.getError())
+            return false;
         return true;
     }
 
     @Override
-    public void updateDetails(Patient patient) {
+    public void updateDetails(PatientDetailData patientDetailData) {
+        Address address = patientDetailData.getAddress();
+        address.setStreet(streetAdd.getText().toString());
+        address.setCity(city.getText().toString());
+        address.setDistrict(dist.getText().toString());
+        address.setState(state.getText().toString());
+        address.setPin(pin.getText().toString());
     }
 
 
@@ -141,9 +170,9 @@ public class AddressFragment extends BaseFragment {
                 if(null == text || text.isEmpty())
                     pinLayout.setError("pin cannot be empty");
                 if(text.length()< 6)
-                    pinLayout.setError("Mobile number is not Correct");
+                    pinLayout.setError("Invlid pin");
                 if(text.length() == 6)
-                    new APIServiceImpl().fetchPinData(text,state,dist);
+                    new APIServiceImpl().fetchPinData(text,state,dist,pinLayout);
             }
         });
     }
@@ -156,8 +185,8 @@ public class AddressFragment extends BaseFragment {
         final TextInputLayout textInputLayout = UIUtil.getTextInputLayout(this.getActivity(),
                 0,(int)(displayHeight*0.2f),displayWidth-200, InputType.TYPE_CLASS_NUMBER,"PinCode");
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        int dialogWindowWidth = displayWidth-200;
-        int dialogWindowHeight = (int) (displayHeight * 1.5f);
+        int dialogWindowWidth = displayWidth-500;
+        int dialogWindowHeight = (int) (displayHeight * 2.5f);
         layoutParams.width = dialogWindowWidth;
         layoutParams.height = dialogWindowHeight;
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

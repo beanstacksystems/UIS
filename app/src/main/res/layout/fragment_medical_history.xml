@@ -60,6 +60,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayoutStyleBox"
+                    android:id="@+id/cancerTypetxtLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/cancerType">
@@ -72,6 +73,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayoutStyleBox"
+                    android:id="@+id/dateOfidentificationLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/identifiedOn">
@@ -84,6 +86,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayoutStyleBox"
+                    android:id="@+id/otherdiseasetxtLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/otherdisease">

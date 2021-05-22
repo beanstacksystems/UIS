@@ -19,15 +19,14 @@ import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.entity.Patient;
+import com.bss.uis.database.relation.PatientDetailData;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.image.ImageCaptureFragment;
 import com.bss.uis.ui.image.ProfileImageFragment;
+import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -59,6 +58,7 @@ public class PersonalDetailFragment extends BaseFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -187,45 +187,51 @@ public class PersonalDetailFragment extends BaseFragment{
     @Override
     public boolean isValidDetails() {
         String profileImagePath = profileImageFragment.getSelectedImagePath();
-        if(null ==  profileImagePath || profileImagePath.isEmpty()) {
+        if(imageCaptureFragmentIdProof.getImageCount() != imageCaptureFragmentIdProof.getSelectedImage().size() ||
+                     null ==  profileImagePath || profileImagePath.isEmpty()) {
             Toast.makeText(UISApplicationContext.getInstance().getContext(),
                     getResources().getString(R.string.fillImage), Toast.LENGTH_LONG).show();
             return false;
         }
-//        String nameTxt = name.getText().toString();
-//        String emailTxt = email.getText().toString();
-//        String contactTxt = contact.getText().toString();
-//        String dobTxt = dob.getText().toString();
-//        String panadharTxt = panadhar.getText().toString();
-//        String genderTxt = gender.getText().toString();
-//        if(null == nameTxt ||nameTxt.isEmpty()|| null == emailTxt ||emailTxt.isEmpty()
-//                || null == contactTxt || contactTxt.isEmpty()
-//                 || null == dobTxt || dobTxt.isEmpty()
-//                   ||   null == panadharTxt || panadharTxt.isEmpty()
-//                 || null == genderTxt || genderTxt.isEmpty()){
-//            Toast.makeText(UISApplicationContext.getInstance().getContext(),
-//                    getResources().getString(R.string.fillvalue),Toast.LENGTH_LONG).show();
-//            return false;
-//        }
-//
-//        if(null != nameInputLayout.getError()||null != eMailInputLayout.getError()
-//                ||null != contactInputLayout.getError()
-//                ||null != dobInputLayout.getError()||null != genderLayout.getError())
-//            return false;
+        String nameTxt = name.getText().toString();
+        String emailTxt = email.getText().toString();
+        String contactTxt = contact.getText().toString();
+        String dobTxt = dob.getText().toString();
+        String panadharTxt = panadhar.getText().toString();
+        String genderTxt = gender.getText().toString();
+        if(null == nameTxt ||nameTxt.isEmpty()|| null == emailTxt ||emailTxt.isEmpty()
+                || null == contactTxt || contactTxt.isEmpty()
+                 || null == dobTxt || dobTxt.isEmpty()
+                   ||   null == panadharTxt || panadharTxt.isEmpty()
+                 || null == genderTxt || genderTxt.isEmpty()){
+            Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                    getResources().getString(R.string.fillvalue),Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(null != nameInputLayout.getError()||null != eMailInputLayout.getError()
+                ||null != contactInputLayout.getError()
+                ||null != dobInputLayout.getError()||null != genderLayout.getError())
+            return false;
         return true;
     }
 
     @Override
-    public void updateDetails(Patient patient) {
-//        patient.setName(name.getText().toString());
-//        patient.setEmailId(email.getText().toString());
-//        patient.setContact(contact.getText().toString());
-//        patient.setDob(dob.getText().toString());
-//        patient.setGender(gender.getText().toString());
-//        patient.setIdproof(panadhar.getText().toString());
+    public void updateDetails(PatientDetailData patientDetailData) {
+         Patient patient = patientDetailData.getPatient();
+        patient.setName(name.getText().toString());
+        patient.setEmailId(email.getText().toString());
+        patient.setContact(contact.getText().toString());
+        patient.setDob(dob.getText().toString());
+        patient.setGender(gender.getText().toString());
+        patient.setIdproof(panadhar.getText().toString());
+        patientDetailData.getImagesList().add(AppUtil.getPatientImage("profileImage",
+                profileImageFragment.getSelectedImagePath())) ;
+        patientDetailData.getImagesList().addAll(AppUtil.getPatientImageList("idproof",
+                imageCaptureFragmentIdProof.getSelectedImage())) ;
     }
     public ImageCaptureFragment getFragment(Boolean bool, int id) {
-        ImageCaptureFragment fragment = new ImageCaptureFragment();
+        ImageCaptureFragment fragment = ImageCaptureFragment.newInstance("idproof",1);
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.replace(id, fragment);
         if (bool)
@@ -242,18 +248,5 @@ public class PersonalDetailFragment extends BaseFragment{
         transaction.commit();
         return fragment;
     }
-    private String getImageStr(String filePath)
-    {
-        File file = new File(filePath);
-        int size = (int) file.length();
-        byte[] bytes = new byte[size];
-        try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return new String(bytes);
-    }
+
 }

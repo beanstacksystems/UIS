@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -29,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
 import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.util.AppUtil;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
@@ -166,17 +166,11 @@ public class ProfileImageFragment extends Fragment {
 
     // Get image file path
     public void getImageFilePath(Uri uri) {
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String absolutePathOfImage = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
-                if (absolutePathOfImage != null) {
-                    checkImage(absolutePathOfImage);
-                } else {
-                    checkImage(String.valueOf(uri));
-                }
-            }
-        }
+        String absolutePathOfImage = AppUtil.getImagePath(getActivity(),uri);//cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+        if (absolutePathOfImage != null)
+            checkImage(absolutePathOfImage);
+        else
+            checkImage(String.valueOf(uri));
     }
 
     // add image in selectedImageList and imageList

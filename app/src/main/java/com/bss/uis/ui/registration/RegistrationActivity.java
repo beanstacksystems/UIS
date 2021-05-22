@@ -17,7 +17,12 @@ import com.beanstack.utility.stepprogress.StepProgressBar.StateNumber;
 import com.beanstack.utility.viewpagerutil.CustomViewPagerNoTouchNoSwipe;
 import com.beanstack.utility.viewpagerutil.ZoomOutPageTransformer;
 import com.bss.uis.R;
+import com.bss.uis.database.entity.Address;
+import com.bss.uis.database.entity.MedicalHistory;
 import com.bss.uis.database.entity.Patient;
+import com.bss.uis.database.entity.PatientAttendant;
+import com.bss.uis.database.entity.PatientImages;
+import com.bss.uis.database.relation.PatientDetailData;
 import com.bss.uis.ui.UIUtil;
 
 import java.util.ArrayList;
@@ -29,7 +34,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     protected Button nextBtn,backBtn;
     protected StepProgressBar stepProgressBar;
     protected ImageView backArrow;
-    private Patient patient;
+    private PatientDetailData patientDetailData;
     private static final int NUM_PAGES = 5;
 
 
@@ -41,7 +46,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        patient = new Patient();
+        initPatientDetails();
         textWithIconHeaderView = findViewById(R.id.fragmentTitle);
         backArrow = findViewById(R.id.back);
         backArrow.setColorFilter(R.color.black);
@@ -91,8 +96,10 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
         {
             if(curfragment.isValidDetails())
             {
-                curfragment.updateDetails(patient);
+                curfragment.updateDetails(patientDetailData);
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
+                if(curfragment.getFragmentTitle().equals("Address Details"))
+                    curfragment.onFragmentVisible();
                 stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 updateFragmentView(mPager.getCurrentItem()+1);
             }
@@ -157,6 +164,16 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
             UIUtil.updateButtonStatus(backBtn,false,R.color.colorAccent,null);
     }
 
+    public void initPatientDetails()
+    {
+        Patient patient = new Patient();
+        List<PatientImages> patientImages = new ArrayList<>();
+        List<PatientAttendant> patientAttendants = new ArrayList<>();
+        MedicalHistory medicalHistory = new MedicalHistory();
+        Address address = new Address();
+        patientDetailData = new PatientDetailData(patient,patientImages,
+                address,medicalHistory,patientAttendants);
 
+    }
 
 }
