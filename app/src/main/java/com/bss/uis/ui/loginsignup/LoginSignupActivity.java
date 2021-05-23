@@ -220,4 +220,5 @@ public class LoginSignupActivity extends AppCompatActivity {
             Log.w(TAG,"error in facebook login");
         }
     }
+
 }

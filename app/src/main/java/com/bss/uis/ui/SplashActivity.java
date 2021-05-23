@@ -22,10 +22,9 @@ public class SplashActivity extends AppCompatActivity {
     private static final String TAG = "SplashActivity";
     ImageView logoviewPurple,logoviewBlue,logoviewRed,logoviewYellow,logoviewOrange,logoviewGreen;
     private NavigationService navigationService;
-    TextView logoText1,logoText2,logoText3;
+    TextView logoText1,logoText2,logoText3,logoText4;
     Animation logoFromRightbottom,logoFromLeftbottom,
             logoFromRightTop,logoFromleftTop,logoFromTop,logoFrombottom;
-    Animation appTitleFade,appTitlezoomin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
         logoText1 = findViewById(R.id.SplashLogoTitle1);
         logoText2 = findViewById(R.id.SplashLogoTitle2);
         logoText3 = findViewById(R.id.SplashLogoTitle3);
+        logoText4 = findViewById(R.id.caption);
 
         logoviewPurple = findViewById(R.id.imageViewpurple);
         logoviewRed = findViewById(R.id.imageViewred);
@@ -47,6 +47,21 @@ public class SplashActivity extends AppCompatActivity {
         logoviewYellow = findViewById(R.id.imageViewYellow);
         logoviewOrange = findViewById(R.id.imageVieworrange);
         logoviewGreen = findViewById(R.id.imageViewGreen);
+        updateUI();
+        setAnimation();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                endAnimation();
+            }
+        }, AppConstants.SPLASH_SCREEN_TIME_OUT);
+    }
+
+    private void updateUI() {
+        navigationService = new NavigationServiceImpl(SplashActivity.this, LoginSignupActivity.class);
+    }
+    private void setAnimation()
+    {
 
         logoFromTop = AnimationUtils.loadAnimation(this, R.anim.fromtop);
         logoFrombottom = AnimationUtils.loadAnimation(this, R.anim.frombottom);
@@ -54,8 +69,6 @@ public class SplashActivity extends AppCompatActivity {
         logoFromleftTop = AnimationUtils.loadAnimation(this, R.anim.fromtopleftcorner);
         logoFromRightbottom = AnimationUtils.loadAnimation(this, R.anim.fromrightbottomcorner);
         logoFromLeftbottom = AnimationUtils.loadAnimation(this, R.anim.fromleftbottomcorner);
-        appTitleFade = AnimationUtils.loadAnimation(this, R.anim.textfadeout);
-        appTitlezoomin = AnimationUtils.loadAnimation(this, R.anim.textzoomin);
 
         logoviewRed.setAnimation(logoFromleftTop);
         logoviewPurple.setAnimation(logoFromLeftbottom);
@@ -64,20 +77,47 @@ public class SplashActivity extends AppCompatActivity {
         logoviewGreen.setAnimation(logoFromRightTop);
         logoviewYellow.setAnimation(logoFromRightbottom);
 
-        logoText1.startAnimation(appTitlezoomin);
-        logoText2.startAnimation(appTitlezoomin);
-        logoText3.startAnimation(appTitlezoomin);
-        updateUI();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                navigationService.navigate();
-                finish();
-            }
-        }, AppConstants.SPLASH_SCREEN_TIME_OUT);
+        logoText1.startAnimation(AnimationUtils.loadAnimation(this, R.anim.text_animation));
+        logoText2.startAnimation(AnimationUtils.loadAnimation(this, R.anim.text_animation));
+        logoText3.startAnimation(AnimationUtils.loadAnimation(this, R.anim.text_animation));
+        logoText4.startAnimation(AnimationUtils.loadAnimation(this, R.anim.text_animation));
     }
+    private void endAnimation()
+    {
 
-    private void updateUI() {
-        navigationService = new NavigationServiceImpl(SplashActivity.this, LoginSignupActivity.class);
+        logoFromTop = AnimationUtils.loadAnimation(this, R.anim.totop);
+        logoFrombottom = AnimationUtils.loadAnimation(this, R.anim.tobottom);
+        logoFromRightTop = AnimationUtils.loadAnimation(this, R.anim.totoprightcorner);
+        logoFromleftTop = AnimationUtils.loadAnimation(this, R.anim.totopleftcorner);
+        logoFromRightbottom = AnimationUtils.loadAnimation(this, R.anim.torightbottomcorner);
+        logoFromLeftbottom = AnimationUtils.loadAnimation(this, R.anim.toleftbottomcorner);
+
+        logoviewRed.setAnimation(logoFromleftTop);
+        logoviewPurple.setAnimation(logoFromLeftbottom);
+        logoviewOrange.setAnimation(logoFrombottom);
+        logoviewBlue.setAnimation(logoFromTop);
+        logoviewGreen.setAnimation(logoFromRightTop);
+        logoviewYellow.setAnimation(logoFromRightbottom);
+        Animation textAnimation = AnimationUtils.loadAnimation(this, R.anim.text_animation_back);
+        logoText1.startAnimation(textAnimation);
+        logoText2.startAnimation(textAnimation);
+        logoText3.startAnimation(textAnimation);
+        logoText4.startAnimation(textAnimation);
+        textAnimation.setAnimationListener(new Animation.AnimationListener() {
+        @Override
+        public void onAnimationEnd(Animation arg0) {
+            finish();
+            navigationService.navigate();
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation arg0) {
+        }
+
+        @Override
+        public void onAnimationStart(Animation arg0) {
+        }
+    });
     }
 }
