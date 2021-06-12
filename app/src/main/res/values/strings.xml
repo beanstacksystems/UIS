@@ -90,10 +90,14 @@
 
     <string name="login">Login</string>
     <string name="signup">SignUp</string>
+    <string name="resetpwd">Reset Password</string>
 
     <string name="submit">Submit</string>
     <string name="fillvalue">Please fill all required values before proceed.</string>
     <string name="fillImage">Please Capture all required Images before proceed.</string>
 
     <string name="income">Income per Year</string>
+    <string name="userregistraionFailed">Failed to register User!</string>
+    <string name="loginfailed">Invalid Username and Password!</string>
+    <string name="severconnectionfailed">Failed to Connect Server.</string>
 </resources>

@@ -1,0 +1,10 @@
+<resources>
+    <style name="alert_dialog_dark" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/abc_vector_test</item>
+    </style>
+    <style name="alert_dialog_light" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/abc_vector_test</item>
+    </style>
+
+
+</resources>

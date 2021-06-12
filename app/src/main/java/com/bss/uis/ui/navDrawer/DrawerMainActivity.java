@@ -35,7 +35,7 @@ public class DrawerMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        uisContext = (UISApplicationContext) getApplicationContext();
+        uisContext = UISApplicationContext.getInstance();
         setContentView(R.layout.activity_drawer_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -97,7 +97,7 @@ public class DrawerMainActivity extends AppCompatActivity {
         User user = uisContext.getUser();
         if(null == user)
             return;
-        navHeaderPersonName.setText(user.getName());
-        navHeaderPersonEmail.setText(user.getEmail());
+        navHeaderPersonName.setText(user.getUserName());
+        navHeaderPersonEmail.setText(user.getUserEmail());
     }
 }

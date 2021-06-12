@@ -98,7 +98,8 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
             {
                 curfragment.updateDetails(patientDetailData);
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
-                if(curfragment.getFragmentTitle().equals("Address Details"))
+                if(curfragment.getFragmentTitle().equals("Address Details") ||
+                        curfragment.getFragmentTitle().equals("Attendant Details"))
                     curfragment.onFragmentVisible();
                 stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 updateFragmentView(mPager.getCurrentItem()+1);

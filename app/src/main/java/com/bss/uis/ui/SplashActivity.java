@@ -98,12 +98,19 @@ public class SplashActivity extends AppCompatActivity {
         logoviewBlue.setAnimation(logoFromTop);
         logoviewGreen.setAnimation(logoFromRightTop);
         logoviewYellow.setAnimation(logoFromRightbottom);
-        Animation textAnimation = AnimationUtils.loadAnimation(this, R.anim.text_animation_back);
-        logoText1.startAnimation(textAnimation);
-        logoText2.startAnimation(textAnimation);
-        logoText3.startAnimation(textAnimation);
-        logoText4.startAnimation(textAnimation);
-        textAnimation.setAnimationListener(new Animation.AnimationListener() {
+        Animation textAnimationright = AnimationUtils.loadAnimation(this, R.anim.text_animation_right);
+        Animation textAnimationback = AnimationUtils.loadAnimation(this, R.anim.text_animation_back);
+        logoText1.startAnimation(textAnimationback);
+        logoText2.startAnimation(textAnimationright);
+        logoText3.startAnimation(textAnimationback);
+        logoText4.startAnimation(textAnimationright);
+        logoviewGreen.startAnimation(textAnimationback);
+        logoviewYellow.startAnimation(textAnimationback);
+        logoviewBlue.startAnimation(textAnimationright);
+        logoviewOrange.startAnimation(textAnimationback);
+        logoviewPurple.startAnimation(textAnimationright);
+        logoviewRed.startAnimation(textAnimationright);
+        textAnimationback.setAnimationListener(new Animation.AnimationListener() {
         @Override
         public void onAnimationEnd(Animation arg0) {
             finish();

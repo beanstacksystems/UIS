@@ -21,7 +21,7 @@
             android:gravity="center"
             android:background="@color/white">
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
+                android:id="@+id/profile_image_pd"
                 android:layout_width="78dp"
                 android:layout_height="78dp"
                 android:layout_marginTop="20dp"
@@ -48,8 +48,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/personName_persondetail"
-                style="@style/TextInputStyleBox"
-                android:layout_height="35dp" />
+                style="@style/TextInputStyleBox"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +82,7 @@
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             style="@style/TextInputLayoutStyleBox"
-            android:id="@+id/idprooftxtLayout"
+            android:id="@+id/panAdharPdetailLayout_pDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/panaadhar">

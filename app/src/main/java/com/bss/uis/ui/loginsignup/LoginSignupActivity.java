@@ -9,10 +9,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beanstack.biometric.BiometricUtils;
+import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
+import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.dao.ApplicationRepository;
@@ -22,7 +25,9 @@ import com.bss.uis.service.UserService;
 import com.bss.uis.service.impl.NavigationServiceImpl;
 import com.bss.uis.service.impl.UserServiceImpl;
 import com.bss.uis.ui.BioMetricActivity;
+import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.navDrawer.DrawerMainActivity;
+import com.bss.uis.util.AppUtil;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -51,10 +56,10 @@ import java.util.List;
 
 public class LoginSignupActivity extends AppCompatActivity {
     private static final String TAG = "LoginSignupActivity";
-    private TextInputEditText nameTxt,emailTxt,pwdTxt;
+    private TextInputEditText nameTxt,emailTxt,pwdTxt,cnfpwdTxt;
     private Button button;
-    private TextView newAccount;
-    private TextInputLayout nameLayout;
+    private TextView newAccount,resetPwd;
+    private TextInputLayout nameLayout,pwdLayout,cnfPwdLayout,emailLayout;
     private ImageView fbImage,gImage;
     private GoogleSignInClient googleSignInClient;
     LoginButton fbLoginButton;
@@ -70,9 +75,13 @@ public class LoginSignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         applicationContext = UISApplicationContext.getInstance();
         applicationContext.setContext(getApplicationContext());
+        if(!AppUtil.isConnectedToInternet(applicationContext.getContext()))
+        {
+
+        }
         updateUI();
+        updateLocalDB();
         if(isUserHasValidToken()){
-            updateLocalDB();
             navigationService.navigate();
             finish();
         }
@@ -113,13 +122,18 @@ public class LoginSignupActivity extends AppCompatActivity {
     private void initView()
     {
         nameLayout = findViewById(R.id.name_signup);
+        pwdLayout = findViewById(R.id.pwdlayout);
+        cnfPwdLayout = findViewById(R.id.cnfpwdlayout);
+        emailLayout = findViewById(R.id.etemail);
         nameTxt = findViewById(R.id.nameTxt);
+        cnfpwdTxt = findViewById(R.id.cnfpwdTxt);
         emailTxt = findViewById(R.id.etemailTxt);
         pwdTxt = findViewById(R.id.pwdTxt);
         button = findViewById(R.id.login_signup_btn);
         fbLoginButton = findViewById(R.id.fb_login_button);
         fbLoginButton.setPermissions(Arrays.asList(fbPermission));
         newAccount = findViewById(R.id.createnewac);
+        resetPwd = findViewById(R.id.forgotpwd);
         fbImage = findViewById(R.id.fbCustomButton);
         gImage = findViewById(R.id.googleCustom);
         fbImage.setOnClickListener(new View.OnClickListener(){
@@ -142,13 +156,139 @@ public class LoginSignupActivity extends AppCompatActivity {
         @Override
         public void onClick( View v)
         {
-            nameLayout.setVisibility(View.VISIBLE);
-            v.setVisibility(View.INVISIBLE);
-            button.setText(R.string.signup);
+            if(newAccount.getText().toString().equals(getResources().getString(R.string.login))){
+                nameLayout.setVisibility(View.INVISIBLE);
+                cnfPwdLayout.setVisibility(View.INVISIBLE);
+                emailLayout.setHint("Email/UserName");
+                button.setText(R.string.login);
+                newAccount.setText(R.string.signup);
+                return;
+            }
+            else{
+                nameLayout.setVisibility(View.VISIBLE);
+                cnfPwdLayout.setVisibility(View.VISIBLE);
+                emailLayout.setHint("Email");
+                button.setText(R.string.signup);
+                newAccount.setText(R.string.login);
+            }
+
+        }
+
+    });
+        resetPwd.setOnClickListener(new View.OnClickListener(){
+        @Override
+        public void onClick( View v)
+        {
+            nameLayout.setVisibility(View.INVISIBLE);
+            cnfPwdLayout.setVisibility(View.VISIBLE);
+            emailLayout.setHint("Email/UserName");
+            button.setText(R.string.resetpwd);
+            newAccount.setText(R.string.login);
         }
     });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isValidData())
+                    return;
+                if(button.getText().toString().equals(getResources().getString(R.string.signup)))
+                    registerUser(nameTxt.getText().toString(),emailTxt.getText().toString(),pwdTxt.getText().toString());
+                else if(button.getText().toString().equals(getResources().getString(R.string.resetpwd)))
+                    resetPwd(emailTxt.getText().toString(),pwdTxt.getText().toString());
+                else
+                    loginUser(emailTxt.getText().toString(),pwdTxt.getText().toString());
+            }
+        });
+        emailTxt.setText("testme");
+        pwdTxt.setText("test123");
+        nameTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (nameLayout,"Name cannot be empty"));
+        nameTxt.addTextChangedListener(new CustomTextValidator(nameTxt) {
+            @Override
+            public void validate(TextView textView, String text) {
+                if(nameLayout.getVisibility()==View.VISIBLE)
+                {
+                    nameLayout.setError(null);
+                    if(null == text || text.isEmpty())
+                        nameLayout.setError("Name cannot be empty");
+                    else if(!UIUtil.isContainsValidCharacter(text))
+                        nameLayout.setError("Only alphanumeric characters allowed");
+                }
+
+            }
+        });
+        emailTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (emailLayout,"Field cannot be empty"));
+        emailTxt.addTextChangedListener(new CustomTextValidator(emailTxt) {
+            @Override
+            public void validate(TextView textView, String text) {
+                boolean isRegister = nameLayout.getVisibility()==View.VISIBLE;
+                emailLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    emailLayout.setError("Field cannot be empty");
+                else if((isRegister)?!(UIUtil.isEmailValid(text)):(!UIUtil.isEmailValid(text)
+                && !UIUtil.isContainsValidCharacter(text)))
+                    emailLayout.setError("Only alphanumeric characters allowed");
+            }
+        });
+        pwdTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (pwdLayout,"Field cannot be empty"));
+        pwdTxt.addTextChangedListener(new CustomTextValidator(pwdTxt) {
+            @Override
+            public void validate(TextView textView, String text) {
+                pwdLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    pwdLayout.setError("Field cannot be empty");
+                else if(AppUtil.isCorrectPasswordPolicy(text))
+                    pwdLayout.setError("Only alphanumeric characters allowed");
+            }
+        });
+        cnfpwdTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (cnfPwdLayout,"Field cannot be empty"));
+        cnfpwdTxt.addTextChangedListener(new CustomTextValidator(cnfpwdTxt) {
+            @Override
+            public void validate(TextView textView, String text) {
+                cnfPwdLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    cnfPwdLayout.setError("Field cannot be empty");
+                else if(!pwdTxt.getText().toString().equals(text))
+                    cnfPwdLayout.setError("Password is not same as ConfirmPassword");
+            }
+        });
     }
 
+    private boolean isValidData() {
+        if((nameLayout.getVisibility()==View.VISIBLE && null != nameLayout.getError())
+            || null != emailLayout.getError() || null != pwdLayout.getError()
+        || (cnfPwdLayout.getVisibility()==View.VISIBLE && null != cnfPwdLayout.getError()))
+            return false;
+        String name = nameTxt.getText().toString();
+        String email = emailTxt.getText().toString();
+        String pwd = pwdTxt.getText().toString();
+        if((nameLayout.getVisibility()==View.VISIBLE && (null == name ||name.isEmpty()))|| null == email ||email.isEmpty()
+                || null == pwd || pwd.isEmpty()){
+            Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                    getResources().getString(R.string.fillvalue),Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void loginUser(String userName,String password)
+    {
+        userService = new UserServiceImpl();
+        userService.loginUser(userName,password,navigationService,this);
+    }
+    private void resetPwd(String userName,String password)
+    {
+        userService = new UserServiceImpl();
+        userService.resetPassword(userName,password,navigationService,this);
+    }
+    private void registerUser(String userName,String email,String password)
+    {
+        userService = new UserServiceImpl();
+        userService.registerUser(userName,email,password,navigationService,this);
+    }
     private void handleAccessToken(String token, String authCode, String email, String userId, String name, String source) {
         Log.w(TAG,token);
         userService = new UserServiceImpl();
@@ -220,5 +360,18 @@ public class LoginSignupActivity extends AppCompatActivity {
             Log.w(TAG,"error in facebook login");
         }
     }
-
+    @Override
+    public void onBackPressed() {
+        if(newAccount.getVisibility()== View.INVISIBLE){
+            nameLayout.setVisibility(View.INVISIBLE);
+            cnfPwdLayout.setVisibility(View.INVISIBLE);
+            emailLayout.setHint("Email/UserName");
+            newAccount.setVisibility(View.VISIBLE);
+            button.setText(R.string.login);
+            return;
+        }
+        else
+            finishAffinity();
+        System.exit(0);
+    }
 }

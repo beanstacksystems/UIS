@@ -1,20 +1,28 @@
 package com.bss.uis.ui.registration;
 
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
 import com.beanstack.utility.validators.AutoCompleteTextValidtor;
+import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.ui.UIUtil;
+import com.bss.uis.ui.image.ProfileImageFragment;
 import com.bss.uis.ui.tabFragment.DynamicTabFragment;
 import com.bss.uis.ui.tabFragment.TabAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -25,14 +33,18 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AttendantFragment extends BaseFragment {
     TextInputEditText name,email,contact,dob,panadhar;
     TextInputLayout occupationInputLayout,eMailInputLayout,contactInputLayout,
-            dobInputLayout,genderLayout,panadhartxtLayout;
+            dobInputLayout,genderLayout,panadhartxtLayout,nameLayout;
     AutoCompleteTextView occupation,gender;
     private String fragmentTitle;
     private TabLayout tabLayout;
     List<DynamicTabFragment> tabFragList = null;
+    private boolean isTabContentInitialized = false;
+    CircleImageView profile_image;
     public AttendantFragment() {
         // Required empty public constructor
     }
@@ -106,35 +118,94 @@ public class AttendantFragment extends BaseFragment {
             }
 
         });
-        int index = 0;
-        for(DynamicTabFragment frag:tabFragList) {
-            initTabView(tabAdapter.getItem(index),index);
-            index++;
-        }
-
-
         return attview;
     }
+    @Override
+    public void onFragmentHide(){};
+    @RequiresApi(api = VERSION_CODES.M)
+    @Override
+    public void onFragmentVisible(){
+        if(!isTabContentInitialized)
+        {
+            for(DynamicTabFragment frag:tabFragList) {
+                initTabView(frag,0);
+            }
+            isTabContentInitialized = true;
+        }
+    };
     private void initTabView(Fragment dynamicTabFragment, int index)
     {
         View tabview = dynamicTabFragment.getView();
+        profile_image = tabview.findViewById(R.id.profile_image_pd);
         name = tabview.findViewById(R.id.personName_persondetail);
+        nameLayout = tabview.findViewById(R.id.personName_persondetail_layout);
         email = tabview.findViewById(R.id.Email_et_persondetail);
+        eMailInputLayout = tabview.findViewById(R.id.Email_etLayout_persondetail);
         contact = tabview.findViewById(R.id.contact_et_persondetail);
+        contactInputLayout = tabview.findViewById(R.id.contactInputLayout_persondetail);
         panadhar = tabview.findViewById(R.id.panAdharPdetail);
+        name.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (nameLayout,"Name cannot be empty"));
+        name.addTextChangedListener(new CustomTextValidator(name) {
+            @Override
+            public void validate(TextView textView, String text) {
+                nameLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    nameLayout.setError("Name cannot be empty");
+                else if(!UIUtil.isContainsValidCharacter(text))
+                    nameLayout.setError("Only alphanumeric characters allowed");
+            }
+        });
+        email.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (eMailInputLayout,"Email cannot be empty"));
+        email.addTextChangedListener(new CustomTextValidator(email) {
+            @Override
+            public void validate(TextView textView, String text) {
+                eMailInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    eMailInputLayout.setError("Email cannot be empty");
+                else if(!UIUtil.isEmailValid(text))
+                    eMailInputLayout.setError("Invalid E-Mail Id");
+            }
+        });
+        contact.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (contactInputLayout,"Mobile no cannot be empty"));
+        contact.addTextChangedListener(new CustomTextValidator(contact) {
+            @Override
+            public void validate(TextView textView, String text) {
+                contactInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    contactInputLayout.setError("Mobile no cannot be empty");
+                else if(text.length()< 10)
+                    contactInputLayout.setError("Mobile number is not Correct");
+            }
+        });
+        panadhartxtLayout = tabview.findViewById(R.id.panAdharPdetailLayout_pDetail);
+        panadhar.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (panadhartxtLayout,"Pan/Aadhar no cannot be empty"));
+        panadhar.addTextChangedListener(new CustomTextValidator(panadhar) {
+            @Override
+            public void validate(TextView textView, String text) {
+                panadhartxtLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    panadhartxtLayout.setError("Pan/Aadhar no cannot be empty");
+                else if(text.length()< 10)
+                    panadhartxtLayout.setError("Pan/Aadhar is not Correct");
+            }
+        });
         initSpinnerView(tabview);
     }
     private void initSpinnerView(View fragmentView)
     {
         occupation = fragmentView.findViewById(R.id.spinner_occupation);
         occupationInputLayout = fragmentView.findViewById(R.id.spinner_occupation_layout);
-        ArrayList<String> bloodGroups = new ArrayList<>();
-        bloodGroups.add("Others");
-        bloodGroups.add("Self employed");
-        bloodGroups.add("House wife");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, bloodGroups);
+        ArrayList<String> occupationList = new ArrayList<>();
+        occupationList.add("Others");
+        occupationList.add("Self employed");
+        occupationList.add("House wife");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, occupationList);
         occupation.setAdapter(adapter);
-        occupation.setValidator(new AutoCompleteTextValidtor(occupationInputLayout,bloodGroups));
+        occupation.setValidator(new AutoCompleteTextValidtor(occupationInputLayout,occupationList));
     }
     private List<DynamicTabFragment> getTabFragmentList(View view,int length)
     {
@@ -145,5 +216,14 @@ public class AttendantFragment extends BaseFragment {
             tabFragList.add(tabFragment);
         }
         return tabFragList;
+    }
+    public ProfileImageFragment getProfileImageFragment(Boolean bool, int id) {
+        ProfileImageFragment fragment = ProfileImageFragment.newInstance(profile_image);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(id, fragment);
+        if (bool)
+            transaction.addToBackStack(null);
+        transaction.commit();
+        return fragment;
     }
 }
