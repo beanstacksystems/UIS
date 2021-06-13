@@ -80,7 +80,9 @@ public class UserServiceImpl implements UserService {
         });
     }
     @Override
-    public void resetPassword(String userName, String password, final NavigationService navigationService,final LoginSignupActivity loginSignupActivity) {
+    public void resetPassword(String userName, String password,
+                              final NavigationService navigationService,
+                              final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.RESET_PWD,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
@@ -110,12 +112,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String userName, String userEmail, String password,
+    public void registerUser(String userName, String userEmail, String password,String loginType,
                              final NavigationService navigationService,final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.REGISTER_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.register(userName,userEmail,password);
+        Call<User> apiCall = apiSignatureService.register(userName,userEmail,password,loginType);
         apiCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

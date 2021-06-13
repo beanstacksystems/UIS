@@ -58,9 +58,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.RegisterPatientActivity"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".ui.BioMetricActivity"
             android:theme="@style/AppTheme" />
         <activity

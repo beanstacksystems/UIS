@@ -7,17 +7,20 @@
     android:orientation="vertical"
     android:padding="10dp"
     tools:context=".ui.navDrawer.ui.home.HomeFragment">
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:cardCornerRadius="30dp"
+        android:layout_margin="5dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardMaxElevation="15dp"
+        app:cardPreventCornerOverlap="true"
         tools:ignore="MissingConstraints">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_shape_orange_corner"
             android:orientation="vertical">
 
             <androidx.viewpager.widget.ViewPager
@@ -27,27 +30,28 @@
             <LinearLayout
                 android:id="@+id/imageProp"
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginLeft="20dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_alignBottom="@id/imgviewPagerMain"
                 android:gravity="left"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/imagePersonName"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
+                    android:layout_height="15dp"
                     android:gravity="left"
                     android:text="First"
                     android:textColor="@color/orange"
-                    android:textSize="8sp"/>
+                    android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/imagePersonDiese"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
+                    android:layout_height="10dp"
                     android:gravity="left"
                     android:text="Second"
                     android:textColor="@color/orange"
-                    android:textSize="8sp"/>
+                    android:textSize="10sp"/>
 
             </LinearLayout>
 
@@ -59,7 +63,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:orientation="horizontal" />
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
     <TextView
         android:id="@+id/shelterHome"
         android:layout_width="match_parent"
@@ -228,7 +232,11 @@
         android:layout_margin="1dp"
         app:strokeWidth="0dp"
         app:strokeColor="@color/colorPrimary"
-        app:cardCornerRadius="8dp">
+        app:cardElevation="10dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardMaxElevation="10dp"
+        app:cardPreventCornerOverlap="true">
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/tabviewPager"
             android:layout_width="match_parent"

@@ -1,9 +1,12 @@
 package com.bss.uis.ui.navDrawer;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,8 +32,10 @@ public class DrawerMainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private TextView naveHeaderdate,navHeaderPersonName,navHeaderPersonEmail;
-    private ImageView navHeaderProfileImage;
+    private ImageView navHeaderProfileImage,profile_image,checkmark_IV, edit_IV;
+    EditText popup_contact_et;
     private UISApplicationContext uisContext;
+    private Dialog profile_dialogue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +49,6 @@ public class DrawerMainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                APIService apiService = new APIServiceImpl();
-//                List<AddressDTO> addressList = apiService.fetchPinData("754082");
-//                if(null == addressList||addressList.isEmpty())
-//                {
-//                    System.out.println("Empty list");
-//                    return;
-//                }
-//                for(AddressDTO addressDTO :addressList)
-//                    System.out.println(addressDTO.getBlock());
                 startActivity(new Intent(DrawerMainActivity.this, RegistrationActivity.class));
             }
         });
@@ -91,6 +87,12 @@ public class DrawerMainActivity extends AppCompatActivity {
         navHeaderPersonName =  (TextView)navHeaderView.findViewById(R.id.navHeaderPersonName);
         navHeaderPersonEmail = (TextView)navHeaderView.findViewById(R.id.navHeaderPersonEmail);
         navHeaderProfileImage =(ImageView)navHeaderView.findViewById(R.id.navHeaderProfileImage);
+        navHeaderProfileImage.setOnClickListener(new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openProfileDialog();
+        }
+        });
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String date = sdf.format(new Date());
         naveHeaderdate.setText(date);
@@ -99,5 +101,17 @@ public class DrawerMainActivity extends AppCompatActivity {
             return;
         navHeaderPersonName.setText(user.getUserName());
         navHeaderPersonEmail.setText(user.getUserEmail());
+    }
+
+    private void openProfileDialog() {
+        profile_dialogue = new Dialog(this);
+        profile_dialogue.setContentView(R.layout.popup_profile);
+        profile_dialogue.setTitle("Custom Alert Dialog");
+        profile_dialogue.setCancelable(false);
+        profile_image = profile_dialogue.findViewById(R.id.profile_image);
+        checkmark_IV = profile_dialogue.findViewById(R.id.checkmark_IV);
+        edit_IV = profile_dialogue.findViewById(R.id.edit_IV);
+        popup_contact_et = profile_dialogue.findViewById(R.id.popup_contact_et);
+        profile_dialogue.show();
     }
 }

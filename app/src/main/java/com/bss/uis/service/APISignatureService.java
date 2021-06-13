@@ -24,5 +24,6 @@ public interface APISignatureService {
     Call<User> resetPassword(@Field("userName") String userName, @Field("password")String password);
     @FormUrlEncoded
     @POST(".")
-    Call<User> register(@Field("userName") String userName,@Field("userEmail") String userEmail, @Field("password")String password);
+    Call<User> register(@Field("userName") String userName,@Field("userEmail") String userEmail,
+                        @Field("password")String password,@Field("loginType") String loginType);
 }

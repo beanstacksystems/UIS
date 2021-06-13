@@ -287,7 +287,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     private void registerUser(String userName,String email,String password)
     {
         userService = new UserServiceImpl();
-        userService.registerUser(userName,email,password,navigationService,this);
+        userService.registerUser(userName,email,password,"Manual",navigationService,this);
     }
     private void handleAccessToken(String token, String authCode, String email, String userId, String name, String source) {
         Log.w(TAG,token);

@@ -65,7 +65,6 @@ public class PersonalDetailFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_personal_detail, container, false);
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         initView(fragmentView);
         return fragmentView;
     }
