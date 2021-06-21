@@ -28,12 +28,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".ui.navDrawer.UserProfileActivity"></activity>
         <activity
             android:name=".ui.loginsignup.LoginSignupActivity"
             android:label="@string/title_activity_login_signup"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ui.registration.RegistrationActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.registration.RegistrationActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ui.image.SelectImageActivity" />
         <activity android:name=".ui.image.FullImageViewActivity" />
 

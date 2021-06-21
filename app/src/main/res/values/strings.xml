@@ -76,6 +76,10 @@
     <string name="fragment_address_title">Address Details</string>
     <string name="fragment_medical_title">Medical History</string>
     <string name="fragment_attendant_title">Attendant Details</string>
+    <string name="profile_details">Profile Details</string>
+    <string name="last_updated">Last Updated:</string>
+    <string name="edit"><u>Edit</u></string>
+    <string name="update_profile"><u>Update</u></string>
 
     <string name="bloodGroup">Blood Group</string>
     <string name="cancerType">Cancer Type</string>
@@ -100,4 +104,10 @@
     <string name="userregistraionFailed">Failed to register User!</string>
     <string name="loginfailed">Invalid Username and Password!</string>
     <string name="severconnectionfailed">Failed to Connect Server.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

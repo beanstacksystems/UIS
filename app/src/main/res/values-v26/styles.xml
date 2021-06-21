@@ -5,16 +5,23 @@
         <item name="boxStrokeColor">@color/uisBlue</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxBackgroundColor">#fff</item>
-        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColorHint">@color/state_background_color</item>
         <item name="android:colorError">@color/uisRed</item>
         <item name="android:layout_margin">5dp</item>
     </style>
 
+    <style name="CustomDropDownTilStyleThin" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxBackgroundColor">#fff</item>
+        <item name="android:textColorHint">@color/state_background_color</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:colorError">@color/uisRed</item>
+    </style>
     <style name="CustomDropDownTilStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
         <item name="boxStrokeColor">@color/uisBlue</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxBackgroundColor">#fff</item>
-        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColorHint">@color/state_background_color</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:colorError">@color/uisRed</item>
     </style>
