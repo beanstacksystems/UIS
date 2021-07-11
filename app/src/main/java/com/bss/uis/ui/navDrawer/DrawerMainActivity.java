@@ -17,6 +17,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.beanstack.showcase.MaterialShowcaseSequence;
+import com.beanstack.showcase.MaterialShowcaseView;
+import com.beanstack.showcase.ShowcaseConfig;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.model.User;
@@ -34,16 +37,19 @@ public class DrawerMainActivity extends AppCompatActivity {
     private TextView naveHeaderdate,navHeaderPersonName,navHeaderPersonEmail;
     private ImageView navHeaderProfileImage;
     private UISApplicationContext uisContext;
+    FloatingActionButton fab;
+    Toolbar toolbar;
+    private static final String SHOWCASE_ID = "DrawerMainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         uisContext = UISApplicationContext.getInstance();
         setContentView(R.layout.activity_drawer_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         loadNavigationHeader();
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +68,7 @@ public class DrawerMainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        presentShowcaseSequence();
     }
 
     @Override
@@ -119,6 +126,33 @@ public class DrawerMainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    private void presentShowcaseSequence() {
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500); // half second between each showcase view
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+            }
+        });
+        sequence.setConfig(config);
+        sequence.addSequenceItem(navHeaderProfileImage, "This is profile button \nPlease check your details Here.", "Next");
+        sequence.addSequenceItem(fab, "Be a paid user to avail complete feature.", "Next");
+
+//        sequence.addSequenceItem(
+//                new MaterialShowcaseView.Builder(this)
+//                        .setSkipText("SKIP")
+//                        .setTarget(imageView_swipe)
+//                        .setDismissText("GOT IT")
+//                        .setContentText("Try it...")
+//                        .withRectangleShape(true)
+//                        .build()
+//        );
+
+
+        sequence.start();
+
     }
 
 }

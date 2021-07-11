@@ -80,6 +80,7 @@
     <string name="last_updated">Last Updated:</string>
     <string name="edit"><u>Edit</u></string>
     <string name="update_profile"><u>Update</u></string>
+    <string name="wcstr">Welcome to UIS family</string>
 
     <string name="bloodGroup">Blood Group</string>
     <string name="cancerType">Cancer Type</string>

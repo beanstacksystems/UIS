@@ -82,8 +82,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         updateUI();
         updateLocalDB();
         if(isUserHasValidToken()){
-            navigationService.navigate();
-            finish();
+            navigationService.finishAndnavigate();
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_login_signup);
@@ -292,9 +291,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     private void handleAccessToken(String token, String authCode, String email, String userId, String name, String source) {
         Log.w(TAG,token);
         userService = new UserServiceImpl();
-        userService.registerAndAuthenticateUser(token, authCode, source);
-        navigationService.navigate();
-        finish();
+        userService.registerWithSocialId(token, authCode, source,navigationService);
     }
     private void updateUI() {
         if (BiometricUtils.isFingerprintAvailable(LoginSignupActivity.this))
@@ -340,7 +337,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                         String email = object.getString("email");
                         String userId = object.getString("id");
                         String name = object.getString("name");
-                        handleAccessToken(loginResult.getAccessToken().getToken(), null, email, userId, name, "Facebook");
+                        handleAccessToken(loginResult.getAccessToken().getToken(), null, email, userId, name, "facebook");
                     } catch (JSONException e) {
                         Log.w(TAG,e.getMessage());
                     }

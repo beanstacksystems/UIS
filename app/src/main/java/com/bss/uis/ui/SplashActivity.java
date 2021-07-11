@@ -62,7 +62,6 @@ public class SplashActivity extends AppCompatActivity {
     }
     private void setAnimation()
     {
-
         logoFromTop = AnimationUtils.loadAnimation(this, R.anim.fromtop);
         logoFrombottom = AnimationUtils.loadAnimation(this, R.anim.frombottom);
         logoFromRightTop = AnimationUtils.loadAnimation(this, R.anim.fromtoprightcorner);
@@ -84,22 +83,21 @@ public class SplashActivity extends AppCompatActivity {
     }
     private void endAnimation()
     {
-
-        logoFromTop = AnimationUtils.loadAnimation(this, R.anim.totop);
-        logoFrombottom = AnimationUtils.loadAnimation(this, R.anim.tobottom);
-        logoFromRightTop = AnimationUtils.loadAnimation(this, R.anim.totoprightcorner);
-        logoFromleftTop = AnimationUtils.loadAnimation(this, R.anim.totopleftcorner);
-        logoFromRightbottom = AnimationUtils.loadAnimation(this, R.anim.torightbottomcorner);
-        logoFromLeftbottom = AnimationUtils.loadAnimation(this, R.anim.toleftbottomcorner);
-
-        logoviewRed.setAnimation(logoFromleftTop);
-        logoviewPurple.setAnimation(logoFromLeftbottom);
-        logoviewOrange.setAnimation(logoFrombottom);
-        logoviewBlue.setAnimation(logoFromTop);
-        logoviewGreen.setAnimation(logoFromRightTop);
-        logoviewYellow.setAnimation(logoFromRightbottom);
         Animation textAnimationright = AnimationUtils.loadAnimation(this, R.anim.text_animation_right);
         Animation textAnimationback = AnimationUtils.loadAnimation(this, R.anim.text_animation_back);
+        textAnimationback.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                SplashActivity.this.finish();
+                navigationService.navigate();
+            }
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+        });
         logoText1.startAnimation(textAnimationback);
         logoText2.startAnimation(textAnimationright);
         logoText3.startAnimation(textAnimationback);
@@ -110,21 +108,6 @@ public class SplashActivity extends AppCompatActivity {
         logoviewOrange.startAnimation(textAnimationback);
         logoviewPurple.startAnimation(textAnimationright);
         logoviewRed.startAnimation(textAnimationright);
-        textAnimationback.setAnimationListener(new Animation.AnimationListener() {
-        @Override
-        public void onAnimationEnd(Animation arg0) {
-            finish();
-            navigationService.navigate();
 
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation arg0) {
-        }
-
-        @Override
-        public void onAnimationStart(Animation arg0) {
-        }
-    });
     }
 }

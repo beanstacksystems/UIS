@@ -15,6 +15,12 @@ public class NavigationServiceImpl implements NavigationService {
         this.clasz = clasz;
     }
     @Override
+    public void finishAndnavigate() {
+        Intent intent = new Intent(appCompatActivity, clasz);
+        appCompatActivity.startActivity(intent);
+        appCompatActivity.finish();
+    }
+    @Override
     public void navigate() {
         Intent intent = new Intent(appCompatActivity, clasz);
         appCompatActivity.startActivity(intent);

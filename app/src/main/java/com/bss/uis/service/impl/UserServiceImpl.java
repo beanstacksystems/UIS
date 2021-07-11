@@ -28,18 +28,18 @@ public class UserServiceImpl implements UserService {
     private APISignatureService apiSignatureService;
 
     @Override
-    public void registerAndAuthenticateUser(final String idToken, String authCode, String source) {
+    public void registerWithSocialId(final String idToken, String authCode, String source,
+                                     final NavigationService navigationService) {
 
-        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.BASE_URL,
-                new GsonBuilder()
-//                        .registerTypeAdapter(AddressDTO.class, new CustomJsonDesrializer<>(AddressDTO.class,"PostOffice"))
-                        .create());
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.SOCIAL_URL+source+"/",
+                new GsonBuilder().create());
         authService = retrofit.create(AuthService.class);
-        Call<AuthResponse> apiCall = authService.validate(idToken, authCode, source);
+        Call<AuthResponse> apiCall = authService.registerWithSocialId(source.equals("google")?authCode:idToken);
         apiCall.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 System.out.println(response.body());
+                navigationService.finishAndnavigate();
             }
 
             @Override

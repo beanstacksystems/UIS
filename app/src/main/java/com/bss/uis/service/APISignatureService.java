@@ -16,6 +16,7 @@ public interface APISignatureService {
 
     @GET("{pin}")
     Call<List<AddressDTO>> fetchPinData(@Path(value = "pin") String pin);
+
     @FormUrlEncoded
     @POST(".")
     Call<User> login(@Field("userName") String userName, @Field("password")String password);
