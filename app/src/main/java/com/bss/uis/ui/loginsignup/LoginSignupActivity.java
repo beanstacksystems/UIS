@@ -15,20 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.beanstack.biometric.BiometricUtils;
 import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
+import com.beanstack.utility.service.NavigationService;
+import com.beanstack.utility.service.impl.NavigationServiceImpl;
 import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
+import com.bss.uis.context.ContextPreferenceManager;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.dao.ApplicationRepository;
 import com.bss.uis.database.entity.AppConfig;
-import com.bss.uis.service.NavigationService;
 import com.bss.uis.service.UserService;
-import com.bss.uis.service.impl.NavigationServiceImpl;
 import com.bss.uis.service.impl.UserServiceImpl;
 import com.bss.uis.ui.BioMetricActivity;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.navDrawer.DrawerMainActivity;
 import com.bss.uis.util.AppUtil;
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -75,14 +75,10 @@ public class LoginSignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         applicationContext = UISApplicationContext.getInstance();
         applicationContext.setContext(getApplicationContext());
-        if(!AppUtil.isConnectedToInternet(applicationContext.getContext()))
-        {
-
-        }
         updateUI();
         updateLocalDB();
         if(isUserHasValidToken()){
-            navigationService.finishAndnavigate();
+            navigationService.finishAndNavigate();
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_login_signup);
@@ -198,8 +194,6 @@ public class LoginSignupActivity extends AppCompatActivity {
                     loginUser(emailTxt.getText().toString(),pwdTxt.getText().toString());
             }
         });
-        emailTxt.setText("testme");
-        pwdTxt.setText("test123");
         nameTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
                 (nameLayout,"Name cannot be empty"));
         nameTxt.addTextChangedListener(new CustomTextValidator(nameTxt) {
@@ -254,6 +248,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                     cnfPwdLayout.setError("Password is not same as ConfirmPassword");
             }
         });
+
     }
 
     private boolean isValidData() {
@@ -273,15 +268,15 @@ public class LoginSignupActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loginUser(String userName,String password)
+    private void loginUser(String userEmail,String password)
     {
         userService = new UserServiceImpl();
-        userService.loginUser(userName,password,navigationService,this);
+        userService.loginUser(userEmail,password,navigationService,this);
     }
-    private void resetPwd(String userName,String password)
+    private void resetPwd(String userEmail,String password)
     {
         userService = new UserServiceImpl();
-        userService.resetPassword(userName,password,navigationService,this);
+        userService.resetPassword(userEmail,password,navigationService,this);
     }
     private void registerUser(String userName,String email,String password)
     {
@@ -316,7 +311,8 @@ public class LoginSignupActivity extends AppCompatActivity {
     }
     private boolean isUserHasValidToken()
     {
-        return AccessToken.getCurrentAccessToken() != null;
+        return new ContextPreferenceManager().isUserLogedOut();
+
     }
     private void initGoogleSignin()
     {

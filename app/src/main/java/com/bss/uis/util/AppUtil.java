@@ -13,8 +13,6 @@ import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
-import com.beanstack.utility.alertDialog.CustomAlertDialog;
-import com.bss.uis.R;
 import com.bss.uis.database.entity.PatientImages;
 
 import java.io.BufferedInputStream;
@@ -109,33 +107,9 @@ public class AppUtil {
                 && activeNetwork.isConnectedOrConnecting();
     }
     public static void getErrorDialog(String contentText, String confirmText, Context context) {
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, CustomAlertDialog.ERROR_TYPE);
-        customAlertDialog.setCanceledOnTouchOutside(false);
-        customAlertDialog.setTitleText("ERROR!")
-                .setContentText(contentText)
-                .setConfirmText(confirmText)
-                .setConfirmClickListener(new CustomAlertDialog.CustomClickListener() {
-                    @Override
-                    public void onClick(CustomAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                }).show();
-        customAlertDialog.getButton(CustomAlertDialog.BUTTON_NEGATIVE).setBackgroundResource(R.drawable.shape_red_color);
     }
 
     public static void getNoticeDialog(String contentText, String confirmText, Context context) {
-        CustomAlertDialog customAlertDialog = new CustomAlertDialog(context, CustomAlertDialog.NORMAL_TYPE);
-        customAlertDialog.setCanceledOnTouchOutside(false);
-        customAlertDialog.setTitleText("Message")
-                .setContentText(contentText)
-                .setConfirmText(confirmText)
-                .setConfirmClickListener(new CustomAlertDialog.CustomClickListener() {
-                    @Override
-                    public void onClick(CustomAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
-                    }
-                }).show();
-        customAlertDialog.getButton(CustomAlertDialog.BUTTON_NEUTRAL).setBackgroundResource(R.drawable.shape_red_color);
     }
 
 }

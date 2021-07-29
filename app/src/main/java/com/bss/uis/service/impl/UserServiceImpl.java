@@ -3,14 +3,15 @@ package com.bss.uis.service.impl;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.beanstack.utility.service.NavigationService;
 import com.bss.uis.R;
 import com.bss.uis.constant.APIConstant;
+import com.bss.uis.context.ContextPreferenceManager;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.model.AuthResponse;
 import com.bss.uis.model.User;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.service.AuthService;
-import com.bss.uis.service.NavigationService;
 import com.bss.uis.service.UserService;
 import com.bss.uis.ui.loginsignup.LoginSignupActivity;
 import com.bss.uis.util.RetrofitUtil;
@@ -39,7 +40,8 @@ public class UserServiceImpl implements UserService {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 System.out.println(response.body());
-                navigationService.finishAndnavigate();
+                navigationService.finishAndNavigate();
+                //new ContextPreferenceManager().saveLoginDetails(useremail,source);
             }
 
             @Override
@@ -51,18 +53,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void loginUser(String userName, String password, final NavigationService navigationService,final LoginSignupActivity loginSignupActivity) {
+    public void loginUser(final String userEmail, final String password, final NavigationService navigationService, final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.LOGIN_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.login(userName,password);
+        Call<User> apiCall = apiSignatureService.login(userEmail,password);
         apiCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                if(null != response.body()){
-                    UISApplicationContext.getInstance().setUser(response.body());
+                    User user = response.body();
+                    UISApplicationContext.getInstance().setUser(user);
                     loginSignupActivity.finish();
                     navigationService.navigate();
+                    new ContextPreferenceManager().saveLoginDetails(user.getAccessToken(),user.getLoginType());
                     return;
                 }
                 else
@@ -80,20 +84,21 @@ public class UserServiceImpl implements UserService {
         });
     }
     @Override
-    public void resetPassword(String userName, String password,
+    public void resetPassword(final String userEmail, final String password,
                               final NavigationService navigationService,
                               final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.RESET_PWD,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.resetPassword(userName,password);
+        Call<User> apiCall = apiSignatureService.resetPassword(userEmail,password);
         apiCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if(null != response.body()){
-                    UISApplicationContext.getInstance().setUser(response.body());
-                    loginSignupActivity.finish();
-                    navigationService.navigate();
+                    User user = response.body();
+                    UISApplicationContext.getInstance().setUser(user);
+                    navigationService.finishAndNavigate();
+                    new ContextPreferenceManager().saveLoginDetails(user.getAccessToken(),user.getLoginType());
                     return;
                 }
                 else
@@ -112,8 +117,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String userName, String userEmail, String password,String loginType,
-                             final NavigationService navigationService,final LoginSignupActivity loginSignupActivity) {
+    public void registerUser(String userName, final String userEmail, final String password, final String loginType,
+                             final NavigationService navigationService, final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.REGISTER_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
@@ -122,9 +127,11 @@ public class UserServiceImpl implements UserService {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                if(null != response.body()){
-                    UISApplicationContext.getInstance().setUser(response.body());
-                    loginSignupActivity.finish();
-                    navigationService.navigate();
+                    User user = response.body();
+                    UISApplicationContext.getInstance().setUser(user);
+                    navigationService.finishAndNavigate();
+                    new ContextPreferenceManager().saveLoginDetails(user.getAccessToken(),user.getLoginType());
+                    return;
                 }
                 else
                     Toast.makeText(UISApplicationContext.getInstance().getContext(),

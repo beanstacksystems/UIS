@@ -2,11 +2,12 @@
 <resources>
     <color name="tomato">#FF4500</color>
     <color name="background_color">#F2000000</color>
-
     <color name="foreground_color">#b42379</color>
-
     <color name="background_text_color">#808080</color>
-
     <color name="foreground_text_color">#eeeeee</color>
-    <color name="success_stroke_color"></color>
+    <color name="white">#ffffff</color>
+    <color name="bluelite">#B5C0FD</color>
+    <color name="greenok">#4CAF50</color>
+    <color name="cancelDark">#FD4D00</color>
+    <color name="red">#C50000</color>
 </resources>

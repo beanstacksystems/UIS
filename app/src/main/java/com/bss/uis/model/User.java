@@ -6,7 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class User implements Comparable<User>{
-    private String loginToken;
+    private String accessToken;
     private String userEmail, userName;
     private String userRole;
     private String loginType;

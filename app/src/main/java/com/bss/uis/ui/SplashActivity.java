@@ -11,11 +11,13 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.beanstack.utility.alertDialog.AppAlertDialog;
+import com.beanstack.utility.service.NavigationService;
+import com.beanstack.utility.service.impl.NavigationServiceImpl;
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
-import com.bss.uis.service.NavigationService;
-import com.bss.uis.service.impl.NavigationServiceImpl;
 import com.bss.uis.ui.loginsignup.LoginSignupActivity;
+import com.bss.uis.util.AppUtil;
 import com.facebook.FacebookSdk;
 
 public class SplashActivity extends AppCompatActivity {
@@ -49,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         logoviewGreen = findViewById(R.id.imageViewGreen);
         updateUI();
         setAnimation();
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -88,8 +91,21 @@ public class SplashActivity extends AppCompatActivity {
         textAnimationback.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-                SplashActivity.this.finish();
-                navigationService.navigate();
+                if(!AppUtil.isConnectedToInternet(SplashActivity.this))
+                {
+                    new AppAlertDialog(SplashActivity.this,new NavigationServiceImpl(null,null){
+                        @Override
+                        public void buttonAction() {
+                            super.buttonAction();
+                            SplashActivity.this.finishAffinity();
+                            System.exit(0);
+                        }
+                    })
+                            .getDialog(0,"Sorry!!!","Data connectivity not available.")
+                            .show();
+                    return;
+                }
+                navigationService.finishAndNavigate();
             }
             @Override
             public void onAnimationRepeat(Animation arg0) {

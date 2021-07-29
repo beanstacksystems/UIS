@@ -34,4 +34,8 @@
             android:icon="@drawable/ic_settings"
             android:title="@string/menu_settings" />
     </group>
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_logout_image_foreground"
+        android:title="@string/menu_logout" />
 </menu>
