@@ -1,7 +1,8 @@
 package com.bss.uis.service;
 
 import com.bss.uis.model.AddressDTO;
-import com.bss.uis.model.User;
+import com.bss.uis.model.AuthResponse;
+import com.bss.uis.model.MasterValueDTO;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -19,12 +21,18 @@ public interface APISignatureService {
 
     @FormUrlEncoded
     @POST(".")
-    Call<User> login(@Field("userName") String userName, @Field("password")String password);
+    Call<AuthResponse> login(@Field("useremail") String userName, @Field("password")String password);
     @FormUrlEncoded
     @POST(".")
-    Call<User> resetPassword(@Field("userName") String userName, @Field("password")String password);
+    Call<AuthResponse> resetPassword(@Field("username") String userName, @Field("password")String password);
     @FormUrlEncoded
     @POST(".")
-    Call<User> register(@Field("userName") String userName,@Field("userEmail") String userEmail,
-                        @Field("password")String password,@Field("loginType") String loginType);
+    Call<AuthResponse> register(@Field("username") String userName,@Field("useremail") String userEmail,
+                        @Field("password")String password,@Field("regtype") String loginType);
+
+    @POST(".")
+    Call<List<MasterValueDTO>> masters(@Header("Authorization")String token);
+
+    @POST(".")
+    Call<String> logout(@Header("Authorization")String token);
 }

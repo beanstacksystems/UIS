@@ -77,7 +77,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         applicationContext.setContext(getApplicationContext());
         updateUI();
         updateLocalDB();
-        if(isUserHasValidToken()){
+        if(!isUserHasValidToken()){
             navigationService.finishAndNavigate();
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
@@ -281,7 +281,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     private void registerUser(String userName,String email,String password)
     {
         userService = new UserServiceImpl();
-        userService.registerUser(userName,email,password,"Manual",navigationService,this);
+        userService.registerUser(userName,email,password,"uis",navigationService,this);
     }
     private void handleAccessToken(String token, String authCode, String email, String userId, String name, String source) {
         Log.w(TAG,token);
@@ -311,8 +311,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     }
     private boolean isUserHasValidToken()
     {
-        return new ContextPreferenceManager().isUserLogedOut();
-
+        return  ContextPreferenceManager.isUserLogedOut();
     }
     private void initGoogleSignin()
     {

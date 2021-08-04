@@ -5,7 +5,10 @@ public interface APIConstant {
     public final String BASE_URL = "http://192.168.0.105:8000/api/";
     public final String SOCIAL_URL = BASE_URL+"auth"+"/";
     public final String LOGIN_URL = BASE_URL+"login"+"/";
+    public final String LOGOUT_URL = BASE_URL+"logout"+"/";
+    public final String USER = BASE_URL+"user"+"/";
     public final String RESET_PWD = BASE_URL+"resetPassword"+"/";
     public final String REGISTER_URL = BASE_URL+"register"+"/";
+    public final String MASTERS = BASE_URL+"masterAll"+"/";
     public final String pinApi = "https://api.postalpincode.in/pincode/";
 }

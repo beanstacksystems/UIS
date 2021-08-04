@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">@color/uisBlue</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/bluelite</item>
         <item name="android:statusBarColor" tools:ignore="NewApi">@color/white</item>

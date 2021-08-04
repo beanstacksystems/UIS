@@ -7,28 +7,40 @@ import com.facebook.AccessToken;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
 public class ContextPreferenceManager {
-    Context context;
 
-    public ContextPreferenceManager() {
-        this.context = UISApplicationContext.getInstance().getContext();
+
+    public static String getToken()
+    {
+        SharedPreferences sharedPreferences = UISApplicationContext.getInstance().getContext()
+                .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("token", "");
     }
-
-    public void saveLoginDetails(String accesstoken,String logintype) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("loginDetails", Context.MODE_PRIVATE);
+    public static void saveLoginDetails(String accesstoken,String logintype) {
+        SharedPreferences sharedPreferences = UISApplicationContext.getInstance().getContext()
+                .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("accesstoken", accesstoken);
+        editor.putString("token", accesstoken);
         editor.putString("logintype", logintype);
         editor.commit();
     }
-
-    public boolean isUserLogedOut() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("logindetails", Context.MODE_PRIVATE);
-        boolean isTokenEmpty = sharedPreferences.getString("accesstoken", "").isEmpty();
+    public static void clearLoginInfo()
+    {
+        SharedPreferences sharedPreferences =
+                UISApplicationContext.getInstance().getContext()
+                        .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
+    public static boolean isUserLogedOut() {
+        SharedPreferences sharedPreferences = UISApplicationContext.getInstance().getContext()
+                .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
+        boolean isTokenEmpty = sharedPreferences.getString("token", "").isEmpty();
         String logintype = sharedPreferences.getString("logintype", "");
         if(logintype.equals("facebook"))
             return AccessToken.getCurrentAccessToken() != null;
         if(logintype.equals("google"))
-            return (null != GoogleSignIn.getLastSignedInAccount(context));
+            return (null != GoogleSignIn.getLastSignedInAccount(UISApplicationContext.getInstance().getContext()));
         return isTokenEmpty;
     }
 }

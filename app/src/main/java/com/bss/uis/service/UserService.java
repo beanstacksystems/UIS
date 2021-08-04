@@ -11,4 +11,5 @@ public interface UserService {
     void registerUser(String userName, String email,String password,String loginType,NavigationService navigationService,LoginSignupActivity loginSignupActivity);
     void getUser(String userId);
     void updateUser(User user);
+    void logout(NavigationService navigationService);
 }

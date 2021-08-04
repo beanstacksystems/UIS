@@ -8,7 +8,10 @@ import com.bss.uis.R;
 import com.bss.uis.constant.APIConstant;
 import com.bss.uis.context.ContextPreferenceManager;
 import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.database.dao.MasterDAORepository;
+import com.bss.uis.database.entity.MasterData;
 import com.bss.uis.model.AuthResponse;
+import com.bss.uis.model.MasterValueDTO;
 import com.bss.uis.model.User;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.service.AuthService;
@@ -16,6 +19,9 @@ import com.bss.uis.service.UserService;
 import com.bss.uis.ui.loginsignup.LoginSignupActivity;
 import com.bss.uis.util.RetrofitUtil;
 import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,117 +42,37 @@ public class UserServiceImpl implements UserService {
                 new GsonBuilder().create());
         authService = retrofit.create(AuthService.class);
         Call<AuthResponse> apiCall = authService.registerWithSocialId(source.equals("google")?authCode:idToken);
-        apiCall.enqueue(new Callback<AuthResponse>() {
-            @Override
-            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                System.out.println(response.body());
-                navigationService.finishAndNavigate();
-                //new ContextPreferenceManager().saveLoginDetails(useremail,source);
-            }
-
-            @Override
-            public void onFailure(Call<AuthResponse> call, Throwable t) {
-                System.out.println(t.getStackTrace());
-            }
-        });
-
+        apiCall.enqueue(getCallBack(navigationService,source,R.string.userregistraionFailed,R.string.severconnectionfailed,true));
     }
 
     @Override
-    public void loginUser(final String userEmail, final String password, final NavigationService navigationService, final LoginSignupActivity loginSignupActivity) {
+    public void loginUser(final String useremail, final String password, final NavigationService navigationService, final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.LOGIN_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.login(userEmail,password);
-        apiCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-               if(null != response.body()){
-                    User user = response.body();
-                    UISApplicationContext.getInstance().setUser(user);
-                    loginSignupActivity.finish();
-                    navigationService.navigate();
-                    new ContextPreferenceManager().saveLoginDetails(user.getAccessToken(),user.getLoginType());
-                    return;
-                }
-                else
-                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                            loginSignupActivity.getResources().getString(R.string.loginfailed),Toast.LENGTH_LONG).show();
-                Log.w(TAG, String.valueOf(response.body()));
-            }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                        loginSignupActivity.getResources().getString(R.string.severconnectionfailed),Toast.LENGTH_LONG).show();
-                Log.w(TAG, String.valueOf(call));
-                Log.e(TAG,t.getMessage());
-            }
-        });
+        Call<AuthResponse> apiCall = apiSignatureService.login(useremail,password);
+        apiCall.enqueue(getCallBack(navigationService,"UIS",R.string.loginfailed,R.string.severconnectionfailed,false));
+
     }
     @Override
-    public void resetPassword(final String userEmail, final String password,
+    public void resetPassword(final String useremail, final String password,
                               final NavigationService navigationService,
                               final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.RESET_PWD,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.resetPassword(userEmail,password);
-        apiCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if(null != response.body()){
-                    User user = response.body();
-                    UISApplicationContext.getInstance().setUser(user);
-                    navigationService.finishAndNavigate();
-                    new ContextPreferenceManager().saveLoginDetails(user.getAccessToken(),user.getLoginType());
-                    return;
-                }
-                else
-                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                            loginSignupActivity.getResources().getString(R.string.loginfailed),Toast.LENGTH_LONG).show();
-                Log.w(TAG, String.valueOf(response.body()));
-            }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                        loginSignupActivity.getResources().getString(R.string.severconnectionfailed),Toast.LENGTH_LONG).show();
-                Log.w(TAG, String.valueOf(call));
-                Log.e(TAG,t.getMessage());
-            }
-        });
+        Call<AuthResponse> apiCall = apiSignatureService.resetPassword(useremail,password);
+        apiCall.enqueue(getCallBack(navigationService,"UIS",R.string.loginfailed,R.string.severconnectionfailed,false));
     }
 
     @Override
-    public void registerUser(String userName, final String userEmail, final String password, final String loginType,
+    public void registerUser(String username, final String useremail, final String password, final String regtype,
                              final NavigationService navigationService, final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.REGISTER_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.register(userName,userEmail,password,loginType);
-        apiCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-               if(null != response.body()){
-                    User user = response.body();
-                    UISApplicationContext.getInstance().setUser(user);
-                    navigationService.finishAndNavigate();
-                    new ContextPreferenceManager().saveLoginDetails(user.getAccessToken(),user.getLoginType());
-                    return;
-                }
-                else
-                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                            loginSignupActivity.getResources().getString(R.string.userregistraionFailed),Toast.LENGTH_LONG).show();
-                Log.w(TAG, String.valueOf(response.body()));
-            }
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                        loginSignupActivity.getResources().getString(R.string.severconnectionfailed),Toast.LENGTH_LONG).show();
-                Log.w(TAG, String.valueOf(call));
-                Log.e(TAG,t.getMessage());
-            }
-        });
-
+        Call<AuthResponse> apiCall = apiSignatureService.register(username,useremail,password,regtype);
+        apiCall.enqueue(getCallBack(navigationService,"UIS",R.string.userregistraionFailed,R.string.severconnectionfailed,true));
     }
 
 
@@ -158,5 +84,103 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUser(User user) {
 
+    }
+    @Override
+    public void logout(NavigationService navigationService) {
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.LOGOUT_URL,
+                new GsonBuilder().create());
+        apiSignatureService = retrofit.create(APISignatureService.class);
+        Call<String> apiCall = apiSignatureService.logout("Bearer "+ContextPreferenceManager.getToken());
+        apiCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(null != response.body() && response.body().equals("Success")) {
+                    ContextPreferenceManager.clearLoginInfo();
+                    navigationService.exitApp();
+                }
+                else
+                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                            UISApplicationContext.getInstance().getContext().getResources().getString(R.string.api_expectation_faied),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(response.body()));
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(R.string.api_failed),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        });
+    }
+
+    private void handleSuccessfulLogin(NavigationService navigationService,AuthResponse authResponse,String source,boolean isRegister)
+    {
+        UISApplicationContext.getInstance().setAuthResponse(authResponse);
+        ContextPreferenceManager.saveLoginDetails(authResponse.getToken(),source);
+        Log.w(TAG, String.valueOf(authResponse));
+        if(isRegister)pullmasterData();
+        navigationService.finishAndNavigate();
+    }
+    private Callback<AuthResponse> getCallBack(NavigationService navigationService,String source,int validationMsg,int failedMsg,boolean isRegister)
+    {
+        return new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if(null != response.body())
+                    handleSuccessfulLogin(navigationService,response.body(),source,isRegister);
+                else
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(validationMsg),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(response.body()));
+            }
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(failedMsg),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        };
+    }
+    private void pullmasterData()
+    {
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.MASTERS,
+                new GsonBuilder().create());
+        apiSignatureService = retrofit.create(APISignatureService.class);
+        Call<List<MasterValueDTO>> apiCall = apiSignatureService.masters("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken());
+        apiCall.enqueue(new Callback<List<MasterValueDTO>>() {
+            @Override
+            public void onResponse(Call<List<MasterValueDTO>> call, Response<List<MasterValueDTO>> response) {
+                if(null != response.body())
+                    saveToMasterEntity(response.body());
+                else
+                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                            "Master api failed",Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(response.body()));
+            }
+            @Override
+            public void onFailure(Call<List<MasterValueDTO>> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(1),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        });
+    }
+    private void saveToMasterEntity(List<MasterValueDTO> masterValueDTOList)
+    {
+        List<MasterData> masterDataList  = new ArrayList<>();
+        for(MasterValueDTO masterValueDTO :masterValueDTOList)
+        {
+            MasterData masterData = new MasterData();
+            masterData.setMasterdatadesc(masterValueDTO.getMasterdatadesc());
+            masterData.setMasterdataId(masterValueDTO.getMasterdataId());
+            masterData.setMasterdataType(masterValueDTO.getMasterdataType());
+            masterData.setMasterdataval(masterValueDTO.getMasterdataval());
+            masterData.setIsactive(masterValueDTO.getIsactive());
+            masterDataList.add(masterData);
+        }
+        MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
+        masterDAORepository.insert(masterDataList);
     }
 }

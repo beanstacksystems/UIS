@@ -3,6 +3,8 @@ package com.bss.uis.ui.navDrawer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -20,9 +22,13 @@ import androidx.navigation.ui.NavigationUI;
 import com.beanstack.showcase.MaterialShowcaseSequence;
 import com.beanstack.showcase.MaterialShowcaseView;
 import com.beanstack.showcase.ShowcaseConfig;
+import com.beanstack.utility.service.NavigationService;
+import com.beanstack.utility.service.impl.NavigationServiceImpl;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.model.User;
+import com.bss.uis.service.UserService;
+import com.bss.uis.service.impl.UserServiceImpl;
 import com.bss.uis.ui.registration.RegistrationActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -39,6 +45,8 @@ public class DrawerMainActivity extends AppCompatActivity {
     private UISApplicationContext uisContext;
     FloatingActionButton fab;
     Toolbar toolbar;
+    private UserService userService;
+    private NavigationService navigationService;
     private static final String SHOWCASE_ID = "DrawerMainActivity";
 
     @Override
@@ -69,6 +77,7 @@ public class DrawerMainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         presentShowcaseSequence();
+        updateUI();
     }
 
     @Override
@@ -88,10 +97,19 @@ public class DrawerMainActivity extends AppCompatActivity {
     {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View navHeaderView = navigationView.getHeaderView(0);
+        MenuItem logout = navigationView.getMenu().findItem(R.id.logout);
         naveHeaderdate = (TextView) navHeaderView.findViewById(R.id.naveHeaderdate);
         navHeaderPersonName =  (TextView)navHeaderView.findViewById(R.id.navHeaderPersonName);
         navHeaderPersonEmail = (TextView)navHeaderView.findViewById(R.id.navHeaderPersonEmail);
         navHeaderProfileImage =(ImageView)navHeaderView.findViewById(R.id.navHeaderProfileImage);
+        logout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                userService = new UserServiceImpl();
+                userService.logout(navigationService);
+                return false;
+            }
+        });
         navHeaderProfileImage.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -154,5 +172,7 @@ public class DrawerMainActivity extends AppCompatActivity {
         sequence.start();
 
     }
-
+    private void updateUI() {
+            navigationService = new NavigationServiceImpl(DrawerMainActivity.this, null);
+    }
 }
