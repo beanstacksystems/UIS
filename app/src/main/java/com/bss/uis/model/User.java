@@ -1,17 +1,21 @@
 package com.bss.uis.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 public class User implements Comparable<User>{
-    private String accessToken;
-    private String userEmail, userName;
-    private String userRole;
-    private String loginType;
+    private String salutation,useremail, username;
+    private int userid;
+    private String logintype;
     private String idUser;
-
+    private String gender;
+    private List<String> userrole;
+    private String imageurl;
+    public  int personid;
 
     @Override
     public int compareTo(User o) {

@@ -30,7 +30,7 @@ public class ContextPreferenceManager {
                         .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.apply();
+        editor.commit();
     }
     public static boolean isUserLogedOut() {
         SharedPreferences sharedPreferences = UISApplicationContext.getInstance().getContext()

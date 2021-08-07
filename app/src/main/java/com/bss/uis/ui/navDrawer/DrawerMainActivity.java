@@ -123,8 +123,8 @@ public class DrawerMainActivity extends AppCompatActivity {
         User user = uisContext.getUser();
         if(null == user)
             return;
-        navHeaderPersonName.setText(user.getUserName());
-        navHeaderPersonEmail.setText(user.getUserEmail());
+        navHeaderPersonName.setText(user.getUsername());
+        navHeaderPersonEmail.setText(user.getUseremail());
     }
 
     @Override
