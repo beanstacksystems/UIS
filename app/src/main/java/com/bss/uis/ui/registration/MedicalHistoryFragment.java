@@ -62,7 +62,7 @@ public class MedicalHistoryFragment extends BaseFragment {
 
     private void initView(View fragmentView) {
         cancerType = fragmentView.findViewById(R.id.cancerTypetxt);
-        otherdiseasetxt = fragmentView.findViewById(R.id.otherdiseasetxt);;
+        otherdiseasetxt = fragmentView.findViewById(R.id.otherdiseasetxt);
         cancerTypeInputLayout = fragmentView.findViewById(R.id.cancerTypetxtLayout);
         otherdiseasetxtInputLayout = fragmentView.findViewById(R.id.otherdiseasetxtLayout);
         cancerType.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
@@ -153,11 +153,9 @@ public class MedicalHistoryFragment extends BaseFragment {
             return false;
         }
 
-        if(null != bloodGrpInputLayout.getError()||null != cancerTypeInputLayout.getError()
-                ||null != otherdiseasetxtInputLayout.getError()
-                ||null != dateOfIdentificationInputLayout.getError())
-            return false;
-        return true;
+        return null == bloodGrpInputLayout.getError() && null == cancerTypeInputLayout.getError()
+                && null == otherdiseasetxtInputLayout.getError()
+                && null == dateOfIdentificationInputLayout.getError();
     }
     @Override
     public void updateDetails(PatientDetailData  patientDetailData) {

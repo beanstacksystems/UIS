@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface ApplicationDao {
     @Query("SELECT * FROM AppConfig")
-    public List<AppConfig> findAll();
+    List<AppConfig> findAll();
 
     @Transaction
     @Insert

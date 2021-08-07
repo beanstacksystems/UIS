@@ -90,7 +90,7 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
 
     }
     class CustomClickListener implements View.OnClickListener {
-        private Dialog dialog;
+        private final Dialog dialog;
         public CustomClickListener(Dialog dialog) {
             this.dialog= dialog;
         }

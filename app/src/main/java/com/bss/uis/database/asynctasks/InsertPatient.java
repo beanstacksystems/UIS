@@ -8,7 +8,7 @@ import com.bss.uis.database.entity.PatientImages;
 import com.bss.uis.database.relation.PatientDetailData;
 
 public class InsertPatient extends AsyncTask<PatientDetailData, Void, Void> {
-    private PatientDao patientDao;
+    private final PatientDao patientDao;
 
     public InsertPatient(PatientDao patientDao) {
         this.patientDao = patientDao;

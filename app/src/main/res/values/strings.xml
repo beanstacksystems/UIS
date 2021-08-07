@@ -5,15 +5,11 @@
     <string name="facebook_app_id">947730725995178</string>
     <string name="fb_login_protocol_scheme">fb947730725995178</string>
 
-    <string name="splashscreen">SplashScreen</string>
     <string name="title_activity_drawer_main">DrawerMainActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Unity is Strength Cancer Foundation</string>
     <string name="nav_header_name">Test</string>
     <string name="nav_header_email">a@b.cde</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_patient">Patients</string>
@@ -37,23 +33,16 @@
     <string name="occupation">Occupation</string>
     <string name="relationship">Relationship With Patient</string>
     <string name="email">Email</string>
-    <string name="male">Male</string>
     <string name="date_of_birth">Date of birth</string>
     <string name="panaadhar">Pan/Aadhar</string>
     <string name="medical_history">Medical history</string>
-    <string name="diease_name">Diease name</string>
-    <string name="Social_profiles">Social profiles</string>
     <string name="id_proof">ID-Proof</string>
-    <string name="medical_report">Medical Reports</string>
     <string name="attendant_details">Attendant Details</string>
     <!--    <string name="copyright">\u00A9 Beanstack Systems Pvt Ltd.</string>-->
     <!--    <string name="facebook_application_id">3323999927638523</string>-->
 
-    <string name="search_title">Search</string>
     <string name="shelter_home">Shelter Home</string>
     <string name="update">Update</string>
-    <string name="register">Register</string>
-    <string name="addAddress">Add Address</string>
     <string name="googleClientId">155649183928-evv6rhcnfccgah86h3kjj2osuokfj50q.apps.googleusercontent.com</string>
 
     <string name="biometric_title">Login</string>
@@ -69,7 +58,6 @@
 
     <string name="cancerFoundation">Cancer Foundation</string>
 
-    <string name="imgcapture">Capture/Upload image here.</string>
     <string name="done">Done</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="fragment_title">fragment_title</string>
@@ -79,8 +67,6 @@
     <string name="fragment_attendant_title">Attendant Details</string>
     <string name="profile_details">Profile Details</string>
     <string name="last_updated">Last Updated:</string>
-    <string name="edit"><u>Edit</u></string>
-    <string name="update_profile"><u>Update</u></string>
     <string name="wcstr">Welcome to UIS family</string>
 
     <string name="bloodGroup">Blood Group</string>
@@ -89,10 +75,7 @@
     <string name="otherdisease">Other disease</string>
     <string name="title_activity_login_signup">LoginSignupActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
     <string name="login">Login</string>
     <string name="signup">SignUp</string>
@@ -107,8 +90,6 @@
     <string name="loginfailed">Invalid Username and Password!</string>
     <string name="severconnectionfailed">Failed to Connect Server.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_user_profile">UserProfileActivity</string>
 
     <string name="api_failed">Failed to connect Server!</string>
     <string name="api_expectation_faied">User operation failed!</string>

@@ -11,8 +11,8 @@ import java.util.List;
 
 public class AutoCompleteTextValidtor implements AutoCompleteTextView.Validator, OnItemClickListener {
 
-    private List<String> listOptions;
-    private TextInputLayout textInputLayout;
+    private final List<String> listOptions;
+    private final TextInputLayout textInputLayout;
     public AutoCompleteTextValidtor(TextInputLayout textInputLayout,List<String> listOptions)
     {
         this.textInputLayout = textInputLayout;

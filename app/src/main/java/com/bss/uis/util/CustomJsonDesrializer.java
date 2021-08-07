@@ -10,8 +10,8 @@ import java.lang.reflect.Type;
 
 public class CustomJsonDesrializer<T> implements JsonDeserializer<T>
 {
-    private Class<T> mClass;
-    private String mKey;
+    private final Class<T> mClass;
+    private final String mKey;
     public CustomJsonDesrializer(Class<T> targetClass,String jsonKeyName) {
         mClass = targetClass;
         mKey = jsonKeyName;

@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 public class RetrieveAppConfig extends AsyncTask<Void, Void, List<AppConfig>> {
-    private ApplicationDao applicationDao;
+    private final ApplicationDao applicationDao;
     List<AppConfig> appConfigList;
     AsynResponse asynResponse = null;
     public interface AsynResponse {

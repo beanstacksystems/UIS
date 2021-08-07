@@ -6,7 +6,7 @@ import com.bss.uis.database.dao.ApplicationDao;
 import com.bss.uis.database.entity.AppConfig;
 
 public class InsertAppConfig extends AsyncTask<AppConfig, Void, Void> {
-    private ApplicationDao applicationDao;
+    private final ApplicationDao applicationDao;
 
     public InsertAppConfig(ApplicationDao applicationDao) {
         this.applicationDao = applicationDao;

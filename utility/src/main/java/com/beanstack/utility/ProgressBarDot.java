@@ -27,10 +27,10 @@ public class ProgressBarDot extends View {
     private int mActiveDotIndex;
 
     private int mNumberOfDots;
-    private Paint mPaint;
+    private final Paint mPaint;
     private int mPaddingLeft;
-    private Handler mHandler;
-    private Runnable mRunnable = new Runnable() {
+    private final Handler mHandler;
+    private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
             if (mNumberOfDots != 0)

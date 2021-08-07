@@ -11,7 +11,7 @@ public enum PaymentApps {
     PAYTM(Package.PAYTM),
     PHONE_PE(Package.PHONE_PE);
 
-    private String mPackageName;
+    private final String mPackageName;
 
     PaymentApps(String mPackageName) {
         this.mPackageName = mPackageName;

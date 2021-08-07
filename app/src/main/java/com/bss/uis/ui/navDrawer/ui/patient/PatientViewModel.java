@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class PatientViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public PatientViewModel() {
         mText = new MutableLiveData<>();

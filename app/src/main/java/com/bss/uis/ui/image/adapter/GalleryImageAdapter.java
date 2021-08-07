@@ -19,8 +19,8 @@ import java.util.ArrayList;
 
 public class GalleryImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private Context context;
-    private ArrayList<ImageModel> imageList;
+    private final Context context;
+    private final ArrayList<ImageModel> imageList;
     private static OnItemClickListener onItemClickListener;
     private final static int IMAGE_LIST = 0;
     private final static int IMAGE_PICKER = 1;
@@ -32,7 +32,7 @@ public class GalleryImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public  RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == IMAGE_LIST) {;
+        if (viewType == IMAGE_LIST) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_image_list, parent, false);
             return new ImageListViewHolder(view);
         } else {
@@ -50,7 +50,7 @@ public class GalleryImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public  void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        if (holder.getItemViewType() == IMAGE_LIST) {;
+        if (holder.getItemViewType() == IMAGE_LIST) {
             final ImageListViewHolder viewHolder = (ImageListViewHolder) holder;
             Glide.with(context)
                     .load(imageList.get(position).getImage())
@@ -59,12 +59,8 @@ public class GalleryImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(viewHolder.image);
 
-            if (imageList.get(position).isSelected()) {;
-                viewHolder.checkBox.setChecked(true);
-            } else {;
-                viewHolder.checkBox.setChecked(false);
-            }
-        } else {;
+            viewHolder.checkBox.setChecked(imageList.get(position).isSelected());
+        } else {
             ImagePickerViewHolder viewHolder = (ImagePickerViewHolder) holder;
             viewHolder.image.setImageResource(imageList.get(position).getResImg());
             viewHolder.title.setText(imageList.get(position).getTitle());
@@ -111,7 +107,7 @@ public class GalleryImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+        GalleryImageAdapter.onItemClickListener = onItemClickListener;
     }
 
     public interface OnItemClickListener {

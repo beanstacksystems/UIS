@@ -50,7 +50,7 @@ public class DynamicTabFragment extends Fragment {
         tabDesc.setText(tabDescription);
         tabBody = (LinearLayout) root.findViewById(R.id.tabBody);
         if(isCustomLayoutNeeded){
-            LinearLayout linearLayout = (LinearLayout) root.inflate(getActivity(),customLayoutId, null);
+            LinearLayout linearLayout = (LinearLayout) View.inflate(getActivity(),customLayoutId, null);
             tabBody.addView(linearLayout);
         }
         return root;

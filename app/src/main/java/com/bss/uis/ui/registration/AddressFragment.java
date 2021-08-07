@@ -55,13 +55,15 @@ public class AddressFragment extends BaseFragment {
     }
 
     @Override
-    public void onFragmentHide(){};
+    public void onFragmentHide(){}
+
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     public void onFragmentVisible(){
         if(pin.getVisibility()==View.VISIBLE && pin.getText().toString().isEmpty())
             createPinPopup();
-    };
+    }
+
     @Override
     public String getFragmentTitle() {
         return fragmentTitle;
@@ -83,11 +85,9 @@ public class AddressFragment extends BaseFragment {
             return false;
         }
 
-        if(null != streetInputLayout.getError()||null != cityInputLayout.getError()
-                ||null != distInputLayout.getError()
-                ||null != stateInputLayout.getError()||null != pinLayout.getError())
-            return false;
-        return true;
+        return null == streetInputLayout.getError() && null == cityInputLayout.getError()
+                && null == distInputLayout.getError()
+                && null == stateInputLayout.getError() && null == pinLayout.getError();
     }
 
     @Override

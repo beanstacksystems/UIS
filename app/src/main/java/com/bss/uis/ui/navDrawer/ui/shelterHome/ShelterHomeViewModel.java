@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class ShelterHomeViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public ShelterHomeViewModel() {
         mText = new MutableLiveData<>();

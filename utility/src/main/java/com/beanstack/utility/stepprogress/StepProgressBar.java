@@ -33,7 +33,7 @@ public class StepProgressBar extends View {
 
     public enum StateNumber {
         ONE(1), TWO(2), THREE(3), FOUR(4), FIVE(5);
-        private int value;
+        private final int value;
 
         StateNumber(int value) {
             this.value = value;
@@ -1236,15 +1236,10 @@ public class StepProgressBar extends View {
 
     private boolean checkStateCompleted(int currentState, int statePosition, boolean checkStateCompleted) {
         if (!mIsStateNumberDescending) {
-            if ((mEnableAllStatesCompleted && checkStateCompleted) || (statePosition + 1 < currentState && checkStateCompleted)) {
-                return true;
-            }
+            return (mEnableAllStatesCompleted && checkStateCompleted) || (statePosition + 1 < currentState && checkStateCompleted);
         } else {
-            if ((mEnableAllStatesCompleted && checkStateCompleted) || (statePosition + 1 > currentState + 1 && checkStateCompleted)) {
-                return true;
-            }
+            return (mEnableAllStatesCompleted && checkStateCompleted) || (statePosition + 1 > currentState + 1 && checkStateCompleted);
         }
-        return false;
     }
 
 
@@ -1272,7 +1267,7 @@ public class StepProgressBar extends View {
 
 
     private class Animator implements Runnable {
-        private Scroller mScroller;
+        private final Scroller mScroller;
         private boolean mRestartAnimation = false;
 
         public Animator() {

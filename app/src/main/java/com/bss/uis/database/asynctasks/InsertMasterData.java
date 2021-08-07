@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 
 public class InsertMasterData extends AsyncTask<MasterData, Void, Void> {
-    private MasterDAO masterDao;
+    private final MasterDAO masterDao;
 
     public InsertMasterData(MasterDAO masterDao) {
         this.masterDao = masterDao;

@@ -8,10 +8,6 @@
 
     </style>
 
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowBackground">@drawable/shape_layout_white</item>
-    </style>
-
 
     <style name="TextInputStyleBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_width">match_parent</item>
@@ -24,23 +20,6 @@
         <item name="android:paddingEnd">10dp</item>
         <item name="android:gravity">fill</item>
     </style>
-    <style name="alertBoxTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:headerDividersEnabled">true</item>
-        <item name="android:typeface">normal</item>
-        <item name="android:background">@drawable/bg_alert_dialog</item>
-    </style>
-
-    <style name="ErrorTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@android:color/holo_orange_dark</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold|italic</item>
-    </style>
-
-    <style name="HelperTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@android:color/holo_green_dark</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold|italic</item>
-    </style>
 
     <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/white</item>
@@ -49,11 +28,7 @@
         <item name="android:textColorHint">@color/white</item>
         <item name="android:layout_margin">5dp</item>
     </style>
-    <style name="hint_Style">
-        <item name="android:textColor">@color/uisBlue</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:gravity">center</item>
-    </style>
+
     <style name="FooterBar">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">40dp</item>

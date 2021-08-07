@@ -8,16 +8,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TransactionDetails {
-    private String transactionId;
-    private String responseCode;
-    private String approvalRefNo;
-    private String status;
-    private String transactionRefId;
-    private String amount;
-    private String name;
-    private String currency;
-    private String description;
-    private String recieverUpiId;
+    private final String transactionId;
+    private final String responseCode;
+    private final String approvalRefNo;
+    private final String status;
+    private final String transactionRefId;
+    private final String amount;
+    private final String name;
+    private final String currency;
+    private final String description;
+    private final String recieverUpiId;
 
 
     public TransactionDetails(

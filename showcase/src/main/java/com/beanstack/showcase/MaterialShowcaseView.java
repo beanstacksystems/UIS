@@ -73,7 +73,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     private boolean mRenderOverNav = false;
     private int mMaskColour;
     private IAnimationFactory mAnimationFactory;
-    private boolean mShouldAnimate = true;
+    private final boolean mShouldAnimate = true;
     private boolean mUseFadeAnimation = false;
     private long mFadeDurationInMillis = DEFAULT_FADE_TIME;
     private Handler mHandler;

@@ -5,11 +5,11 @@ import android.content.Context;
 import androidx.room.Room;
 
 public class UISDataBaseClient {
-    private Context context;
+    private final Context context;
     private static UISDataBaseClient uisDataBaseClient;
 
     //our app database object
-    private UISDatabase uisDatabase;
+    private final UISDatabase uisDatabase;
 
     private UISDataBaseClient(Context mCtx) {
         this.context = mCtx;

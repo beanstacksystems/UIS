@@ -9,7 +9,7 @@ import com.bss.uis.database.entity.MasterData;
 import java.util.List;
 
 public class MasterDAORepository {
-    private MasterDAO masterDAO;
+    private final MasterDAO masterDAO;
     public MasterDAORepository(UISApplicationContext context) {
         UISDatabase database = UISDataBaseClient.getInstance(context).getUisDatabase();
         masterDAO = database.masterDAO();

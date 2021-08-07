@@ -37,6 +37,7 @@ public abstract class BaseFragment extends Fragment {
     public abstract String getFragmentTitle();
     public abstract boolean isValidDetails();
     public abstract void updateDetails(PatientDetailData patientDetailData);
-    public void onFragmentVisible(){};
-    public void onFragmentHide(){};
+    public void onFragmentVisible(){}
+
+    public void onFragmentHide(){}
 }

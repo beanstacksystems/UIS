@@ -11,19 +11,10 @@
     </style>
 
 
-    <style name="ThemeOverlay.UIS.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/uisViolet</item>
-        <item name="fullscreenTextColor">@color/uisRed</item>
-    </style>
-
     <style name="Theme.UIS.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
-    <style name="Theme.UIS.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.UIS.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>

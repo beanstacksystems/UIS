@@ -35,7 +35,7 @@ public class ShowcaseTooltip {
 
     private View rootView;
     private View view;
-    private TooltipView tooltip_view;
+    private final TooltipView tooltip_view;
 
 
     private ShowcaseTooltip(Context context) {

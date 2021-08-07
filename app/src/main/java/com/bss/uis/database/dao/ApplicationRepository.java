@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ApplicationRepository {
-    private ApplicationDao applicationDao;
+    private final ApplicationDao applicationDao;
     public ApplicationRepository(UISApplicationContext context) {
         UISDatabase database = UISDataBaseClient.getInstance(context.getContext()).getUisDatabase();
         applicationDao = database.applicationDao();

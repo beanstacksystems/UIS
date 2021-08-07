@@ -4,7 +4,7 @@ package com.beanstack.utility.stepprogress.components;
 
 public class StateItemNumber extends BaseItem {
 
-    private int number;
+    private final int number;
 
     // private Typeface typeface;
 

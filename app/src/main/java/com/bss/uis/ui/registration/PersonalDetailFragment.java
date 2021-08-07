@@ -208,11 +208,9 @@ public class PersonalDetailFragment extends BaseFragment{
             return false;
         }
 
-        if(null != nameInputLayout.getError()||null != eMailInputLayout.getError()
-                ||null != contactInputLayout.getError()
-                ||null != dobInputLayout.getError()||null != genderLayout.getError())
-            return false;
-        return true;
+        return null == nameInputLayout.getError() && null == eMailInputLayout.getError()
+                && null == contactInputLayout.getError()
+                && null == dobInputLayout.getError() && null == genderLayout.getError();
     }
 
     @Override

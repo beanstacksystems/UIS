@@ -121,7 +121,8 @@ public class AttendantFragment extends BaseFragment {
         return attview;
     }
     @Override
-    public void onFragmentHide(){};
+    public void onFragmentHide(){}
+
     @RequiresApi(api = VERSION_CODES.M)
     @Override
     public void onFragmentVisible(){
@@ -132,7 +133,8 @@ public class AttendantFragment extends BaseFragment {
             }
             isTabContentInitialized = true;
         }
-    };
+    }
+
     private void initTabView(Fragment dynamicTabFragment, int index)
     {
         View tabview = dynamicTabFragment.getView();

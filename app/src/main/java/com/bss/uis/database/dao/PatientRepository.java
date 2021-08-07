@@ -9,7 +9,7 @@ import com.bss.uis.database.relation.PatientDetailData;
 
 
 public class PatientRepository {
-    private PatientDao patientDao;
+    private final PatientDao patientDao;
     public PatientRepository(UISApplicationContext context) {
         UISDatabase database = UISDataBaseClient.getInstance(context).getUisDatabase();
         patientDao = database.patientDao();

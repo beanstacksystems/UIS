@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 public class NotificationModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final MutableLiveData<String> mText;
 
     public NotificationModel() {
         mText = new MutableLiveData<>();

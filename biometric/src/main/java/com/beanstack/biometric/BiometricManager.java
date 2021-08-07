@@ -14,11 +14,11 @@ import androidx.annotation.RequiresApi;
 public class BiometricManager extends BiometricAuthenticateManager {
 
     protected CancellationSignal mCancellationSignal = new CancellationSignal();
-    private String title;
-    private String subtitle;
-    private String description;
-    private String negativeButtonText;
-    private Context context;
+    private final String title;
+    private final String subtitle;
+    private final String description;
+    private final String negativeButtonText;
+    private final Context context;
 
     protected BiometricManager(final BiometricBuilder biometricBuilder) {
         this.context = biometricBuilder.context;
@@ -113,7 +113,7 @@ public class BiometricManager extends BiometricAuthenticateManager {
         private String description;
         private String negativeButtonText;
 
-        private Context context;
+        private final Context context;
 
         public BiometricBuilder(Context context) {
             this.context = context;

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ScrollImageAdapter extends PagerAdapter {
     Context mContext;
-    private List<String> imageList;
+    private final List<String> imageList;
     public ScrollImageAdapter(Context context, List<String> imageList) {
         this.mContext = context;
         this.imageList = imageList;

@@ -17,9 +17,9 @@ import java.util.Map;
 
 public final class UpiPayment {
     public static final String TAG = UpiPayment.class.getSimpleName();
-    private Activity mActivity;
-    private Payment mPayment;
-    private Singleton singleton;
+    private final Activity mActivity;
+    private final Payment mPayment;
+    private final Singleton singleton;
 
     private UpiPayment(@NonNull final Activity mActivity, @NonNull Payment mPayment) {
         this.mActivity = mActivity;

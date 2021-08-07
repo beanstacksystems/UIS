@@ -8,8 +8,8 @@ import com.beanstack.utility.service.NavigationService;
 
 
 public class NavigationServiceImpl implements NavigationService {
-    private AppCompatActivity appCompatActivity;
-    private Class clasz;
+    private final AppCompatActivity appCompatActivity;
+    private final Class clasz;
 
     public NavigationServiceImpl(AppCompatActivity appCompatActivity, Class clasz) {
         this.appCompatActivity = appCompatActivity;
