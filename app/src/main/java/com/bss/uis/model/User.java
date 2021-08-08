@@ -11,9 +11,8 @@ public class User implements Comparable<User>{
     private String salutation,useremail, username;
     private int userid;
     private String logintype;
-    private String idUser;
     private String gender;
-    private List<String> userrole;
+    private List<UserRole> userrole;
     private String imageurl;
     public  int personid;
 

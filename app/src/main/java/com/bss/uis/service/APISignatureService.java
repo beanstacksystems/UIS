@@ -3,6 +3,8 @@ package com.bss.uis.service;
 import com.bss.uis.model.AddressDTO;
 import com.bss.uis.model.AuthResponse;
 import com.bss.uis.model.MasterValueDTO;
+import com.bss.uis.model.User;
+import com.bss.uis.model.UserRightDTO;
 
 import java.util.List;
 
@@ -32,6 +34,11 @@ public interface APISignatureService {
 
     @POST(".")
     Call<List<MasterValueDTO>> masters(@Header("Authorization")String token);
+    @POST(".")
+    Call<User> user(@Header("Authorization")String token);
+    @FormUrlEncoded
+    @POST(".")
+    Call<List<UserRightDTO>> userrights(@Header("Authorization")String token, @Field("roleidlist[]")List<Integer> roleidlist);
 
     @POST(".")
     Call<String> logout(@Header("Authorization")String token);

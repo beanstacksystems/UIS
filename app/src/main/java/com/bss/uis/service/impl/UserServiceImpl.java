@@ -9,10 +9,14 @@ import com.bss.uis.constant.APIConstant;
 import com.bss.uis.context.ContextPreferenceManager;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.dao.MasterDAORepository;
+import com.bss.uis.database.dao.UserDAORepository;
 import com.bss.uis.database.entity.MasterData;
+import com.bss.uis.database.entity.UserRightData;
 import com.bss.uis.model.AuthResponse;
 import com.bss.uis.model.MasterValueDTO;
 import com.bss.uis.model.User;
+import com.bss.uis.model.UserRightDTO;
+import com.bss.uis.model.UserRole;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.service.AuthService;
 import com.bss.uis.service.UserService;
@@ -119,6 +123,7 @@ public class UserServiceImpl implements UserService {
         ContextPreferenceManager.saveLoginDetails(authResponse.getToken(),source);
         Log.w(TAG, String.valueOf(authResponse));
         if(isRegister)pullmasterData();
+        pullUserData();
         navigationService.finishAndNavigate();
     }
     private Callback<AuthResponse> getCallBack(NavigationService navigationService,String source,int validationMsg,int failedMsg,boolean isRegister)
@@ -182,5 +187,82 @@ public class UserServiceImpl implements UserService {
         }
         MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
         masterDAORepository.insert(masterDataList);
+    }
+    private void pullUserData()
+    {
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.USER,
+                new GsonBuilder().create());
+        apiSignatureService = retrofit.create(APISignatureService.class);
+        Call<User> apiCall = apiSignatureService.user("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken());
+        apiCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(null != response.body()) {
+                    UISApplicationContext.getInstance().setUser(response.body());
+                    for(UserRole userRole : UISApplicationContext.getInstance().getUser().getUserrole()) {
+                        if(userRole.getIsdefaultrole().equals("Y"))
+                            UISApplicationContext.getInstance().setUserLoginRole(userRole.getUserroleid());
+                    }
+                    pullUserRights();
+                }
+                else
+                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                            "User api failed",Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(response.body()));
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        "Api Failed.",Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        });
+    }
+    private void pullUserRights()
+    {
+        List<UserRole> rolelist = UISApplicationContext.getInstance().getUser().getUserrole();
+        List<Integer> roleids = new ArrayList<>();
+        for (UserRole userRole:rolelist) {
+            roleids.add(userRole.getUserroleid());
+        }
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.USERRIGHTS,
+                new GsonBuilder().create());
+        apiSignatureService = retrofit.create(APISignatureService.class);
+        Call<List<UserRightDTO>> apiCall = apiSignatureService.userrights("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken(),roleids);
+        apiCall.enqueue(new Callback<List<UserRightDTO>>() {
+            @Override
+            public void onResponse(Call<List<UserRightDTO>> call, Response<List<UserRightDTO>> response) {
+                if(null != response.body())
+                    saveUserRights(response.body());
+                else
+                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                            "User api failed",Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(response.body()));
+            }
+            @Override
+            public void onFailure(Call<List<UserRightDTO>> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(1),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        });
+    }
+    private void saveUserRights(List<UserRightDTO> userRightDTOList)
+    {
+        List<UserRightData> userRightDataList  = new ArrayList<>();
+        for(UserRightDTO userRightDTO :userRightDTOList)
+        {
+            UserRightData userRightData = new UserRightData();
+            userRightData.setUserRightId(userRightDTO.getRightid());
+            userRightData.setUserRoleId(userRightDTO.getRoleid());
+            userRightData.setDesc(userRightDTO.getRightdesc());
+            userRightData.setUserRightType(userRightDTO.getRighttype());
+            userRightDataList.add(userRightData);
+        }
+        UISApplicationContext.getInstance().setUserRightDataList(userRightDataList);
+        UserDAORepository userDAORepository = new UserDAORepository(UISApplicationContext.getInstance());
+        userDAORepository.insert(userRightDataList);
     }
 }

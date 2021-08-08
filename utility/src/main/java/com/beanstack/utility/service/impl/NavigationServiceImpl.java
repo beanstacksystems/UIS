@@ -34,7 +34,7 @@ public class NavigationServiceImpl implements NavigationService {
     }
 
     @Override
-    public void buttonAction() {
+    public void buttonAction(String text) {
 
     }
 }

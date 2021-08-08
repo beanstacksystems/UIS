@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class ContextPreferenceManager {
 
@@ -29,6 +31,11 @@ public class ContextPreferenceManager {
                 UISApplicationContext.getInstance().getContext()
                         .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
+        String logintype = sharedPreferences.getString("logintype", "");
+        if(logintype.equals("facebook"))
+            LoginManager.getInstance().logOut();
+        if(logintype.equals("google"))
+            GoogleSignIn.getClient(UISApplicationContext.getInstance().getContext(), GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
         editor.clear();
         editor.commit();
     }

@@ -50,21 +50,28 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
         setCanceledOnTouchOutside(false);
         this.setContentView(dialogView);
     }
-    public Dialog getDialog(int dlgtype,String dialogTitle,String dialogContent)
+    public Dialog getDialog(int dlgtype,String dialogTitle,String dialogContent,boolean headerReq)
     {
         Button okButton = dialogView.findViewById(R.id.dlg_buttonOk);
         Button caButton = dialogView.findViewById(R.id.dlg_buttoncancel);
+        okButton.setOnClickListener(new CustomClickListener(this));
+        TextView titleText = dialogView.findViewById(R.id.dlg_title);
+        RelativeLayout relativeLayout = dialogView.findViewById(R.id.dlg_head);
+        if(dlgtype==MESSAGE_DLG)
+        {
+            titleText.setText(dialogTitle);
+            caButton.setOnClickListener(new CustomClickListener(this));
+        }
         if(dlgtype==ERROR_DLG)
         {
-            RelativeLayout relativeLayout = dialogView.findViewById(R.id.dlg_head);
             relativeLayout.setBackgroundResource(R.color.red);
-            TextView titleText = dialogView.findViewById(R.id.dlg_title);
             titleText.setText(dialogTitle);
             caButton.setVisibility(View.INVISIBLE);
-            okButton.setOnClickListener(new CustomClickListener(this));
             ImageView headimg = dialogView.findViewById(R.id.dlg_head_icon);
             headimg.setBackgroundResource(R.drawable.ic_cross_svg);
         }
+        if(!headerReq)
+            relativeLayout.setVisibility(View.GONE);
         TextView dlgMsgTxt = dialogView.findViewById(R.id.dlg_msg_txt);
         dlgMsgTxt.setText(dialogContent);
         return this;
@@ -98,7 +105,7 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
         public void onClick(View v) {
             dialog.dismiss();
             if(null != navigationService)
-                navigationService.buttonAction();
+                navigationService.buttonAction(((Button)v).getText().toString());
         }
     }
 }

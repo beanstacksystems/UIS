@@ -4,5 +4,5 @@ public interface NavigationService {
     void finishAndNavigate();
     void navigate();
     void exitApp();
-    void buttonAction();
+    void buttonAction(String text);
 }

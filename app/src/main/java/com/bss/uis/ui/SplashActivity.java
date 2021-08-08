@@ -95,14 +95,12 @@ public class SplashActivity extends AppCompatActivity {
                 {
                     new AppAlertDialog(SplashActivity.this,new NavigationServiceImpl(null,null){
                         @Override
-                        public void buttonAction() {
-                            super.buttonAction();
+                        public void buttonAction(String text) {
+                            super.buttonAction(text);
                             SplashActivity.this.finishAffinity();
                             System.exit(0);
                         }
-                    })
-                            .getDialog(0,"Sorry!!!","Data connectivity not available.")
-                            .show();
+                    }).getDialog(0,"Sorry!!!","Data connectivity not available.",true).show();
                     return;
                 }
                 navigationService.finishAndNavigate();

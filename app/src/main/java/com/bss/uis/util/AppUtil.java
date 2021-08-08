@@ -14,6 +14,7 @@ import android.util.Base64;
 import androidx.annotation.RequiresApi;
 
 import com.bss.uis.database.entity.PatientImages;
+import com.bss.uis.database.entity.UserRightData;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -111,5 +112,12 @@ public class AppUtil {
 
     public static void getNoticeDialog(String contentText, String confirmText, Context context) {
     }
-
+    public static boolean isHavingRight(List<UserRightData> userRightDataList,int roleid,String userright)
+    {
+        for(UserRightData userRightData:userRightDataList) {
+            if(userRightData.getUserRoleId()==roleid)
+                return userright.equals(userRightData.getUserRightType());
+        }
+        return false;
+    }
 }
