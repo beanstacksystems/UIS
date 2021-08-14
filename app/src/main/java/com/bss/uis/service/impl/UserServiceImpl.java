@@ -123,8 +123,7 @@ public class UserServiceImpl implements UserService {
         ContextPreferenceManager.saveLoginDetails(authResponse.getToken(),source);
         Log.w(TAG, String.valueOf(authResponse));
         if(isRegister)pullmasterData();
-        pullUserData();
-        navigationService.finishAndNavigate();
+        pullUserData(navigationService);
     }
     private Callback<AuthResponse> getCallBack(NavigationService navigationService,String source,int validationMsg,int failedMsg,boolean isRegister)
     {
@@ -133,13 +132,18 @@ public class UserServiceImpl implements UserService {
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if(null != response.body())
                     handleSuccessfulLogin(navigationService,response.body(),source,isRegister);
-                else
-                Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                        UISApplicationContext.getInstance().getContext().getResources().getString(validationMsg),Toast.LENGTH_LONG).show();
+                else{
+                    ContextPreferenceManager.clearSocialLogin(source);
+                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                            UISApplicationContext.getInstance().
+                                    getContext().getResources().getString(validationMsg),Toast.LENGTH_LONG).show();
+                }
+
                 Log.w(TAG, String.valueOf(response.body()));
             }
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+                ContextPreferenceManager.clearSocialLogin(source);
                 Toast.makeText(UISApplicationContext.getInstance().getContext(),
                         UISApplicationContext.getInstance().getContext().getResources().getString(failedMsg),Toast.LENGTH_LONG).show();
                 Log.w(TAG, String.valueOf(call));
@@ -186,9 +190,10 @@ public class UserServiceImpl implements UserService {
             masterDataList.add(masterData);
         }
         MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
+        masterDAORepository.deleteMaster();
         masterDAORepository.insert(masterDataList);
     }
-    private void pullUserData()
+    private void pullUserData(NavigationService navigationService)
     {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.USER,
                 new GsonBuilder().create());
@@ -203,7 +208,7 @@ public class UserServiceImpl implements UserService {
                         if(userRole.getIsdefaultrole().equals("Y"))
                             UISApplicationContext.getInstance().setUserLoginRole(userRole.getUserroleid());
                     }
-                    pullUserRights();
+                    pullUserRights(navigationService);
                 }
                 else
                     Toast.makeText(UISApplicationContext.getInstance().getContext(),
@@ -219,7 +224,7 @@ public class UserServiceImpl implements UserService {
             }
         });
     }
-    private void pullUserRights()
+    private void pullUserRights(NavigationService navigationService)
     {
         List<UserRole> rolelist = UISApplicationContext.getInstance().getUser().getUserrole();
         List<Integer> roleids = new ArrayList<>();
@@ -234,7 +239,7 @@ public class UserServiceImpl implements UserService {
             @Override
             public void onResponse(Call<List<UserRightDTO>> call, Response<List<UserRightDTO>> response) {
                 if(null != response.body())
-                    saveUserRights(response.body());
+                    saveUserRights(response.body(),navigationService);
                 else
                     Toast.makeText(UISApplicationContext.getInstance().getContext(),
                             "User api failed",Toast.LENGTH_LONG).show();
@@ -249,7 +254,7 @@ public class UserServiceImpl implements UserService {
             }
         });
     }
-    private void saveUserRights(List<UserRightDTO> userRightDTOList)
+    private void saveUserRights(List<UserRightDTO> userRightDTOList,NavigationService navigationService)
     {
         List<UserRightData> userRightDataList  = new ArrayList<>();
         for(UserRightDTO userRightDTO :userRightDTOList)
@@ -264,5 +269,6 @@ public class UserServiceImpl implements UserService {
         UISApplicationContext.getInstance().setUserRightDataList(userRightDataList);
         UserDAORepository userDAORepository = new UserDAORepository(UISApplicationContext.getInstance());
         userDAORepository.insert(userRightDataList);
+        navigationService.finishAndNavigate();
     }
 }

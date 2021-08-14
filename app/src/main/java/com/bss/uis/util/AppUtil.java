@@ -13,6 +13,9 @@ import android.util.Base64;
 
 import androidx.annotation.RequiresApi;
 
+import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.database.dao.MasterDAORepository;
+import com.bss.uis.database.entity.MasterData;
 import com.bss.uis.database.entity.PatientImages;
 import com.bss.uis.database.entity.UserRightData;
 
@@ -115,9 +118,18 @@ public class AppUtil {
     public static boolean isHavingRight(List<UserRightData> userRightDataList,int roleid,String userright)
     {
         for(UserRightData userRightData:userRightDataList) {
-            if(userRightData.getUserRoleId()==roleid)
-                return userright.equals(userRightData.getUserRightType());
+            if(userRightData.getUserRoleId()==roleid &&
+                    userright.equals(userRightData.getUserRightType()))
+                return true;
         }
         return false;
+    }
+    public static ArrayList<String> getMasterByType(String masterType)
+    {
+        ArrayList<String> masterTypeList = new ArrayList<>();
+        MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
+        for( MasterData masterData :masterDAORepository.getMasterByType(masterType))
+            masterTypeList.add(masterData.getMasterdataval());
+        return masterTypeList;
     }
 }

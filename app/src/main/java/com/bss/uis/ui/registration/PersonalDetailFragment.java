@@ -175,10 +175,7 @@ public class PersonalDetailFragment extends BaseFragment{
     {
         genderLayout = fragmentView.findViewById(R.id.spinner_gender_layout);
         gender = fragmentView.findViewById(R.id.spinner_gender);
-        ArrayList<String> genderValue = new ArrayList<>();
-        genderValue.add("Female");
-        genderValue.add("Male");
-        genderValue.add("ThirdGender");
+        ArrayList<String> genderValue = AppUtil.getMasterByType("gender");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, genderValue);
         gender.setAdapter(adapter);
         gender.setValidator(new AutoCompleteTextValidtor(genderLayout,genderValue));

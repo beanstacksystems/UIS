@@ -19,6 +19,7 @@ import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.entity.MedicalHistory;
 import com.bss.uis.database.relation.PatientDetailData;
 import com.bss.uis.ui.UIUtil;
+import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -130,10 +131,7 @@ public class MedicalHistoryFragment extends BaseFragment {
     {
         bloodGrp = fragmentView.findViewById(R.id.blood_group);
         bloodGrpInputLayout = fragmentView.findViewById(R.id.spinner_blood_group);
-        ArrayList<String> bloodGroups = new ArrayList<>();
-        bloodGroups.add("O+ve");
-        bloodGroups.add("A+ve");
-        bloodGroups.add("B+ve");
+        ArrayList<String> bloodGroups = AppUtil.getMasterByType("bloodGrp");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, bloodGroups);
         bloodGrp.setAdapter(adapter);
         bloodGrp.setValidator(new AutoCompleteTextValidtor(bloodGrpInputLayout,bloodGroups));

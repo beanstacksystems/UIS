@@ -32,10 +32,7 @@ public class ContextPreferenceManager {
                         .getSharedPreferences("logindetails", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String logintype = sharedPreferences.getString("logintype", "");
-        if(logintype.equals("facebook"))
-            LoginManager.getInstance().logOut();
-        if(logintype.equals("google"))
-            GoogleSignIn.getClient(UISApplicationContext.getInstance().getContext(), GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
+        clearSocialLogin(logintype);
         editor.clear();
         editor.commit();
     }
@@ -49,5 +46,12 @@ public class ContextPreferenceManager {
         if(logintype.equals("google"))
             return (null != GoogleSignIn.getLastSignedInAccount(UISApplicationContext.getInstance().getContext()));
         return isTokenEmpty;
+    }
+    public static void clearSocialLogin(String logintype)
+    {
+        if(logintype.equals("facebook"))
+            LoginManager.getInstance().logOut();
+        if(logintype.equals("google"))
+            GoogleSignIn.getClient(UISApplicationContext.getInstance().getContext(), GoogleSignInOptions.DEFAULT_SIGN_IN).signOut();
     }
 }

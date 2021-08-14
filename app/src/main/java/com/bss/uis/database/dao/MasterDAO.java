@@ -20,4 +20,7 @@ public interface MasterDAO {
     @Transaction
     @Insert
     void insertMasterData(List<MasterData> masterDataList);
+
+    @Query("DELETE FROM MasterData")
+    void delete();
 }

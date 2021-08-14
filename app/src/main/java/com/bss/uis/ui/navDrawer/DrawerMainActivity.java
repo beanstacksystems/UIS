@@ -1,6 +1,8 @@
 package com.bss.uis.ui.navDrawer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,8 +39,11 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Executors;
 
 public class DrawerMainActivity extends AppCompatActivity {
 
@@ -126,11 +131,18 @@ public class DrawerMainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        Glide.with(DrawerMainActivity.this)
-                .load(uisContext.getUser().getImageurl())
-                .placeholder(R.color.codeGray)
-                .centerCrop()
-                .into(navHeaderProfileImage);
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL imageURL = new URL(uisContext.getUser().getImageurl());
+                    Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                    navHeaderProfileImage.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         navHeaderProfileImage.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View v) {
