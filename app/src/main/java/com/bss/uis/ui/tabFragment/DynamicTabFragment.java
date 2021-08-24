@@ -17,18 +17,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DynamicTabFragment extends Fragment {
-    private String tabTitle,tabTable,tabDescription;
+    private String tabTitle,tabData,tabDescription;
     private LinearLayout tabBody;
     private boolean isCustomLayoutNeeded;
     private int customLayoutId;
     public DynamicTabFragment() {
     }
 
-    public static DynamicTabFragment newInstance(String tabTitle, String tabTable,
+    public static DynamicTabFragment newInstance(String tabTitle, String tabData,
                                                  String tabDescription,boolean isCustomLayoutNeeded,int customLayoutId) {
         DynamicTabFragment fragment = new DynamicTabFragment();
         fragment.setTabTitle(tabTitle);
-        fragment.setTabTable(tabTable);
+        fragment.setTabData(tabData);
         fragment.setTabDescription(tabDescription);
         fragment.setCustomLayoutNeeded(isCustomLayoutNeeded);
         fragment.setCustomLayoutId(customLayoutId);

@@ -2,6 +2,7 @@ package com.bss.uis.ui.navDrawer.ui.home;
 
 import android.annotation.SuppressLint;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -20,9 +22,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.database.entity.HomeTabData;
 import com.bss.uis.ui.image.adapter.ScrollImageAdapter;
 import com.bss.uis.ui.tabFragment.DynamicTabFragment;
 import com.bss.uis.ui.tabFragment.TabAdapter;
+import com.bss.uis.util.AppUtil;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.Tab;
 
@@ -41,6 +45,7 @@ public class HomeFragment extends Fragment {
     private UISApplicationContext uisApplicationContext;
 
 
+    @RequiresApi(api = VERSION_CODES.N)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         uisApplicationContext = UISApplicationContext.getInstance();
@@ -126,13 +131,15 @@ public class HomeFragment extends Fragment {
             }
         }, 500, 2000);
     }
+    @RequiresApi(api = VERSION_CODES.N)
     private List<DynamicTabFragment> getTabFragmentList()
     {
-        List<DynamicTabFragment> tabFragList = new ArrayList<>();
-        tabFragList.add(DynamicTabFragment.newInstance("Cancer Info","","Cancer Desc",false,0));
-        tabFragList.add(DynamicTabFragment.newInstance("Emergency Detail","","Emergency Detail",false,0));
-        tabFragList.add(DynamicTabFragment.newInstance("Near By Hospital","","Hospital details",false,0));
-        tabFragList.add(DynamicTabFragment.newInstance("Attendant Details","","Attendant Details",false,0));
+        List<HomeTabData> homeTabDataList = AppUtil.getTabData();
+        List<DynamicTabFragment> tabFragList = new ArrayList<>(homeTabDataList.size());
+        for(HomeTabData homeTabData:homeTabDataList)
+        {
+            tabFragList.add(DynamicTabFragment.newInstance(homeTabData.getTabname(),homeTabData.getTabdata(),homeTabData.getTabdesc(),false,homeTabData.getTabseq()));
+        }
         return tabFragList;
     }
 

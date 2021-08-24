@@ -1,8 +1,6 @@
 package com.bss.uis.ui.navDrawer;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +8,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,19 +30,18 @@ import com.bss.uis.R;
 import com.bss.uis.constant.AppRightsConstants;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.model.User;
+import com.bss.uis.service.ISelectionService;
 import com.bss.uis.service.UserService;
 import com.bss.uis.service.impl.UserServiceImpl;
+import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.registration.RegistrationActivity;
 import com.bss.uis.util.AppUtil;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.Executors;
 
 public class DrawerMainActivity extends AppCompatActivity {
 
@@ -56,6 +54,7 @@ public class DrawerMainActivity extends AppCompatActivity {
     private UserService userService;
     private NavigationService navigationService;
     private static final String SHOWCASE_ID = "DrawerMainActivity";
+    String roleSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +65,7 @@ public class DrawerMainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         loadNavigationHeader();
         fab = findViewById(R.id.fab);
-        if(AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.registerPatient))
+        if(AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.registerPatient))
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +80,7 @@ public class DrawerMainActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_patient, R.id.nav_shelterHome,R.id.nav_members,R.id.nav_gallery,
-                R.id.nav_notification,R.id.nav_settings,R.id.logout)
+                R.id.nav_notification,R.id.nav_settings,R.id.nav_menu_admin,R.id.logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -109,12 +108,38 @@ public class DrawerMainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View navHeaderView = navigationView.getHeaderView(0);
         Menu navMenu = navigationView.getMenu();
-        handleMenuBasedOnRight(navMenu);
+        MenuItem switchrole = navMenu.findItem(R.id.switchrolemenu);
         MenuItem logout = navMenu.findItem(R.id.logout);
         naveHeaderdate = (TextView) navHeaderView.findViewById(R.id.naveHeaderdate);
         navHeaderPersonName =  (TextView)navHeaderView.findViewById(R.id.navHeaderPersonName);
         navHeaderPersonEmail = (TextView)navHeaderView.findViewById(R.id.navHeaderPersonEmail);
         navHeaderProfileImage =(ImageView)navHeaderView.findViewById(R.id.navHeaderProfileImage);
+        switchrole.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                String [] useRoles = AppUtil.getUserRoles(UISApplicationContext.getInstance());
+                Spinner roleSpinner = UIUtil.getSpinnerView(UISApplicationContext.getInstance().getContext(),151,useRoles,new ISelectionService() {
+                    @Override
+                    public void onSelected(String selectedVal, int index) {
+                        if (index == 0)
+                            roleSelected = "";
+                        else
+                            roleSelected = selectedVal;
+                    }
+                });
+                new AppAlertDialog(DrawerMainActivity.this,new NavigationServiceImpl(null,null){
+                    @Override
+                    public void buttonAction(String text) {
+                        super.buttonAction(text);
+                        if(text.equals("Cancel"))return;
+                        userService = new UserServiceImpl();
+                        userService.logout(navigationService);
+                    }
+                }).getDialog(4,"Switch Role","Do you want to switch to",false,roleSpinner).show();
+
+                return false;
+            }
+        });
         logout.setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -126,23 +151,12 @@ public class DrawerMainActivity extends AppCompatActivity {
                         userService = new UserServiceImpl();
                         userService.logout(navigationService);
                     }
-                }).getDialog(1,"Logout","Do you want to exit?.",false).show();
+                }).getDialog(1,"Logout","Do you want to exit?.",false,null).show();
 
                 return false;
             }
         });
-        Executors.newSingleThreadExecutor().submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL imageURL = new URL(uisContext.getUser().getImageurl());
-                    Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-                    navHeaderProfileImage.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        UIUtil.updateImageView(uisContext.getUser().getImageurl(),navHeaderProfileImage);
         navHeaderProfileImage.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -158,21 +172,24 @@ public class DrawerMainActivity extends AppCompatActivity {
             return;
         navHeaderPersonName.setText((null ==user.getSalutation())?"":user.getSalutation()+user.getUsername());
         navHeaderPersonEmail.setText(user.getUseremail());
+        handleMenuBasedOnRight(navMenu);
     }
 
     private void handleMenuBasedOnRight(Menu navMenu) {
-        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.patientMenu))
+        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.patientMenu))
             navMenu.removeItem(R.id.nav_patient);
-        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.settingMenu))
+        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.settingMenu))
             navMenu.removeItem(R.id.nav_settings);
-        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.shelterMenu))
+        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.shelterMenu))
             navMenu.removeItem(R.id.nav_shelterHome);
-        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.memberMenu))
+        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.memberMenu))
             navMenu.removeItem(R.id.nav_members);
-        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.galleryMenu))
+        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.galleryMenu))
             navMenu.removeItem(R.id.nav_gallery);
-        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserLoginRole(), AppRightsConstants.notificationMenu))
+        if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.notificationMenu))
             navMenu.removeItem(R.id.nav_notification);
+        if(uisContext.getUser().getUserrole().size()<2)
+            navMenu.removeItem(R.id.switchrolemenu);
     }
 
     @Override
@@ -203,8 +220,9 @@ public class DrawerMainActivity extends AppCompatActivity {
             }
         });
         sequence.setConfig(config);
-        sequence.addSequenceItem(navHeaderProfileImage, "This is profile button \nPlease check your details Here.", "Next");
-        sequence.addSequenceItem(fab, "Be a paid user to avail complete feature.", "Next");
+        sequence.addSequenceItem(navHeaderProfileImage, "Unity Is Strength \n A cancer foundation welcomes You.", "Next");
+        if(fab.getVisibility()==View.VISIBLE)
+            sequence.addSequenceItem(fab, "Register patient here.", "Done");
 
 //        sequence.addSequenceItem(
 //                new MaterialShowcaseView.Builder(this)

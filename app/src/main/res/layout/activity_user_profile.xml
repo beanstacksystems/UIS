@@ -132,7 +132,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Name:"
+                                android:text="Name: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
                             <TextView
@@ -154,11 +154,33 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:text="Email:"
+                                android:text="Email: "
                                 android:textColor="@color/black"
                                 android:textStyle="bold" />
                             <TextView
                                 android:id="@+id/profile_email"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/uisGreen"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/profile_dobLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/profile_dob_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Date of Birth: "
+                                android:textColor="@color/black"
+                                android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/profile_dob"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""
@@ -181,7 +203,7 @@
                         android:id="@+id/user_contact_Label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Contact:"
+                        android:text="Contact: "
                         android:textStyle="bold"
                         android:textColor="@color/black"/>
                     <TextView
@@ -215,11 +237,11 @@
                         android:id="@+id/user_desg_Label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Designation:"
+                        android:text="Occupation: "
                         android:textStyle="bold"
                         android:textColor="@color/black"/>
                     <TextView
-                        android:id="@+id/user_desg_tv"
+                        android:id="@+id/user_occu_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -235,7 +257,7 @@
                         android:hint=""
                         android:visibility="gone">
                     <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                        android:id="@+id/profile_desg_spinner"
+                        android:id="@+id/profile_occu_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:clickable="true"
@@ -298,18 +320,40 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Logged in As:"
+                        android:text="Logged in As: "
                         android:textColor="@color/black"
                         android:textStyle="italic" />
                     <TextView
-                        android:id="@+id/userRole"
+                        android:id="@+id/userRoletv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CareTaker"
+                        android:text="User"
                         android:textColor="@color/uisViolet"
                         android:textStyle="normal" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Default Role: "
+                        android:textColor="@color/black"
+                        android:textStyle="italic" />
+                    <TextView
+                        android:id="@+id/userRoledef"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User"
+                        android:textColor="@color/uisViolet"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/updatedOn"

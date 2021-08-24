@@ -15,9 +15,11 @@ import androidx.annotation.RequiresApi;
 
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.dao.MasterDAORepository;
+import com.bss.uis.database.entity.HomeTabData;
 import com.bss.uis.database.entity.MasterData;
 import com.bss.uis.database.entity.PatientImages;
 import com.bss.uis.database.entity.UserRightData;
+import com.bss.uis.model.UserRole;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -124,6 +126,19 @@ public class AppUtil {
         }
         return false;
     }
+    public static String getRoleName(UISApplicationContext uisApplicationContext,boolean isDefaultRoleReq)
+    {
+        List<UserRole> userRoleList = uisApplicationContext.getUser().getUserrole();
+        for(UserRole userRole:userRoleList) {
+            if(isDefaultRoleReq && userRole.getIsdefaultrole().equals("Y"))
+            {
+                return userRole.getUserroletype();
+            }
+            if(userRole.getUserroleid()==uisApplicationContext.getUserCurrentRole())
+                return userRole.getUserroletype();
+        }
+        return "";
+    }
     public static ArrayList<String> getMasterByType(String masterType)
     {
         ArrayList<String> masterTypeList = new ArrayList<>();
@@ -131,5 +146,27 @@ public class AppUtil {
         for( MasterData masterData :masterDAORepository.getMasterByType(masterType))
             masterTypeList.add(masterData.getMasterdataval());
         return masterTypeList;
+    }
+    @RequiresApi(api = VERSION_CODES.N)
+    public static List<HomeTabData> getTabData()
+    {
+        MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
+        List<HomeTabData> homeTabDataList = masterDAORepository.getTabData();
+        homeTabDataList.sort((o1, o2) -> (o1.getTabseq() > o2.getTabseq()) ? 1 :
+                (o1.getTabseq() < o2.getTabseq()) ? -1 : 0);
+        return homeTabDataList;
+    }
+    public static String[] getUserRoles(UISApplicationContext uisApplicationContext)
+    {
+        List<UserRole> userRoleList = uisApplicationContext.getUser().getUserrole();
+        String [] userRoles = new String[userRoleList.size()];
+        int index = 0;
+        for(UserRole userRole:userRoleList) {
+            if(userRole.getIsdefaultrole().equals("Y"))
+                 userRoles[index] = userRole.getUserroletype()+"-(D)";
+            userRoles[index] = userRole.getUserroletype();
+            index++;
+        }
+        return userRoles;
     }
 }

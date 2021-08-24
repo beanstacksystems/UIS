@@ -1,9 +1,11 @@
 package com.bss.uis.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -14,20 +16,27 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Spinner;
 
 import com.bss.uis.R;
+import com.bss.uis.service.ISelectionService;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 public class UIUtil {
@@ -202,5 +211,41 @@ public class UIUtil {
             e.printStackTrace();
         }
         return null;
+    }
+    public static void updateImageView(String imageUrl,ImageView imageView)
+    {
+        Executors.newSingleThreadExecutor().submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL imageURL = new URL(imageUrl);
+                    Bitmap bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                    imageView.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    @SuppressLint("ResourceAsColor")
+    public static Spinner getSpinnerView(Context context, int id, String[] option, ISelectionService selectionService) {
+        Spinner spinner = new Spinner(context);
+        spinner.setId(id);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, option);
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setGravity(Gravity.CENTER);
+//        spinner.setBackgroundResource(R.drawable.bubble_shape_edittext);
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                selectionService.onSelected(parentView.getSelectedItem().toString(), parentView.getSelectedItemPosition());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        return spinner;
     }
 }

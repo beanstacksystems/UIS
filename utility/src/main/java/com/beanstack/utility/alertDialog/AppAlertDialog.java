@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
     public static final int ERROR_DLG = 0;
     public static final int SUCCESS_DLG = 2;
     public static final int WARNING_DLG = 3;
+    public static final int CUSTOM_DLG = 4;
 
     private String dlgTitleText;
     private String dlgContentText;
@@ -50,25 +52,28 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
         setCanceledOnTouchOutside(false);
         this.setContentView(dialogView);
     }
-    public Dialog getDialog(int dlgtype,String dialogTitle,String dialogContent,boolean headerReq)
+    public Dialog getDialog(int dlgtype,String dialogTitle,String dialogContent,boolean headerReq,View view)
     {
         Button okButton = dialogView.findViewById(R.id.dlg_buttonOk);
         Button caButton = dialogView.findViewById(R.id.dlg_buttoncancel);
         okButton.setOnClickListener(new CustomClickListener(this));
         TextView titleText = dialogView.findViewById(R.id.dlg_title);
         RelativeLayout relativeLayout = dialogView.findViewById(R.id.dlg_head);
+        titleText.setText(dialogTitle);
         if(dlgtype==MESSAGE_DLG)
-        {
-            titleText.setText(dialogTitle);
-            caButton.setOnClickListener(new CustomClickListener(this));
-        }
+           caButton.setOnClickListener(new CustomClickListener(this));
         if(dlgtype==ERROR_DLG)
         {
             relativeLayout.setBackgroundResource(R.color.red);
-            titleText.setText(dialogTitle);
             caButton.setVisibility(View.INVISIBLE);
             ImageView headimg = dialogView.findViewById(R.id.dlg_head_icon);
             headimg.setBackgroundResource(R.drawable.ic_cross_svg);
+        }
+        if(dlgtype==CUSTOM_DLG)
+        {
+            LinearLayout linearLayout = dialogView.findViewById(R.id.componentlayout);
+            caButton.setOnClickListener(new CustomClickListener(this));
+            linearLayout.addView(view);
         }
         if(!headerReq)
             relativeLayout.setVisibility(View.GONE);

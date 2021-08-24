@@ -14,16 +14,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
+import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.image.ProfileImageFragment;
+import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
     private ImageView profileImageView,backArrow,editLink,updateLink;
-    private TextView name,email,mobileNo,desgnTv,genderTv;
+    private TextView name,email,mobileNo,occuTv,genderTv,userroletv,userroledef,updatedon;
     private TextInputLayout genderSelectLayout,desgnSelectLayout;
-    private AutoCompleteTextView designation,gender;
+    private AutoCompleteTextView occupation,gender;
     private EditText mobileNoEditText;
     private UISApplicationContext uisContext;
     ProfileImageFragment profileImageFragment;
@@ -42,10 +44,13 @@ public class UserProfileActivity extends AppCompatActivity {
         mobileNoEditText = findViewById(R.id.user_contact_et);
         desgnSelectLayout = findViewById(R.id.profile_desg_spinner_layout);
         genderSelectLayout = findViewById(R.id.profile_gender_spinner_layout);
-        desgnTv = findViewById(R.id.user_desg_tv);
+        occuTv = findViewById(R.id.user_occu_tv);
         genderTv = findViewById(R.id.user_gender_tv);
-        designation = findViewById(R.id.profile_desg_spinner);
+        occupation = findViewById(R.id.profile_occu_spinner);
         gender = findViewById(R.id.profile_gender_spinner);
+        userroletv = findViewById(R.id.userRoletv);
+        userroledef =findViewById(R.id.userRoledef);
+        updatedon = findViewById(R.id.updatedOn);
         backArrow = findViewById(R.id.user_back);
         backArrow.setColorFilter(R.color.black);
         backArrow.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +66,7 @@ public class UserProfileActivity extends AppCompatActivity {
         editLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                desgnTv.setText("");
+                occuTv.setText("");
                 genderTv.setText("");
                 mobileNo.setText("");
                 mobileNoEditText.setVisibility(View.VISIBLE);
@@ -74,7 +79,7 @@ public class UserProfileActivity extends AppCompatActivity {
         updateLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                desgnTv.setText(designation.getText().toString());
+                occuTv.setText(occupation.getText().toString());
                 genderTv.setText(gender.getText().toString());
                 mobileNo.setText(mobileNoEditText.getText());
                 mobileNoEditText.setVisibility(View.GONE);
@@ -85,6 +90,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
             }
         });
+        UIUtil.updateImageView(uisContext.getUser().getImageurl(),profileImageView);
+        name.setText(UISApplicationContext.getInstance().getUser().getUsername());
+        email.setText(UISApplicationContext.getInstance().getUser().getUseremail());
+        userroletv.setText(AppUtil.getRoleName(uisContext,false));
+        userroledef.setText(AppUtil.getRoleName(uisContext,true));
+        updatedon.setText(updatedon.getText()+" "+uisContext.getUser().getUsername());
         initSpinnerView();
     }
     public ProfileImageFragment getProfileImageFragment(Boolean bool, int id) {
@@ -98,11 +109,12 @@ public class UserProfileActivity extends AppCompatActivity {
     }
     private void initSpinnerView()
     {
-        ArrayList<String> genderValue = new ArrayList<>();
-        genderValue.add("Female");
-        genderValue.add("Male");
-        genderValue.add("ThirdGender");
+        ArrayList<String> genderValue = AppUtil.getMasterByType("gender");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(uisContext.getContext(), android.R.layout.simple_spinner_item, genderValue);
         gender.setAdapter(adapter);
+
+        ArrayList<String> occuValue = AppUtil.getMasterByType("occupationtype");
+        ArrayAdapter<String> occuValueadapter = new ArrayAdapter<>(uisContext.getContext(), android.R.layout.simple_spinner_item, occuValue);
+        gender.setAdapter(occuValueadapter);
     }
 }

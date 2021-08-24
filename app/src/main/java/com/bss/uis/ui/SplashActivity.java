@@ -100,7 +100,7 @@ public class SplashActivity extends AppCompatActivity {
                             SplashActivity.this.finishAffinity();
                             System.exit(0);
                         }
-                    }).getDialog(0,"Sorry!!!","Data connectivity not available.",true).show();
+                    }).getDialog(0,"Sorry!!!","Data connectivity not available.",true,null).show();
                     return;
                 }
                 navigationService.finishAndNavigate();

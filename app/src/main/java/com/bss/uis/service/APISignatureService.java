@@ -3,6 +3,7 @@ package com.bss.uis.service;
 import com.bss.uis.model.AddressDTO;
 import com.bss.uis.model.AuthResponse;
 import com.bss.uis.model.MasterValueDTO;
+import com.bss.uis.model.TabValueDTO;
 import com.bss.uis.model.User;
 import com.bss.uis.model.UserRightDTO;
 
@@ -34,6 +35,8 @@ public interface APISignatureService {
 
     @POST(".")
     Call<List<MasterValueDTO>> masters(@Header("Authorization")String token);
+    @POST(".")
+    Call<List<TabValueDTO>> tabs(@Header("Authorization")String token);
     @POST(".")
     Call<User> user(@Header("Authorization")String token);
     @FormUrlEncoded

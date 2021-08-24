@@ -77,7 +77,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         applicationContext.setContext(getApplicationContext());
         updateUI();
         updateLocalDB();
-        if(!isUserHasValidToken()){
+        if(!ContextPreferenceManager.isUserLogedOut()){
             navigationService.finishAndNavigate();
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
@@ -309,16 +309,13 @@ public class LoginSignupActivity extends AppCompatActivity {
             }
         }
     }
-    private boolean isUserHasValidToken()
-    {
-        return  ContextPreferenceManager.isUserLogedOut();
-    }
     private void initGoogleSignin()
     {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.googleClientId))
                 .requestServerAuthCode(getString(R.string.googleClientId))
                 .requestEmail()
+//                .requestScopes(new Scope("https://www.googleapis.com/auth/user.birthday.read"))
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
     }

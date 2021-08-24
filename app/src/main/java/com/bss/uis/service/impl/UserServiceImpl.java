@@ -10,10 +10,12 @@ import com.bss.uis.context.ContextPreferenceManager;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.dao.MasterDAORepository;
 import com.bss.uis.database.dao.UserDAORepository;
+import com.bss.uis.database.entity.HomeTabData;
 import com.bss.uis.database.entity.MasterData;
 import com.bss.uis.database.entity.UserRightData;
 import com.bss.uis.model.AuthResponse;
 import com.bss.uis.model.MasterValueDTO;
+import com.bss.uis.model.TabValueDTO;
 import com.bss.uis.model.User;
 import com.bss.uis.model.UserRightDTO;
 import com.bss.uis.model.UserRole;
@@ -175,6 +177,28 @@ public class UserServiceImpl implements UserService {
                 Log.e(TAG,t.getMessage());
             }
         });
+        Retrofit retrofit2 = RetrofitUtil.getRetrofitClient2(APIConstant.TABS,
+                new GsonBuilder().create());
+        APISignatureService apiSignatureService2 = retrofit2.create(APISignatureService.class);
+        Call<List<TabValueDTO>> tabList = apiSignatureService2.tabs("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken());
+        tabList.enqueue(new Callback<List<TabValueDTO>>() {
+            @Override
+            public void onResponse(Call<List<TabValueDTO>> call, Response<List<TabValueDTO>> response) {
+                if(null != response.body())
+                    saveTabData(response.body());
+                else
+                    Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                            "Master api failed",Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(response.body()));
+            }
+            @Override
+            public void onFailure(Call<List<TabValueDTO>> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(1),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        });
     }
     private void saveToMasterEntity(List<MasterValueDTO> masterValueDTOList)
     {
@@ -193,6 +217,22 @@ public class UserServiceImpl implements UserService {
         masterDAORepository.deleteMaster();
         masterDAORepository.insert(masterDataList);
     }
+    private void saveTabData(List<TabValueDTO> tabValueDTOList)
+    {
+        List<HomeTabData> homeTabDataList  = new ArrayList<>();
+        for(TabValueDTO tabValueDTO :tabValueDTOList)
+        {
+            HomeTabData homeTabData = new HomeTabData();
+            homeTabData.setTabname(tabValueDTO.getTabname());
+            homeTabData.setTabdata(tabValueDTO.getTabdata());
+            homeTabData.setTabdesc(tabValueDTO.getTabdesc());
+            homeTabData.setTabseq(tabValueDTO.getTabseq());
+            homeTabDataList.add(homeTabData);
+        }
+        MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
+        masterDAORepository.deleteTabData();
+        masterDAORepository.insertTab(homeTabDataList);
+    }
     private void pullUserData(NavigationService navigationService)
     {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.USER,
@@ -206,7 +246,7 @@ public class UserServiceImpl implements UserService {
                     UISApplicationContext.getInstance().setUser(response.body());
                     for(UserRole userRole : UISApplicationContext.getInstance().getUser().getUserrole()) {
                         if(userRole.getIsdefaultrole().equals("Y"))
-                            UISApplicationContext.getInstance().setUserLoginRole(userRole.getUserroleid());
+                            UISApplicationContext.getInstance().setUserCurrentRole(userRole.getUserroleid());
                     }
                     pullUserRights(navigationService);
                 }

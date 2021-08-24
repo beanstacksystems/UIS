@@ -21,7 +21,7 @@ public class UISApplicationContext extends Application {
     public Context context = null;
     private AuthResponse authResponse;
     private User user;
-    private int userLoginRole;
+    private int userCurrentRole;
     private List<UserRightData> userRightDataList;
     private Map<String,String> appConfigMap;
     public static UISApplicationContext getInstance() {

@@ -14,6 +14,8 @@ public class User implements Comparable<User>{
     private String gender;
     private List<UserRole> userrole;
     private String imageurl;
+    private String dob;
+    private String occupation;
     public  int personid;
 
     @Override
