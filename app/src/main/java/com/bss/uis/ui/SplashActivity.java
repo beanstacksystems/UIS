@@ -16,6 +16,8 @@ import com.beanstack.utility.service.NavigationService;
 import com.beanstack.utility.service.impl.NavigationServiceImpl;
 import com.bss.uis.R;
 import com.bss.uis.constant.AppConstants;
+import com.bss.uis.service.APIService;
+import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.ui.loginsignup.LoginSignupActivity;
 import com.bss.uis.util.AppUtil;
 import com.facebook.FacebookSdk;
@@ -27,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
     TextView logoText1,logoText2,logoText3,logoText4;
     Animation logoFromRightbottom,logoFromLeftbottom,
             logoFromRightTop,logoFromleftTop,logoFromTop,logoFrombottom;
+    APIService apiservice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        apiservice = new APIServiceImpl();
         logoText1 = findViewById(R.id.SplashLogoTitle1);
         logoText2 = findViewById(R.id.SplashLogoTitle2);
         logoText3 = findViewById(R.id.SplashLogoTitle3);
@@ -103,7 +106,7 @@ public class SplashActivity extends AppCompatActivity {
                     }).getDialog(0,"Sorry!!!","Data connectivity not available.",true,null).show();
                     return;
                 }
-                navigationService.finishAndNavigate();
+                apiservice.isserverreachable(navigationService,SplashActivity.this);
             }
             @Override
             public void onAnimationRepeat(Animation arg0) {

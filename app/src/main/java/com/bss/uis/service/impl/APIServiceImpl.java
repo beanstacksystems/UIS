@@ -1,5 +1,10 @@
 package com.bss.uis.service.impl;
 
+import android.content.Context;
+
+import com.beanstack.utility.alertDialog.AppAlertDialog;
+import com.beanstack.utility.service.NavigationService;
+import com.beanstack.utility.service.impl.NavigationServiceImpl;
 import com.bss.uis.constant.APIConstant;
 import com.bss.uis.model.AddressDTO;
 import com.bss.uis.service.APIService;
@@ -48,6 +53,33 @@ public class APIServiceImpl implements APIService{
             @Override
             public void onFailure(Call<List<AddressDTO>> call, Throwable t) {
                 System.out.println(call);
+            }
+        });
+    }
+
+    @Override
+    public void isserverreachable(NavigationService navigationService, Context context) {
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.SERVERAVAILABLECHECKAPI,
+                new GsonBuilder().create());
+        apiSignatureService = retrofit.create(APISignatureService.class);
+        Call<String> apiCall = apiSignatureService.isserverreachable();
+        apiCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                System.out.println(response.body());
+                navigationService.finishAndNavigate();
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                System.out.println(call);
+                new AppAlertDialog(context,new NavigationServiceImpl(null,null){
+                    @Override
+                    public void buttonAction(String text) {
+                        super.buttonAction(text);
+                        System.exit(0);
+                    }
+                }).getDialog(0,"Sorry!!!","Not able to connect Server",true,null).show();
+                return;
             }
         });
     }

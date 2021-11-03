@@ -41,13 +41,13 @@ public class UserServiceImpl implements UserService {
     private APISignatureService apiSignatureService;
 
     @Override
-    public void registerWithSocialId(final String idToken, String authCode, String source,
+    public void registerWithSocialId(final String idToken, String authCode, String serial,String model,String source,
                                      final NavigationService navigationService) {
 
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.SOCIAL_URL+source+"/",
                 new GsonBuilder().create());
         authService = retrofit.create(AuthService.class);
-        Call<AuthResponse> apiCall = authService.registerWithSocialId(source.equals("google")?authCode:idToken);
+        Call<AuthResponse> apiCall = authService.registerWithSocialId(source.equals("google")?authCode:idToken,serial,model);
         apiCall.enqueue(getCallBack(navigationService,source,R.string.userregistraionFailed,R.string.severconnectionfailed,true));
     }
 
@@ -72,12 +72,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerUser(String username, final String useremail, final String password, final String regtype,
+    public void registerUser(String username, final String useremail, final String password,String serial,String model, final String regtype,
                              final NavigationService navigationService, final LoginSignupActivity loginSignupActivity) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.REGISTER_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<AuthResponse> apiCall = apiSignatureService.register(username,useremail,password,regtype);
+        Call<AuthResponse> apiCall = apiSignatureService.register(username,useremail,password,serial, model,regtype);
         apiCall.enqueue(getCallBack(navigationService,"UIS",R.string.userregistraionFailed,R.string.severconnectionfailed,true));
     }
 
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.LOGOUT_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<String> apiCall = apiSignatureService.logout("Bearer "+ContextPreferenceManager.getToken());
+        Call<String> apiCall = apiSignatureService.logout("Bearer "+ContextPreferenceManager.getToken("token"));
         apiCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
     private void handleSuccessfulLogin(NavigationService navigationService,AuthResponse authResponse,String source,boolean isRegister)
     {
         UISApplicationContext.getInstance().setAuthResponse(authResponse);
-        ContextPreferenceManager.saveLoginDetails(authResponse.getToken(),source);
+        ContextPreferenceManager.saveLoginDetails(authResponse.getToken(),authResponse.getRefreshtoken(),source,authResponse.getExpires_in());
         Log.w(TAG, String.valueOf(authResponse));
         if(isRegister)pullmasterData();
         pullUserData(navigationService);
@@ -233,7 +233,7 @@ public class UserServiceImpl implements UserService {
         masterDAORepository.deleteTabData();
         masterDAORepository.insertTab(homeTabDataList);
     }
-    private void pullUserData(NavigationService navigationService)
+    public void pullUserData(NavigationService navigationService)
     {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.USER,
                 new GsonBuilder().create());

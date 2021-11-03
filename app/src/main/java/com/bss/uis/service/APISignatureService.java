@@ -31,8 +31,7 @@ public interface APISignatureService {
     @FormUrlEncoded
     @POST(".")
     Call<AuthResponse> register(@Field("username") String userName,@Field("useremail") String userEmail,
-                        @Field("password")String password,@Field("regtype") String loginType);
-
+                        @Field("password")String password,@Field("deviceid")String serial,@Field("devicemodel")String model,@Field("regtype") String loginType);
     @POST(".")
     Call<List<MasterValueDTO>> masters(@Header("Authorization")String token);
     @POST(".")
@@ -42,7 +41,8 @@ public interface APISignatureService {
     @FormUrlEncoded
     @POST(".")
     Call<List<UserRightDTO>> userrights(@Header("Authorization")String token, @Field("roleidlist[]")List<Integer> roleidlist);
-
     @POST(".")
     Call<String> logout(@Header("Authorization")String token);
+    @POST(".")
+    Call<String> isserverreachable();
 }

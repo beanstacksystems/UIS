@@ -2,6 +2,7 @@ package com.bss.uis.ui.loginsignup;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.bss.uis.context.ContextPreferenceManager;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.dao.ApplicationRepository;
 import com.bss.uis.database.entity.AppConfig;
+import com.bss.uis.model.AuthResponse;
 import com.bss.uis.service.UserService;
 import com.bss.uis.service.impl.UserServiceImpl;
 import com.bss.uis.ui.BioMetricActivity;
@@ -75,10 +77,14 @@ public class LoginSignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         applicationContext = UISApplicationContext.getInstance();
         applicationContext.setContext(getApplicationContext());
+        userService = new UserServiceImpl();
         updateUI();
         updateLocalDB();
         if(!ContextPreferenceManager.isUserLogedOut()){
-            navigationService.finishAndNavigate();
+//            userService.resetAccessToken(ContextPreferenceManager);
+            applicationContext.setAuthResponse(new AuthResponse(ContextPreferenceManager.getToken("token"),ContextPreferenceManager.getToken("refreshtoken")));
+            userService.pullUserData(navigationService);
+//            navigationService.finishAndNavigate();
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_login_signup);
@@ -270,23 +276,19 @@ public class LoginSignupActivity extends AppCompatActivity {
 
     private void loginUser(String userEmail,String password)
     {
-        userService = new UserServiceImpl();
         userService.loginUser(userEmail,password,navigationService,this);
     }
     private void resetPwd(String userEmail,String password)
     {
-        userService = new UserServiceImpl();
         userService.resetPassword(userEmail,password,navigationService,this);
     }
     private void registerUser(String userName,String email,String password)
     {
-        userService = new UserServiceImpl();
-        userService.registerUser(userName,email,password,"uis",navigationService,this);
+        userService.registerUser(userName,email,password,Build.ID,Build.MANUFACTURER+"-"+Build.MODEL,"uis",navigationService,this);
     }
     private void handleAccessToken(String token, String authCode, String email, String userId, String name, String source) {
         Log.w(TAG,token);
-        userService = new UserServiceImpl();
-        userService.registerWithSocialId(token, authCode, source,navigationService);
+        userService.registerWithSocialId(token, authCode, Build.ID,Build.MANUFACTURER+"-"+Build.MODEL,source,navigationService);
     }
     private void updateUI() {
         if (BiometricUtils.isFingerprintAvailable(LoginSignupActivity.this))
