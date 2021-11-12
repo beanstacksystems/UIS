@@ -8,6 +8,7 @@ import com.bss.uis.database.asynctasks.DeleteTabData;
 import com.bss.uis.database.asynctasks.InsertMasterData;
 import com.bss.uis.database.asynctasks.InsertTabData;
 import com.bss.uis.database.asynctasks.RetrieveMasterDataByType;
+import com.bss.uis.database.asynctasks.RetrieveMasterDataByTypeAndVal;
 import com.bss.uis.database.asynctasks.RetrieveTabData;
 import com.bss.uis.database.entity.HomeTabData;
 import com.bss.uis.database.entity.MasterData;
@@ -31,6 +32,10 @@ public class MasterDAORepository {
     @SneakyThrows
     public List<MasterData> getMasterByType(String masterType) {
         return new RetrieveMasterDataByType(masterDAO,masterType).execute().get();
+    }
+    @SneakyThrows
+    public MasterData getMasterByTypeAndVal(String masterType,String masterVal) {
+        return new RetrieveMasterDataByTypeAndVal(masterDAO,masterType,masterVal).execute().get();
     }
     @SneakyThrows
     public List<HomeTabData> getTabData() {

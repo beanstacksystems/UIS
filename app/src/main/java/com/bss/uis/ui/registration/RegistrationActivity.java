@@ -102,6 +102,11 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
                         curfragment.getFragmentTitle().equals("Attendant Details"))
                     curfragment.onFragmentVisible();
                 stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
+                if(((Button) v).getText()=="Submit")
+                {
+
+                    return;
+                }
                 updateFragmentView(mPager.getCurrentItem()+1);
             }
            else

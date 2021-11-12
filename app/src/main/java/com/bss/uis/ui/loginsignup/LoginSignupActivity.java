@@ -84,6 +84,7 @@ public class LoginSignupActivity extends AppCompatActivity {
 //            userService.resetAccessToken(ContextPreferenceManager);
             applicationContext.setAuthResponse(new AuthResponse(ContextPreferenceManager.getToken("token"),ContextPreferenceManager.getToken("refreshtoken")));
             userService.pullUserData(navigationService);
+            return;
 //            navigationService.finishAndNavigate();
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));

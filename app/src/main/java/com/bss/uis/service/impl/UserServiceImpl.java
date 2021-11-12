@@ -77,7 +77,10 @@ public class UserServiceImpl implements UserService {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.REGISTER_URL,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<AuthResponse> apiCall = apiSignatureService.register(username,useremail,password,serial, model,regtype);
+//        Call<AuthResponse> apiCall = apiSignatureService.register(username,useremail,password,serial, model,regtype,
+//                AppUtil.getMasterByTypeAndValue("entitytype","User").getMasterdataId());
+        Call<AuthResponse> apiCall = apiSignatureService.register(username,useremail,password,serial, model,regtype,
+                "User");
         apiCall.enqueue(getCallBack(navigationService,"UIS",R.string.userregistraionFailed,R.string.severconnectionfailed,true));
     }
 

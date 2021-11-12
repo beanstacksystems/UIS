@@ -131,7 +131,7 @@ public class MedicalHistoryFragment extends BaseFragment {
     {
         bloodGrp = fragmentView.findViewById(R.id.blood_group);
         bloodGrpInputLayout = fragmentView.findViewById(R.id.spinner_blood_group);
-        ArrayList<String> bloodGroups = AppUtil.getMasterByType("bloodGrp");
+        ArrayList<String> bloodGroups = AppUtil.getMasterByType("bloodgroup");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, bloodGroups);
         bloodGrp.setAdapter(adapter);
         bloodGrp.setValidator(new AutoCompleteTextValidtor(bloodGrpInputLayout,bloodGroups));

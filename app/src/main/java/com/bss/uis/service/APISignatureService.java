@@ -3,6 +3,7 @@ package com.bss.uis.service;
 import com.bss.uis.model.AddressDTO;
 import com.bss.uis.model.AuthResponse;
 import com.bss.uis.model.MasterValueDTO;
+import com.bss.uis.model.PatientDTO;
 import com.bss.uis.model.TabValueDTO;
 import com.bss.uis.model.User;
 import com.bss.uis.model.UserRightDTO;
@@ -31,7 +32,8 @@ public interface APISignatureService {
     @FormUrlEncoded
     @POST(".")
     Call<AuthResponse> register(@Field("username") String userName,@Field("useremail") String userEmail,
-                        @Field("password")String password,@Field("deviceid")String serial,@Field("devicemodel")String model,@Field("regtype") String loginType);
+                        @Field("password")String password,@Field("deviceid")String serial,@Field("devicemodel")String model,
+                                @Field("regtype") String loginType,@Field("entitytype") String entitytype);
     @POST(".")
     Call<List<MasterValueDTO>> masters(@Header("Authorization")String token);
     @POST(".")
@@ -45,4 +47,6 @@ public interface APISignatureService {
     Call<String> logout(@Header("Authorization")String token);
     @POST(".")
     Call<String> isserverreachable();
+    @POST(".")
+    Call<PatientDTO> registerPatient(@Header("Authorization")String token);
 }

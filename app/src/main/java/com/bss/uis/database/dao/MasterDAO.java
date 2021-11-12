@@ -21,6 +21,9 @@ public interface MasterDAO {
     @Query("SELECT * FROM MasterData WHERE masterdataType is:masterdataType")
     public List<MasterData> findByMasterdataType(String masterdataType);
 
+    @Query("SELECT * FROM MasterData WHERE masterdataType is:masterdataType AND masterdataval is:masterdataval")
+    public MasterData findByMasterdataTypeAndVal(String masterdataType,String masterdataval);
+
     @Transaction
     @Insert
     void insertMasterData(List<MasterData> masterDataList);

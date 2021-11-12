@@ -147,6 +147,12 @@ public class AppUtil {
             masterTypeList.add(masterData.getMasterdataval());
         return masterTypeList;
     }
+    public static MasterData getMasterByTypeAndValue(String masterType,String masterVal)
+    {
+        ArrayList<String> masterTypeList = new ArrayList<>();
+        MasterDAORepository masterDAORepository = new MasterDAORepository(UISApplicationContext.getInstance());
+        return masterDAORepository.getMasterByTypeAndVal(masterType,masterVal);
+    }
     @RequiresApi(api = VERSION_CODES.N)
     public static List<HomeTabData> getTabData()
     {

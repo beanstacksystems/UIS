@@ -118,8 +118,12 @@ public class AttendantFragment extends BaseFragment {
             }
 
         });
+        for(DynamicTabFragment frag:tabFragList) {
+            initTabView(frag,0);
+        }
         return attview;
     }
+
     @Override
     public void onFragmentHide(){};
     @RequiresApi(api = VERSION_CODES.M)
