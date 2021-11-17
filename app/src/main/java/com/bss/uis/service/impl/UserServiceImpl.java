@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.SOCIAL_URL+source+"/",
                 new GsonBuilder().create());
         authService = retrofit.create(AuthService.class);
-        Call<AuthResponse> apiCall = authService.registerWithSocialId(source.equals("google")?authCode:idToken,serial,model);
+        Call<AuthResponse> apiCall = authService.registerWithSocialId(source.equals("google")?authCode:idToken,serial,model,"User");
         apiCall.enqueue(getCallBack(navigationService,source,R.string.userregistraionFailed,R.string.severconnectionfailed,true));
     }
 

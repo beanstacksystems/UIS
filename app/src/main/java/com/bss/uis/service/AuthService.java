@@ -15,5 +15,5 @@ public interface AuthService {
     Call<AuthResponse> validate(@Header("idToken") String idToken, @Header("authCode") String authCode, @Path(value = "registrationId") String registrationId);
     @FormUrlEncoded
     @POST(".")
-    Call<AuthResponse> registerWithSocialId(@Field("token") String token,@Field("deviceid") String serial,@Field("devicemodel") String model);
+    Call<AuthResponse> registerWithSocialId(@Field("token") String token,@Field("deviceid") String serial,@Field("devicemodel") String model,@Field("entitytype") String entitytype);
 }
