@@ -30,6 +30,7 @@ import com.bss.uis.R;
 import com.bss.uis.constant.AppRightsConstants;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.model.User;
+import com.bss.uis.model.UserRole;
 import com.bss.uis.service.ISelectionService;
 import com.bss.uis.service.UserService;
 import com.bss.uis.service.impl.UserServiceImpl;
@@ -176,6 +177,7 @@ public class DrawerMainActivity extends AppCompatActivity {
     }
 
     private void handleMenuBasedOnRight(Menu navMenu) {
+        boolean isadminuser = false;
         if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.patientMenu))
             navMenu.removeItem(R.id.nav_patient);
         if(!AppUtil.isHavingRight(uisContext.getUserRightDataList(),uisContext.getUserCurrentRole(), AppRightsConstants.settingMenu))
@@ -190,6 +192,13 @@ public class DrawerMainActivity extends AppCompatActivity {
             navMenu.removeItem(R.id.nav_notification);
         if(uisContext.getUser().getUserrole().size()<2)
             navMenu.removeItem(R.id.switchrolemenu);
+        for(UserRole userRole : uisContext.getUser().getUserrole()) {
+            if(userRole.getUserroletype().equals(AppRightsConstants.admin)||
+                    userRole.getUserroletype().equals(AppRightsConstants.superadmin))
+                isadminuser = true;
+        }
+        if(!isadminuser)
+            navMenu.removeItem(R.id.nav_menu_admin);
     }
 
     @Override

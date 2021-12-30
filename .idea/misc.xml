@@ -3,21 +3,28 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/drawable/login_signup_bottom.xml" value="0.22552083333333334" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/drawable/login_signup_top.xml" value="0.22552083333333334" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/activity_drawer_main.xml" value="0.146875" />
-        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/activity_login_signup.xml" value="0.25" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/activity_login_signup.xml" value="0.33" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/activity_registration.xml" value="0.20615384615384616" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/activity_user_profile.xml" value="0.22" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_address.xml" value="0.1" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_attendant_record.xml" value="0.20615384615384616" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_dynamic_tab.xml" value="0.209375" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_medical_history.xml" value="0.20615384615384616" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_members.xml" value="0.10364583333333334" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/fragment_personal_detail.xml" value="0.20615384615384616" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/nav_header_main.xml" value="0.209375" />
+        <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/layout/person_basic_details.xml" value="0.20615384615384616" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/app/src/main/res/menu/activity_main_drawer.xml" value="0.33" />
         <entry key="..\:/beanstack-codebase/UIS-Android/uis-android/utility/src/main/res/layout/app_alert_dlg_layout.xml" value="0.10104166666666667" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

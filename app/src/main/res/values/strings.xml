@@ -36,6 +36,7 @@
     <string name="person_details">Person Details</string>
     <string name="person_name_hint">Enter Full Name</string>
     <string name="contact">Mobile No</string>
+    <string name="salutation">Salutation</string>
     <string name="gender">Gender</string>
     <string name="occupation">Occupation</string>
     <string name="relationship">Relationship With Patient</string>

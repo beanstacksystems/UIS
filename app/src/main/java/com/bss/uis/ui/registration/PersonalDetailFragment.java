@@ -35,10 +35,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonalDetailFragment extends BaseFragment{
 
-    TextInputEditText name,email,contact,dob,panadhar;
-    TextInputLayout nameInputLayout,eMailInputLayout,contactInputLayout,
-            dobInputLayout,genderLayout,panadhartxtLayout;
-    AutoCompleteTextView gender;
+    TextInputEditText name,email,contact,dob,panadhar,income;
+    TextInputLayout nameInputLayout,eMailInputLayout,contactInputLayout,incomeInputLayout,
+            dobInputLayout,genderLayout,salutationLayout,occupationLayout,panadhartxtLayout;
+    AutoCompleteTextView gender,salutation,occupation;
     DatePickerDialog picker;
     String fragmentTitle;
     CircleImageView profile_image;
@@ -79,6 +79,7 @@ public class PersonalDetailFragment extends BaseFragment{
         nameInputLayout = fragmentView.findViewById(R.id.personNameLayout);
         eMailInputLayout = fragmentView.findViewById(R.id.Email_etLayout);
         contactInputLayout = fragmentView.findViewById(R.id.contactInputLayout);
+        incomeInputLayout = fragmentView.findViewById(R.id.incomeInputLayout);
         name = fragmentView.findViewById(R.id.personName);
         name.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
                 (nameInputLayout,"Name cannot be empty"));
@@ -118,6 +119,17 @@ public class PersonalDetailFragment extends BaseFragment{
                     contactInputLayout.setError("Mobile number is not Correct");
             }
         });
+        income = fragmentView.findViewById(R.id.income_et);
+        income.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (incomeInputLayout,"Income cannot be empty"));
+        income.addTextChangedListener(new CustomTextValidator(income) {
+            @Override
+            public void validate(TextView textView, String text) {
+                incomeInputLayout.setError(null);
+                if(null == text || text.isEmpty())
+                    incomeInputLayout.setError("Income cannot be empty");
+            }
+        });
         panadhar = fragmentView.findViewById(R.id.panAdhar);
         panadhartxtLayout = fragmentView.findViewById(R.id.idprooftxtLayout);
         panadhar.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
@@ -136,6 +148,8 @@ public class PersonalDetailFragment extends BaseFragment{
         profileImageFragment = getProfileImageFragment(false,R.id.profile_image_edit_layout);
         initDOB(fragmentView);
         initGenderView(fragmentView);
+        initSalutationView(fragmentView);
+        initOccupationView(fragmentView);
         imageCaptureFragmentIdProof = getFragment(false,R.id.id_proof_imageview_Layout);
     }
     private void initDOB(View fragmentView) {
@@ -180,6 +194,24 @@ public class PersonalDetailFragment extends BaseFragment{
         gender.setAdapter(adapter);
         gender.setValidator(new AutoCompleteTextValidtor(genderLayout,genderValue));
     }
+    private void initSalutationView(View fragmentView)
+    {
+        salutationLayout = fragmentView.findViewById(R.id.spinner_salutation_layout);
+        salutation = fragmentView.findViewById(R.id.spinner_salutation);
+        ArrayList<String> salutationValue = AppUtil.getMasterByType("salutation");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, salutationValue);
+        salutation.setAdapter(adapter);
+        salutation.setValidator(new AutoCompleteTextValidtor(salutationLayout,salutationValue));
+    }
+    private void initOccupationView(View fragmentView)
+    {
+        occupationLayout = fragmentView.findViewById(R.id.spinner_occupation_layout);
+        occupation = fragmentView.findViewById(R.id.spinner_occupation);
+        ArrayList<String> occupationValue = AppUtil.getMasterByType("occupationtype");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, occupationValue);
+        occupation.setAdapter(adapter);
+        occupation.setValidator(new AutoCompleteTextValidtor(occupationLayout,occupationValue));
+    }
     @Override
     public boolean isValidDetails() {
         String profileImagePath = profileImageFragment.getSelectedImagePath();
@@ -192,14 +224,20 @@ public class PersonalDetailFragment extends BaseFragment{
         String nameTxt = name.getText().toString();
         String emailTxt = email.getText().toString();
         String contactTxt = contact.getText().toString();
+        String incomeTxt = income.getText().toString();
         String dobTxt = dob.getText().toString();
         String panadharTxt = panadhar.getText().toString();
         String genderTxt = gender.getText().toString();
+        String salTxt = salutation.getText().toString();
+        String occupationTxt = occupation.getText().toString();
         if(null == nameTxt ||nameTxt.isEmpty()|| null == emailTxt ||emailTxt.isEmpty()
                 || null == contactTxt || contactTxt.isEmpty()
+                || null == incomeTxt || incomeTxt.isEmpty()
                  || null == dobTxt || dobTxt.isEmpty()
                    ||   null == panadharTxt || panadharTxt.isEmpty()
-                 || null == genderTxt || genderTxt.isEmpty()){
+                 || null == genderTxt || genderTxt.isEmpty()
+                || null == salTxt || salTxt.isEmpty()
+                || null == occupationTxt || occupationTxt.isEmpty()){
             Toast.makeText(UISApplicationContext.getInstance().getContext(),
                     getResources().getString(R.string.fillvalue),Toast.LENGTH_LONG).show();
             return false;
@@ -207,7 +245,8 @@ public class PersonalDetailFragment extends BaseFragment{
 
         if(null != nameInputLayout.getError()||null != eMailInputLayout.getError()
                 ||null != contactInputLayout.getError()
-                ||null != dobInputLayout.getError()||null != genderLayout.getError())
+                ||null != dobInputLayout.getError()||null != genderLayout.getError()
+                ||null != salutationLayout.getError() ||null != occupationLayout.getError())
             return false;
         return true;
     }
