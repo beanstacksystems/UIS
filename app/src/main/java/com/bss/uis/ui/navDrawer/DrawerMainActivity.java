@@ -124,8 +124,10 @@ public class DrawerMainActivity extends AppCompatActivity {
                     public void onSelected(String selectedVal, int index) {
                         if (index == 0)
                             roleSelected = "";
-                        else
+                        else {
                             roleSelected = selectedVal;
+                            uisContext.setUserCurrentRole(AppUtil.getRoleIdbyName(uisContext,roleSelected));
+                        }
                     }
                 });
                 new AppAlertDialog(DrawerMainActivity.this,new NavigationServiceImpl(null,null){
@@ -133,8 +135,7 @@ public class DrawerMainActivity extends AppCompatActivity {
                     public void buttonAction(String text) {
                         super.buttonAction(text);
                         if(text.equals("Cancel"))return;
-                        userService = new UserServiceImpl();
-                        userService.logout(navigationService);
+                        handleMenuBasedOnRight(navMenu);
                     }
                 }).getDialog(4,"Switch Role","Do you want to switch to",false,roleSpinner).show();
 

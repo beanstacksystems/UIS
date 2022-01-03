@@ -126,6 +126,15 @@ public class AppUtil {
         }
         return false;
     }
+    public static int getRoleIdbyName(UISApplicationContext uisApplicationContext,String userrole)
+    {
+        List<UserRole> userRoleList = uisApplicationContext.getUser().getUserrole();
+        for(UserRole userRole:userRoleList) {
+            if(userRole.getUserroletype().equals(userrole))
+                return userRole.getUserroleid();
+        }
+        return 0;
+    }
     public static String getRoleName(UISApplicationContext uisApplicationContext,boolean isDefaultRoleReq)
     {
         List<UserRole> userRoleList = uisApplicationContext.getUser().getUserrole();
@@ -170,7 +179,10 @@ public class AppUtil {
         for(UserRole userRole:userRoleList) {
             if(userRole.getIsdefaultrole().equals("Y"))
                  userRoles[index] = userRole.getUserroletype()+"-(D)";
-            userRoles[index] = userRole.getUserroletype();
+            if(userRole.getUserroleid() == uisApplicationContext.getUserCurrentRole())
+                 userRoles[index] = userRole.getUserroletype()+"-(D)";
+            else
+                userRoles[index] = userRole.getUserroletype();
             index++;
         }
         return userRoles;

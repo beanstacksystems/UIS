@@ -291,7 +291,7 @@ public class UserServiceImpl implements UserService {
             @Override
             public void onFailure(Call<List<UserRightDTO>> call, Throwable t) {
                 Toast.makeText(UISApplicationContext.getInstance().getContext(),
-                        UISApplicationContext.getInstance().getContext().getResources().getString(1),Toast.LENGTH_LONG).show();
+                        UISApplicationContext.getInstance().getContext().getResources().getString(R.string.api_failed),Toast.LENGTH_LONG).show();
                 Log.w(TAG, String.valueOf(call));
                 Log.e(TAG,t.getMessage());
             }
