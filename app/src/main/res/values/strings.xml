@@ -112,4 +112,7 @@
 
     <string name="api_failed">Failed to connect Server!</string>
     <string name="api_expectation_faied">User operation failed!</string>
+
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
 </resources>

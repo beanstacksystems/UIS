@@ -1,6 +1,7 @@
 package com.bss.uis.ui.registration;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +36,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PersonalDetailFragment extends BaseFragment{
 
-    TextInputEditText name,email,contact,dob,panadhar,income;
+    TextInputEditText name,email,contact,dob,panadhar,income,gender;
     TextInputLayout nameInputLayout,eMailInputLayout,contactInputLayout,incomeInputLayout,
             dobInputLayout,genderLayout,salutationLayout,occupationLayout,panadhartxtLayout;
-    AutoCompleteTextView gender,salutation,occupation;
+    AutoCompleteTextView salutation,occupation;
     DatePickerDialog picker;
     String fragmentTitle;
     CircleImageView profile_image;
@@ -188,11 +189,16 @@ public class PersonalDetailFragment extends BaseFragment{
     private void initGenderView(View fragmentView)
     {
         genderLayout = fragmentView.findViewById(R.id.spinner_gender_layout);
-        gender = fragmentView.findViewById(R.id.spinner_gender);
+        gender = fragmentView.findViewById(R.id.text_gender);
         ArrayList<String> genderValue = AppUtil.getMasterByType("gender");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, genderValue);
-        gender.setAdapter(adapter);
-        gender.setValidator(new AutoCompleteTextValidtor(genderLayout,genderValue));
+        gender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
+                        "Gender",genderValue.toArray(new String[genderValue.size()]),gender);
+                dialog.show();
+                }
+        });
     }
     private void initSalutationView(View fragmentView)
     {

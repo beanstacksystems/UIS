@@ -23,7 +23,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bss.uis.R;
 import com.bss.uis.service.ISelectionService;
@@ -146,6 +149,42 @@ public class UIUtil {
         dialog.setContentView(R.layout.popup_address);
         dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
         return dialog;
+    }
+    public static Dialog getSelectPopupDialog(Context context, String title,String[] options,TextView view)
+    {
+        Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.popup_select);
+        LinearLayout radioLinearLayout = dialog.findViewById(R.id.selectpopup_radioLayout);
+        radioLinearLayout.addView(getRadioGroup(context,options,LinearLayout.VERTICAL,view));
+        TextView headerText = dialog.findViewById(R.id.SelectPopUpHeader);
+        dialog.setTitle(title);
+        headerText.setText(title);
+        dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        return dialog;
+    }
+    public static RadioGroup getRadioGroup(Context context, String[] options, int orientation,TextView v) {
+        RadioGroup radioGroup = new RadioGroup(context);
+        radioGroup.setOrientation(orientation);
+        radioGroup.setGravity(Gravity.LEFT);
+        for (String option : options) {
+            RadioButton radioButton = new RadioButton(context);
+            radioButton.setText(option);
+            radioGroup.addView(radioButton);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup rg, int checkedId) {
+                for (int i = 0; i < rg.getChildCount(); i++) {
+                    RadioButton btn = (RadioButton) rg.getChildAt(i);
+                    if (btn.getId() == checkedId) {
+                        v.setText(btn.getText().toString());
+                        return;
+                    }
+                }
+            }
+        });
+        return radioGroup;
     }
     public static Bitmap getScaledBitmap(Bitmap bitmap,int newWidth,int newHeight)
     {

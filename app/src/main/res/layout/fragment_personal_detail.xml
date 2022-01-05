@@ -164,17 +164,13 @@
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/spinner_gender_layout"
-                            style="@style/CustomDropDownTilStyle"
+                            style="@style/TextInputLayoutStyleBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/gender">
-
-                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                                android:id="@+id/spinner_gender"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="true"
-                                tools:ignore="KeyboardInaccessibleWidget" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_gender"
+                                style="@style/TextInputStyleBox" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
