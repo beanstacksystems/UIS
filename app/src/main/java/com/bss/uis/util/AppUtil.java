@@ -19,6 +19,11 @@ import com.bss.uis.database.entity.HomeTabData;
 import com.bss.uis.database.entity.MasterData;
 import com.bss.uis.database.entity.PatientImages;
 import com.bss.uis.database.entity.UserRightData;
+import com.bss.uis.dto.AddressDTO;
+import com.bss.uis.dto.ContactTypeDTO;
+import com.bss.uis.dto.IdproofDTO;
+import com.bss.uis.dto.PatientDTO;
+import com.bss.uis.dto.PersonDTO;
 import com.bss.uis.model.UserRole;
 
 import java.io.BufferedInputStream;
@@ -186,5 +191,20 @@ public class AppUtil {
             index++;
         }
         return userRoles;
+    }
+    public static PatientDTO getPatientDTO()
+    {
+        PatientDTO patientDTO = new PatientDTO();
+        List<PersonDTO> personlist = new ArrayList<PersonDTO>();
+        patientDTO.setPersonlist(personlist);
+        return patientDTO;
+    }
+    public static PersonDTO getPersonDTO()
+    {
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setAddressdto(new AddressDTO());
+        personDTO.setIdproofdto(new IdproofDTO());
+        personDTO.setContactlist(new ArrayList<ContactTypeDTO>());
+        return personDTO;
     }
 }

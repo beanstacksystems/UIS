@@ -6,7 +6,7 @@
     android:layout_below="@+id/header"
     android:gravity="center"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.registration.PersonalDetailFragment">
+    tools:context=".ui.patientregistration.PersonalDetailFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -78,20 +78,15 @@
                             android:text="@string/person_details"
                             android:textColor="@color/black"
                             android:textStyle="bold" />
-
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/spinner_salutation_layout"
-                            style="@style/CustomDropDownTilStyle"
+                            android:id="@+id/text_salutation_layout"
+                            style="@style/TextInputLayoutStyleBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/salutation">
-
-                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                                android:id="@+id/spinner_salutation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="true"
-                                tools:ignore="KeyboardInaccessibleWidget" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_salutation"
+                                style="@style/TextInputStyleBox" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -148,22 +143,40 @@
                                 style="@style/TextInputStyleBox" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/idprooftxtLayout"
-                            style="@style/TextInputLayoutStyleBox"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/panaadhar">
+                            android:orientation="horizontal">
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/text_panadhar_layout"
+                                style="@style/TextInputLayoutStyleBox"
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/panaadhar">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/panAdhar"
-                                style="@style/TextInputStyleBox" />
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/text_panadhar_select"
+                                    style="@style/TextInputStyleBox"
+                                    />
+                            </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/idprooftxtLayout"
+                                style="@style/TextInputLayoutStyleBox"
+                                android:layout_width="160dp"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/panaadhar">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/panAdharval"
+                                    style="@style/TextInputStyleBox" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/spinner_gender_layout"
+                            android:id="@+id/text_gender_layout"
                             style="@style/TextInputLayoutStyleBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -172,20 +185,15 @@
                                 android:id="@+id/text_gender"
                                 style="@style/TextInputStyleBox" />
                         </com.google.android.material.textfield.TextInputLayout>
-
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/spinner_occupation_layout"
-                            style="@style/CustomDropDownTilStyle"
+                            android:id="@+id/text_occupation_layout"
+                            style="@style/TextInputLayoutStyleBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/occupation">
-
-                            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                                android:id="@+id/spinner_occupation"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="true"
-                                tools:ignore="KeyboardInaccessibleWidget" />
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/text_occupation"
+                                style="@style/TextInputStyleBox" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout

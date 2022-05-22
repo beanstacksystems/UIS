@@ -1,4 +1,4 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.dto.PatientDTO;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.image.ProfileImageFragment;
 import com.bss.uis.ui.tabFragment.DynamicTabFragment;
@@ -81,8 +82,11 @@ public class AttendantFragment extends BaseFragment {
     }
 
     @Override
-    public void updateDetails(PatientDetailData patientDetailData) {
+    public void updatePatientDTO(PatientDTO patientDTO) {
+
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,9 +122,7 @@ public class AttendantFragment extends BaseFragment {
             }
 
         });
-        for(DynamicTabFragment frag:tabFragList) {
-            initTabView(frag,0);
-        }
+
         return attview;
     }
 

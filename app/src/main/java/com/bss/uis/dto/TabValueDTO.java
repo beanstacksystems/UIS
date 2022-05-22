@@ -1,4 +1,4 @@
-package com.bss.uis.model;
+package com.bss.uis.dto;
 
 import lombok.Getter;
 import lombok.Setter;

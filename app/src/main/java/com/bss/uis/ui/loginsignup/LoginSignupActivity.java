@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +63,7 @@ public class LoginSignupActivity extends AppCompatActivity {
     private Button button;
     private TextView newAccount,resetPwd;
     private TextInputLayout nameLayout,pwdLayout,cnfPwdLayout,emailLayout;
+    private LinearLayout loginlayout;
     private ImageView fbImage,gImage;
     private GoogleSignInClient googleSignInClient;
     LoginButton fbLoginButton;
@@ -80,12 +82,15 @@ public class LoginSignupActivity extends AppCompatActivity {
         userService = new UserServiceImpl();
         updateUI();
         updateLocalDB();
+
+
         if(!ContextPreferenceManager.isUserLogedOut()){
-//            userService.resetAccessToken(ContextPreferenceManager);
             applicationContext.setAuthResponse(new AuthResponse(ContextPreferenceManager.getToken("token"),ContextPreferenceManager.getToken("refreshtoken")));
-            userService.pullUserData(navigationService);
-            return;
-//            navigationService.finishAndNavigate();
+            userService.isValidAccessToken();
+            if(!ContextPreferenceManager.isUserLogedOut()) {
+                userService.pullUserData(navigationService);
+                return;
+            }
         }
         FacebookSdk.setApplicationId(getString(R.string.facebook_app_id));
         setContentView(R.layout.activity_login_signup);
@@ -94,7 +99,7 @@ public class LoginSignupActivity extends AppCompatActivity {
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new CustomFacebookCallBack());
         initGoogleSignin();
-        initView();
+        initView((null == applicationContext.getUser())?null:applicationContext.getUser().getLogintype());
     }
 
     private void updateLocalDB() {
@@ -121,8 +126,39 @@ public class LoginSignupActivity extends AppCompatActivity {
             applicationContext.getAppConfigMap().put(appConfig.getConfigKey(),appConfig.getConfigValue());
     }
 
-    private void initView()
+    private void initView(String logintype)
     {
+        if(null != logintype)
+        {
+            loginlayout =  findViewById(R.id.login_layout);
+            loginlayout.removeAllViews();
+            if(logintype.equals("facebook")) {
+                fbLoginButton = findViewById(R.id.fb_login_button);
+                fbImage = findViewById(R.id.fbCustomButton);
+                fbImage.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick( View v)
+                    {
+                        fbLoginButton.performClick();
+                    }
+                });
+                loginlayout.addView(fbImage);
+            }
+            if(logintype.equals("google")) {
+                gImage = findViewById(R.id.googleCustom);
+                gImage.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick( View v)
+                    {
+                        Intent signInIntent = googleSignInClient.getSignInIntent();
+                        startActivityForResult(signInIntent, RC_SIGN_IN);
+                    }
+                });
+                loginlayout.addView(gImage);
+            }
+
+            return;
+        }
         nameLayout = findViewById(R.id.name_signup);
         pwdLayout = findViewById(R.id.pwdlayout);
         cnfPwdLayout = findViewById(R.id.cnfpwdlayout);

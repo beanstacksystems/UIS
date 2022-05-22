@@ -1,4 +1,4 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,6 +21,7 @@ import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.entity.Address;
 import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.dto.PatientDTO;
 import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.ui.UIUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -91,14 +92,11 @@ public class AddressFragment extends BaseFragment {
     }
 
     @Override
-    public void updateDetails(PatientDetailData patientDetailData) {
-        Address address = patientDetailData.getAddress();
-        address.setStreet(streetAdd.getText().toString());
-        address.setCity(city.getText().toString());
-        address.setDistrict(dist.getText().toString());
-        address.setState(state.getText().toString());
-        address.setPin(pin.getText().toString());
+    public void updatePatientDTO(PatientDTO patientDTO) {
+
     }
+
+
 
 
     private void initView(View fragmentView) {

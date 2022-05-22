@@ -14,10 +14,10 @@ import com.bss.uis.database.entity.HomeTabData;
 import com.bss.uis.database.entity.MasterData;
 import com.bss.uis.database.entity.UserRightData;
 import com.bss.uis.model.AuthResponse;
-import com.bss.uis.model.MasterValueDTO;
-import com.bss.uis.model.TabValueDTO;
+import com.bss.uis.dto.MasterValueDTO;
+import com.bss.uis.dto.TabValueDTO;
 import com.bss.uis.model.User;
-import com.bss.uis.model.UserRightDTO;
+import com.bss.uis.dto.UserRightDTO;
 import com.bss.uis.model.UserRole;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.service.AuthService;
@@ -26,6 +26,7 @@ import com.bss.uis.ui.loginsignup.LoginSignupActivity;
 import com.bss.uis.util.RetrofitUtil;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +121,38 @@ public class UserServiceImpl implements UserService {
                 Log.e(TAG,t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void isValidAccessToken() {
+        Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.ISVALIDACCESSTOKEN,
+                new GsonBuilder().create());
+        apiSignatureService = retrofit.create(APISignatureService.class);
+        Call<String> apiCall = apiSignatureService.isValidAccessToken("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken());
+        apiCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(403 == response.code())
+                {
+                    ContextPreferenceManager.clearLoginInfo();
+                    return;
+                }
+            }
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(UISApplicationContext.getInstance().getContext(),
+                        UISApplicationContext.getInstance().getContext().getResources().getString(R.string.api_failed),Toast.LENGTH_LONG).show();
+                Log.w(TAG, String.valueOf(call));
+                Log.e(TAG,t.getMessage());
+            }
+        });
+//        try {
+//            Response<String> response = apiCall.execute();
+//
+//        } catch (IOException e) {
+//            Log.w(TAG, e.getMessage());
+//        }
+
     }
 
     private void handleSuccessfulLogin(NavigationService navigationService,AuthResponse authResponse,String source,boolean isRegister)
@@ -241,7 +274,7 @@ public class UserServiceImpl implements UserService {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.USER,
                 new GsonBuilder().create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<User> apiCall = apiSignatureService.user("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken());
+        Call<User> apiCall = apiSignatureService.user("Bearer "+UISApplicationContext.getInstance().getAuthResponse().getToken(),"application/json");
         apiCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

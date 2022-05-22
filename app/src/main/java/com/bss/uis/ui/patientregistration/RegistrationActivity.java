@@ -1,4 +1,4 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +23,14 @@ import com.bss.uis.database.entity.Patient;
 import com.bss.uis.database.entity.PatientAttendant;
 import com.bss.uis.database.entity.PatientImages;
 import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.dto.AddressDTO;
+import com.bss.uis.dto.ContactTypeDTO;
+import com.bss.uis.dto.IdproofDTO;
+import com.bss.uis.model.AddressEx;
+import com.bss.uis.dto.PatientDTO;
+import com.bss.uis.dto.PersonDTO;
 import com.bss.uis.ui.UIUtil;
+import com.bss.uis.util.AppUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +42,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     protected StepProgressBar stepProgressBar;
     protected ImageView backArrow;
     private PatientDetailData patientDetailData;
+    private PatientDTO patientDTO;
     private static final int NUM_PAGES = 5;
 
 
@@ -96,7 +104,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
         {
             if(curfragment.isValidDetails())
             {
-                curfragment.updateDetails(patientDetailData);
+                curfragment.updatePatientDTO(AppUtil.getPatientDTO());
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
                 if(curfragment.getFragmentTitle().equals("Address Details") ||
                         curfragment.getFragmentTitle().equals("Attendant Details"))
@@ -104,7 +112,6 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
                 stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 if(((Button) v).getText()=="Submit")
                 {
-
                     return;
                 }
                 updateFragmentView(mPager.getCurrentItem()+1);
@@ -181,5 +188,6 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
                 address,medicalHistory,patientAttendants);
 
     }
+
 
 }

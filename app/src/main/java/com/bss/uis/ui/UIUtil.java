@@ -3,6 +3,8 @@ package com.bss.uis.ui;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -25,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -150,20 +153,29 @@ public class UIUtil {
         dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
         return dialog;
     }
-    public static Dialog getSelectPopupDialog(Context context, String title,String[] options,TextView view)
+    public static Dialog getSelectPopupDialog(Context context, String title,String[] options,
+                                              TextView view,TextInputLayout genderLayout)
     {
         Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.popup_select);
-        LinearLayout radioLinearLayout = dialog.findViewById(R.id.selectpopup_radioLayout);
-        radioLinearLayout.addView(getRadioGroup(context,options,LinearLayout.VERTICAL,view));
+        RelativeLayout radioLinearLayout = dialog.findViewById(R.id.selectpopup_radioLayout);
+        radioLinearLayout.addView(getRadioGroup(context,options,LinearLayout.VERTICAL,view,dialog,genderLayout));
         TextView headerText = dialog.findViewById(R.id.SelectPopUpHeader);
         dialog.setTitle(title);
         headerText.setText(title);
         dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+        dialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                view.clearFocus();
+            }
+        });
         return dialog;
     }
-    public static RadioGroup getRadioGroup(Context context, String[] options, int orientation,TextView v) {
+    public static RadioGroup getRadioGroup(Context context, String[] options,
+                                           int orientation,TextView v,Dialog dialog,
+                                           TextInputLayout genderLayout) {
         RadioGroup radioGroup = new RadioGroup(context);
         radioGroup.setOrientation(orientation);
         radioGroup.setGravity(Gravity.LEFT);
@@ -179,6 +191,8 @@ public class UIUtil {
                     RadioButton btn = (RadioButton) rg.getChildAt(i);
                     if (btn.getId() == checkedId) {
                         v.setText(btn.getText().toString());
+                        dialog.dismiss();
+                        genderLayout.setError(null);
                         return;
                     }
                 }

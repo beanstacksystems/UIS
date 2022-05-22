@@ -1,4 +1,4 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.bss.uis.R;
-import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.dto.PatientDTO;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     }
     public abstract String getFragmentTitle();
     public abstract boolean isValidDetails();
-    public abstract void updateDetails(PatientDetailData patientDetailData);
+    public abstract void updatePatientDTO(PatientDTO patientDTO);
     public void onFragmentVisible(){};
     public void onFragmentHide(){};
 }

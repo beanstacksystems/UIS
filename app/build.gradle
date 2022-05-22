@@ -4,7 +4,6 @@ final VERSION_NAME = '1.0.0'
 final VERSION_CODE = 10
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
 
     defaultConfig {
         resValue "string", "version_name", VERSION_NAME

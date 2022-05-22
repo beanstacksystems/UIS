@@ -1,4 +1,4 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

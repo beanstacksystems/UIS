@@ -13,4 +13,5 @@ public interface UserService {
     void updateUser(User user);
     void pullUserData(NavigationService navigationService);
     void logout(NavigationService navigationService);
+    void isValidAccessToken();
 }

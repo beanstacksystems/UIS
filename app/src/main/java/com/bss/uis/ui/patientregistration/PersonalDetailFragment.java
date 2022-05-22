@@ -1,26 +1,28 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
-import com.beanstack.utility.validators.AutoCompleteTextValidtor;
 import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
-import com.bss.uis.database.entity.Patient;
-import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.dto.ContactTypeDTO;
+import com.bss.uis.dto.IdproofDTO;
+import com.bss.uis.dto.ImageDTO;
+import com.bss.uis.dto.PatientDTO;
+import com.bss.uis.dto.PersonDTO;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.ui.image.ImageCaptureFragment;
 import com.bss.uis.ui.image.ProfileImageFragment;
@@ -30,16 +32,17 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class PersonalDetailFragment extends BaseFragment{
 
-    TextInputEditText name,email,contact,dob,panadhar,income,gender;
+    TextInputEditText name,email,contact,dob,panadhar,panadharval,income,gender,salutation,occupation;
     TextInputLayout nameInputLayout,eMailInputLayout,contactInputLayout,incomeInputLayout,
-            dobInputLayout,genderLayout,salutationLayout,occupationLayout,panadhartxtLayout;
-    AutoCompleteTextView salutation,occupation;
+            dobInputLayout,genderLayout,salutationLayout,occupationLayout,panadhartxtLayout,panadharvaltextlayout;
     DatePickerDialog picker;
     String fragmentTitle;
     CircleImageView profile_image;
@@ -62,6 +65,7 @@ public class PersonalDetailFragment extends BaseFragment{
         setRetainInstance(true);
     }
 
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class PersonalDetailFragment extends BaseFragment{
         return fragmentTitle;
     }
 
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     private void initView(View fragmentView) {
         nameInputLayout = fragmentView.findViewById(R.id.personNameLayout);
         eMailInputLayout = fragmentView.findViewById(R.id.Email_etLayout);
@@ -131,23 +136,24 @@ public class PersonalDetailFragment extends BaseFragment{
                     incomeInputLayout.setError("Income cannot be empty");
             }
         });
-        panadhar = fragmentView.findViewById(R.id.panAdhar);
-        panadhartxtLayout = fragmentView.findViewById(R.id.idprooftxtLayout);
-        panadhar.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
-                (panadhartxtLayout,"Pan/Aadhar no cannot be empty"));
-        panadhar.addTextChangedListener(new CustomTextValidator(panadhar) {
+        panadharval = fragmentView.findViewById(R.id.panAdharval);
+        panadharvaltextlayout = fragmentView.findViewById(R.id.idprooftxtLayout);
+        panadharval.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+                (panadharvaltextlayout,"Cannot be empty"));
+        panadharval.addTextChangedListener(new CustomTextValidator(panadharval) {
             @Override
             public void validate(TextView textView, String text) {
-                panadhartxtLayout.setError(null);
+                panadharvaltextlayout.setError(null);
                 if(null == text || text.isEmpty())
-                    panadhartxtLayout.setError("Pan/Aadhar no cannot be empty");
+                    panadharvaltextlayout.setError("Cannot be empty");
                 else if(text.length()< 10)
-                    panadhartxtLayout.setError("Pan/Aadhar is not Correct");
+                    panadharvaltextlayout.setError("Value is not Correct");
             }
         });
         profile_image = (CircleImageView)fragmentView.findViewById(R.id.profile_image);
         profileImageFragment = getProfileImageFragment(false,R.id.profile_image_edit_layout);
         initDOB(fragmentView);
+        initPanAdharView(fragmentView);
         initGenderView(fragmentView);
         initSalutationView(fragmentView);
         initOccupationView(fragmentView);
@@ -185,38 +191,99 @@ public class PersonalDetailFragment extends BaseFragment{
         dob.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
                 (dobInputLayout,"Date Of Birth cannot be empty"));
     }
-
-    private void initGenderView(View fragmentView)
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
+    private void initPanAdharView(View fragmentView)
     {
-        genderLayout = fragmentView.findViewById(R.id.spinner_gender_layout);
+        panadhartxtLayout = fragmentView.findViewById(R.id.text_panadhar_layout);
+        panadhar = fragmentView.findViewById(R.id.text_panadhar_select);
+        genderLayout = fragmentView.findViewById(R.id.text_gender_layout);
         gender = fragmentView.findViewById(R.id.text_gender);
-        ArrayList<String> genderValue = AppUtil.getMasterByType("gender");
-        gender.setOnClickListener(new View.OnClickListener() {
+        panadhar.setShowSoftInputOnFocus(false);
+        ArrayList<String> idproofVal = AppUtil.getMasterByType("identity");
+        panadhar.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
-                        "Gender",genderValue.toArray(new String[genderValue.size()]),gender);
-                dialog.show();
+            public void onFocusChange(View v, boolean hasFocus) {
+                panadhartxtLayout.setError(null);
+                TextInputEditText textInputEditText = (TextInputEditText)v;
+                String text = textInputEditText.getText().toString();
+                if(null == text || text.isEmpty())
+                    panadhartxtLayout.setError("Can not be empty.");
+                if(hasFocus) {
+                    Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
+                            "Gender", idproofVal.toArray(new String[idproofVal.size()]), panadhar,panadhartxtLayout);
+                    dialog.show();
                 }
+            }
         });
     }
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
+    private void initGenderView(View fragmentView)
+    {
+        genderLayout = fragmentView.findViewById(R.id.text_gender_layout);
+        gender = fragmentView.findViewById(R.id.text_gender);
+        gender.setShowSoftInputOnFocus(false);
+        ArrayList<String> genderValue = AppUtil.getMasterByType("gender");
+        gender.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                genderLayout.setError(null);
+                TextInputEditText textInputEditText = (TextInputEditText)v;
+                String text = textInputEditText.getText().toString();
+                if(null == text || text.isEmpty())
+                    genderLayout.setError("Gender can not be empty.");
+                if(hasFocus) {
+                    Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
+                            "Gender", genderValue.toArray(new String[genderValue.size()]), gender,genderLayout);
+                    dialog.show();
+                }
+            }
+        });
+    }
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     private void initSalutationView(View fragmentView)
     {
-        salutationLayout = fragmentView.findViewById(R.id.spinner_salutation_layout);
-        salutation = fragmentView.findViewById(R.id.spinner_salutation);
+        salutationLayout = fragmentView.findViewById(R.id.text_salutation_layout);
+        salutation = fragmentView.findViewById(R.id.text_salutation);
+        salutation.setShowSoftInputOnFocus(false);
         ArrayList<String> salutationValue = AppUtil.getMasterByType("salutation");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, salutationValue);
-        salutation.setAdapter(adapter);
-        salutation.setValidator(new AutoCompleteTextValidtor(salutationLayout,salutationValue));
+        salutation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                salutationLayout.setError(null);
+                TextInputEditText textInputEditText = (TextInputEditText)v;
+                String text = textInputEditText.getText().toString();
+                if(null == text || text.isEmpty())
+                    salutationLayout.setError("Salutation can not be empty.");
+                if(hasFocus) {
+                    Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
+                            "Salutation", salutationValue.toArray(new String[salutationValue.size()]), salutation,salutationLayout);
+                    dialog.show();
+                }
+            }
+        });
     }
+    @RequiresApi(api = VERSION_CODES.LOLLIPOP)
     private void initOccupationView(View fragmentView)
     {
-        occupationLayout = fragmentView.findViewById(R.id.spinner_occupation_layout);
-        occupation = fragmentView.findViewById(R.id.spinner_occupation);
+        occupationLayout = fragmentView.findViewById(R.id.text_occupation_layout);
+        occupation = fragmentView.findViewById(R.id.text_occupation);
+        occupation.setShowSoftInputOnFocus(false);
         ArrayList<String> occupationValue = AppUtil.getMasterByType("occupationtype");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, occupationValue);
-        occupation.setAdapter(adapter);
-        occupation.setValidator(new AutoCompleteTextValidtor(occupationLayout,occupationValue));
+        occupation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                occupationLayout.setError(null);
+                TextInputEditText textInputEditText = (TextInputEditText)v;
+                String text = textInputEditText.getText().toString();
+                if(null == text || text.isEmpty())
+                    occupationLayout.setError("Occupation can not be empty.");
+                if(hasFocus) {
+                    Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
+                            "Occupation", occupationValue.toArray(new String[occupationValue.size()]), occupation,occupationLayout);
+                    dialog.show();
+                }
+            }
+        });
     }
     @Override
     public boolean isValidDetails() {
@@ -258,18 +325,24 @@ public class PersonalDetailFragment extends BaseFragment{
     }
 
     @Override
-    public void updateDetails(PatientDetailData patientDetailData) {
-         Patient patient = patientDetailData.getPatient();
-        patient.setName(name.getText().toString());
-        patient.setEmailId(email.getText().toString());
-        patient.setContact(contact.getText().toString());
-        patient.setDob(dob.getText().toString());
-        patient.setGender(gender.getText().toString());
-        patient.setIdproof(panadhar.getText().toString());
-        patientDetailData.getImagesList().add(AppUtil.getPatientImage("profileImage",
-                profileImageFragment.getSelectedImagePath())) ;
-        patientDetailData.getImagesList().addAll(AppUtil.getPatientImageList("idproof",
-                imageCaptureFragmentIdProof.getSelectedImage())) ;
+    public void updatePatientDTO(PatientDTO patientDTO) {
+        PersonDTO personDTO = AppUtil.getPersonDTO();
+        personDTO.setPrefix(salutation.getText().toString());
+        personDTO.setName(name.getText().toString());
+        personDTO.setGender(gender.getText().toString());
+        personDTO.setDateofbirth(dob.getText().toString());
+        personDTO.setEntitytype(String.valueOf(AppUtil.
+                getMasterByTypeAndValue("entitytype","Patient").getMasterdataId()));
+        personDTO.setIncomeperyear(income.getText().toString());
+        personDTO.setRelationwithpatient(String.valueOf(AppUtil.
+                getMasterByTypeAndValue("relationship","other").getMasterdataId()));
+        personDTO.setOccupation(occupation.getText().toString());
+        personDTO.setIsactive("Y");
+        personDTO.setUpdatedate(new Date().toString());
+        personDTO.setCreateddate(new Date().toString());
+        personDTO.setIdproofdto(getIdproofDetails(personDTO));
+        personDTO.setImagelist(getImageList(personDTO));
+        personDTO.setContactlist(getContactList(personDTO));
     }
     public ImageCaptureFragment getFragment(Boolean bool, int id) {
         ImageCaptureFragment fragment = ImageCaptureFragment.newInstance("idproof",1);
@@ -289,5 +362,57 @@ public class PersonalDetailFragment extends BaseFragment{
         transaction.commit();
         return fragment;
     }
+    public IdproofDTO getIdproofDetails(PersonDTO personDTO)
+    {
+        IdproofDTO idproofDTO = personDTO.getIdproofdto();
+        idproofDTO.setEntitytypeid(personDTO.getEntitytype());
+        idproofDTO.setIddetails(panadharval.getText().toString());
+        idproofDTO.setIsactive("Y");
+        idproofDTO.setIdtypeid(String.valueOf(AppUtil.
+                getMasterByTypeAndValue("identity",panadhar.getText().toString()).getMasterdataId()));
+        idproofDTO.setUpdatedate(personDTO.getUpdatedate());
+        idproofDTO.setCreateddate(personDTO.getCreateddate());
+        return idproofDTO;
+    }
+    public List<ImageDTO> getImageList(PersonDTO personDTO)
+    {
+        List<ImageDTO> imageDTOList = new ArrayList<ImageDTO>();
+        imageDTOList.add(getImage(personDTO,"Profile Image",profileImageFragment.getSelectedImagePath()));
+        imageDTOList.add(getImage(personDTO,"IdProof Image",imageCaptureFragmentIdProof.getSelectedImage().get(0)));
+        return imageDTOList;
+    }
 
+    public ImageDTO getImage(PersonDTO personDTO,String imagetype,String imagepath)
+    {
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setEntitytypeid(personDTO.getEntitytype());
+        imageDTO.setImagedata(AppUtil.getImageStr(imagepath));
+        imageDTO.setIsactive("Y");
+        imageDTO.setImagefilename(imagepath);
+        imageDTO.setImagetype(String.valueOf(AppUtil.
+                getMasterByTypeAndValue("imagetype",imagetype).getMasterdataId()));
+        imageDTO.setUpdatedate(personDTO.getUpdatedate());
+        imageDTO.setCreateddate(personDTO.getCreateddate());
+        return imageDTO;
+    }
+    public List<ContactTypeDTO> getContactList(PersonDTO personDTO)
+    {
+        List<ContactTypeDTO> contactTypeDTOList = personDTO.getContactlist();
+        contactTypeDTOList.add(getContact(personDTO,"mobile",contact.getText().toString()));
+        contactTypeDTOList.add(getContact(personDTO,"email",email.getText().toString()));
+        return contactTypeDTOList;
+
+    }
+    public ContactTypeDTO getContact(PersonDTO personDTO,String contacttype, String value)
+    {
+        ContactTypeDTO contactTypeDTO = new ContactTypeDTO();
+        contactTypeDTO.setIsactive("Y");
+        contactTypeDTO.setEntitytypeid(personDTO.getEntitytype());
+        contactTypeDTO.setContacttypeid(String.valueOf(AppUtil.
+                getMasterByTypeAndValue("contact",contacttype).getMasterdataId()));
+        contactTypeDTO.setContactdetails(value);
+        contactTypeDTO.setUpdatedate(personDTO.getUpdatedate());
+        contactTypeDTO.setCreateddate(personDTO.getCreateddate());
+        return contactTypeDTO;
+    }
 }

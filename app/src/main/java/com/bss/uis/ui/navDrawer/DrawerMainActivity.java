@@ -35,7 +35,7 @@ import com.bss.uis.service.ISelectionService;
 import com.bss.uis.service.UserService;
 import com.bss.uis.service.impl.UserServiceImpl;
 import com.bss.uis.ui.UIUtil;
-import com.bss.uis.ui.registration.RegistrationActivity;
+import com.bss.uis.ui.patientregistration.RegistrationActivity;
 import com.bss.uis.util.AppUtil;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

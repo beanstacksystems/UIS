@@ -6,7 +6,7 @@ import com.beanstack.utility.alertDialog.AppAlertDialog;
 import com.beanstack.utility.service.NavigationService;
 import com.beanstack.utility.service.impl.NavigationServiceImpl;
 import com.bss.uis.constant.APIConstant;
-import com.bss.uis.model.AddressDTO;
+import com.bss.uis.model.AddressEx;
 import com.bss.uis.service.APIService;
 import com.bss.uis.service.APISignatureService;
 import com.bss.uis.util.CustomJsonDesrializer;
@@ -29,13 +29,13 @@ public class APIServiceImpl implements APIService{
                              final TextInputLayout pin) {
         Retrofit retrofit = RetrofitUtil.getRetrofitClient2(APIConstant.pinApi,
         new GsonBuilder()
-                .registerTypeAdapter(AddressDTO.class, new CustomJsonDesrializer<>(AddressDTO.class,"PostOffice"))
+                .registerTypeAdapter(AddressEx.class, new CustomJsonDesrializer<>(AddressEx.class,"PostOffice"))
                 .create());
         apiSignatureService = retrofit.create(APISignatureService.class);
-        Call<List<AddressDTO>> apiCall = apiSignatureService.fetchPinData(pincode);
-        apiCall.enqueue(new Callback<List<AddressDTO>>() {
+        Call<List<AddressEx>> apiCall = apiSignatureService.fetchPinData(pincode);
+        apiCall.enqueue(new Callback<List<AddressEx>>() {
             @Override
-            public void onResponse(Call<List<AddressDTO>> call, Response<List<AddressDTO>> response) {
+            public void onResponse(Call<List<AddressEx>> call, Response<List<AddressEx>> response) {
                 System.out.println(response.body());
                 //In this point we got our hero list
                 //thats damn easy right ;)
@@ -51,7 +51,7 @@ public class APIServiceImpl implements APIService{
 
 
             @Override
-            public void onFailure(Call<List<AddressDTO>> call, Throwable t) {
+            public void onFailure(Call<List<AddressEx>> call, Throwable t) {
                 System.out.println(call);
             }
         });
@@ -66,19 +66,28 @@ public class APIServiceImpl implements APIService{
         apiCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println(response.body());
+                if(response.code() == 503)
+                {
+                    new AppAlertDialog(context,new NavigationServiceImpl(null,null){
+                        @Override
+                        public void buttonAction(String text) {
+                            super.buttonAction(text);
+                            System.exit(0);
+                        }
+                    }).getDialog(0,"Sorry",response.message(),true,null).show();
+                    return;
+                }
                 navigationService.finishAndNavigate();
             }
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                System.out.println(call);
                 new AppAlertDialog(context,new NavigationServiceImpl(null,null){
                     @Override
                     public void buttonAction(String text) {
                         super.buttonAction(text);
                         System.exit(0);
                     }
-                }).getDialog(0,"Sorry!!!","Not able to connect Server",true,null).show();
+                }).getDialog(0,"Sorry","Not able to connect Server",true,null).show();
                 return;
             }
         });

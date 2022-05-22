@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class AddressDTO {
+public class AddressEx {
     @SerializedName("Name")
     @Expose
     public String name;

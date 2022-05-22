@@ -1,4 +1,4 @@
-package com.bss.uis.ui.registration;
+package com.bss.uis.ui.patientregistration;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
 import com.bss.uis.database.entity.MedicalHistory;
 import com.bss.uis.database.relation.PatientDetailData;
+import com.bss.uis.dto.PatientDTO;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.util.AppUtil;
 import com.google.android.material.textfield.TextInputEditText;
@@ -157,12 +158,10 @@ public class MedicalHistoryFragment extends BaseFragment {
             return false;
         return true;
     }
+
     @Override
-    public void updateDetails(PatientDetailData  patientDetailData) {
-        MedicalHistory medicalHistory = patientDetailData.getMedicalHistory();
-        medicalHistory.setCancerType(cancerType.getText().toString());
-        medicalHistory.setIdentifiedOn(dateOfIdentification.getText().toString());
-        medicalHistory.setBloodGroup(bloodGrp.getText().toString());
-        medicalHistory.setOtherDisease(otherdiseasetxt.getText().toString());
+    public void updatePatientDTO(PatientDTO patientDTO) {
+
     }
+
 }

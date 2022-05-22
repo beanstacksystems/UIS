@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_below="@+id/header"
     android:gravity="center"
-    tools:context=".ui.registration.AddressFragment">
+    tools:context=".ui.patientregistration.AddressFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
