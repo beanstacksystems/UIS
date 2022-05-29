@@ -54,32 +54,26 @@
                     android:textStyle="bold" />
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/spinner_blood_group"
-                    style="@style/CustomDropDownTilStyle"
+                    style="@style/TextInputLayoutStyleBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/bloodGroup">
-
-                    <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/blood_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        tools:ignore="KeyboardInaccessibleWidget" />
+                        style="@style/TextInputStyleBox" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayoutStyleBox"
                     android:id="@+id/cancerTypetxtLayout"
+                    style="@style/TextInputLayoutStyleBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/cancerType">
-
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/cancerTypetxt"
                         style="@style/TextInputStyleBox" />
-
                 </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/TextInputLayoutStyleBox"

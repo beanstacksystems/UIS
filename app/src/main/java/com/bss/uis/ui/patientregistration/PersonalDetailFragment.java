@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.beanstack.utility.listener.DateChooserFocusChangeListener;
 import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
 import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
@@ -31,7 +31,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -108,7 +107,7 @@ public class PersonalDetailFragment extends BaseFragment{
                 eMailInputLayout.setError(null);
                 if(null == text || text.isEmpty())
                     eMailInputLayout.setError("Email cannot be empty");
-                else if(!UIUtil.isEmailValid(text))
+                else if(!UIUtil.isEmailValid(text.trim()))
                     eMailInputLayout.setError("Invalid E-Mail Id");
             }
         });
@@ -162,24 +161,6 @@ public class PersonalDetailFragment extends BaseFragment{
     private void initDOB(View fragmentView) {
         dob = fragmentView.findViewById(R.id.dateOfBirth);
         dobInputLayout = fragmentView.findViewById(R.id.dateOfBirthLayout);
-        dob.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar cldr = Calendar.getInstance();
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker = new DatePickerDialog(getActivity(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                dob.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
-        });
         dob.addTextChangedListener(new CustomTextValidator(dob) {
             @Override
             public void validate(TextView textView, String text) {
@@ -188,7 +169,7 @@ public class PersonalDetailFragment extends BaseFragment{
                     dobInputLayout.setError("Date Of Birth cannot be empty");
             }
         });
-        dob.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
+        dob.setOnFocusChangeListener(new DateChooserFocusChangeListener
                 (dobInputLayout,"Date Of Birth cannot be empty"));
     }
     @RequiresApi(api = VERSION_CODES.LOLLIPOP)
@@ -210,7 +191,7 @@ public class PersonalDetailFragment extends BaseFragment{
                     panadhartxtLayout.setError("Can not be empty.");
                 if(hasFocus) {
                     Dialog dialog = UIUtil.getSelectPopupDialog(getActivity(),
-                            "Gender", idproofVal.toArray(new String[idproofVal.size()]), panadhar,panadhartxtLayout);
+                            "ID-Proof", idproofVal.toArray(new String[idproofVal.size()]), panadhar,panadhartxtLayout);
                     dialog.show();
                 }
             }
@@ -294,15 +275,15 @@ public class PersonalDetailFragment extends BaseFragment{
                     getResources().getString(R.string.fillImage), Toast.LENGTH_LONG).show();
             return false;
         }
-        String nameTxt = name.getText().toString();
-        String emailTxt = email.getText().toString();
-        String contactTxt = contact.getText().toString();
-        String incomeTxt = income.getText().toString();
-        String dobTxt = dob.getText().toString();
-        String panadharTxt = panadhar.getText().toString();
-        String genderTxt = gender.getText().toString();
-        String salTxt = salutation.getText().toString();
-        String occupationTxt = occupation.getText().toString();
+        String nameTxt = name.getText().toString().trim();
+        String emailTxt = email.getText().toString().trim();
+        String contactTxt = contact.getText().toString().trim();
+        String incomeTxt = income.getText().toString().trim();
+        String dobTxt = dob.getText().toString().trim();
+        String panadharTxt = panadhar.getText().toString().trim();
+        String genderTxt = gender.getText().toString().trim();
+        String salTxt = salutation.getText().toString().trim();
+        String occupationTxt = occupation.getText().toString().trim();
         if(null == nameTxt ||nameTxt.isEmpty()|| null == emailTxt ||emailTxt.isEmpty()
                 || null == contactTxt || contactTxt.isEmpty()
                 || null == incomeTxt || incomeTxt.isEmpty()

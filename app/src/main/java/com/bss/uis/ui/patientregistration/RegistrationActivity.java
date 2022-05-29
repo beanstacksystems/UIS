@@ -23,12 +23,7 @@ import com.bss.uis.database.entity.Patient;
 import com.bss.uis.database.entity.PatientAttendant;
 import com.bss.uis.database.entity.PatientImages;
 import com.bss.uis.database.relation.PatientDetailData;
-import com.bss.uis.dto.AddressDTO;
-import com.bss.uis.dto.ContactTypeDTO;
-import com.bss.uis.dto.IdproofDTO;
-import com.bss.uis.model.AddressEx;
 import com.bss.uis.dto.PatientDTO;
-import com.bss.uis.dto.PersonDTO;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.util.AppUtil;
 
@@ -106,10 +101,10 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
             {
                 curfragment.updatePatientDTO(AppUtil.getPatientDTO());
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
+                stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 if(curfragment.getFragmentTitle().equals("Address Details") ||
                         curfragment.getFragmentTitle().equals("Attendant Details"))
                     curfragment.onFragmentVisible();
-                stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 if(((Button) v).getText()=="Submit")
                 {
                     return;

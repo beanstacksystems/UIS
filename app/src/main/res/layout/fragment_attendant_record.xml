@@ -35,36 +35,23 @@
             android:text="@string/attendant_details"
             android:textColor="@color/black"
             android:textStyle="bold" />
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="2dp"
-            app:cardElevation="5dp"
-            app:cardCornerRadius="10dp"
-            app:cardBackgroundColor="@color/white"
-            app:cardMaxElevation="1dp"
-            app:cardPreventCornerOverlap="true"
-            app:cardUseCompatPadding="true">
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/attendant_tabviewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </androidx.viewpager.widget.ViewPager>
+            android:layout_height="wrap_content">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/attendant_tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabTextColor="@color/orange"
-            app:tabIndicatorGravity="stretch"
             app:tabIndicatorColor="@color/greenlite"
             app:tabGravity="fill"
             android:background="@color/white"
             app:tabMode="scrollable"
             tools:ignore="MissingConstraints">
         </com.google.android.material.tabs.TabLayout>
-        </com.google.android.material.card.MaterialCardView>>
-
+        </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

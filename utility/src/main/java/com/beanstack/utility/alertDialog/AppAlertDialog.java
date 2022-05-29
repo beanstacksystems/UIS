@@ -1,6 +1,5 @@
 package com.beanstack.utility.alertDialog;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -52,7 +51,8 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
         setCanceledOnTouchOutside(false);
         this.setContentView(dialogView);
     }
-    public Dialog getDialog(int dlgtype,String dialogTitle,String dialogContent,boolean headerReq,View view)
+    public Dialog getDialog(int dlgtype,String dialogTitle,String dialogContent,
+                            boolean headerReq,View view)
     {
         Button okButton = dialogView.findViewById(R.id.dlg_buttonOk);
         Button caButton = dialogView.findViewById(R.id.dlg_buttoncancel);
@@ -82,19 +82,20 @@ public class AppAlertDialog extends Dialog implements View.OnClickListener{
         return this;
     }
 
-    private void showCustomDialog(Context context) {
-        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
-
-
-        //Now we need an AlertDialog.Builder object
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
-        //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+    public void showCustomDialog(int dlgtype,String dialogTitle,String dialogContent,
+                                  boolean headerReq,View view,View.OnClickListener listener) {
+        Button okButton = dialogView.findViewById(R.id.dlg_buttonOk);
+        Button caButton = dialogView.findViewById(R.id.dlg_buttoncancel);
+        okButton.setOnClickListener(listener);
+        caButton.setOnClickListener(listener);
+        TextView titleText = dialogView.findViewById(R.id.dlg_title);
+        RelativeLayout relativeLayout = dialogView.findViewById(R.id.dlg_head);
+        titleText.setText(dialogTitle);
+        if(!headerReq)
+            relativeLayout.setVisibility(View.GONE);
+        dialogView.findViewById(R.id.dlg_msg_txt).setVisibility(View.GONE);
+        LinearLayout linearLayout = dialogView.findViewById(R.id.componentlayout);
+        linearLayout.addView(view);
     }
 
     @Override

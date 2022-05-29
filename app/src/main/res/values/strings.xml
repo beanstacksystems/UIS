@@ -42,7 +42,7 @@
     <string name="relationship">Relationship With Patient</string>
     <string name="email">Email</string>
     <string name="male">Male</string>
-    <string name="date_of_birth">Date of birth</string>
+    <string name="date_of_birth">Date of birth dd/mm/yyyy</string>
     <string name="panaadhar">Pan/Aadhar</string>
     <string name="medical_history">Medical history</string>
     <string name="diease_name">Diease name</string>

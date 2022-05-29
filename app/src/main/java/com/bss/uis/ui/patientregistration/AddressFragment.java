@@ -1,26 +1,22 @@
 package com.bss.uis.ui.patientregistration;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.beanstack.utility.alertDialog.AppAlertDialog;
 import com.beanstack.utility.listener.TextInputLayoutFocusChangeListener;
 import com.beanstack.utility.validators.CustomTextValidator;
 import com.bss.uis.R;
 import com.bss.uis.context.UISApplicationContext;
-import com.bss.uis.database.entity.Address;
-import com.bss.uis.database.relation.PatientDetailData;
 import com.bss.uis.dto.PatientDTO;
 import com.bss.uis.service.impl.APIServiceImpl;
 import com.bss.uis.ui.UIUtil;
@@ -45,6 +41,7 @@ public class AddressFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -177,35 +174,25 @@ public class AddressFragment extends BaseFragment {
     @RequiresApi(api = VERSION_CODES.M)
     private void createPinPopup()
     {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this.getActivity(),null));
-        int displayWidth = UIUtil.getscreenwidth(this.getActivity().getWindow());
-        int displayHeight = UIUtil.getscreenheight(this.getActivity().getWindow());
         final TextInputLayout textInputLayout = UIUtil.getTextInputLayout(this.getActivity(),
-                0,(int)(displayHeight*0.2f),displayWidth-200, InputType.TYPE_CLASS_NUMBER,"PinCode");
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
-        int dialogWindowWidth = displayWidth-500;
-        int dialogWindowHeight = (int) (displayHeight * 2.5f);
-        layoutParams.width = dialogWindowWidth;
-        layoutParams.height = dialogWindowHeight;
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                0, InputType.TYPE_CLASS_NUMBER,"PinCode");
+        AppAlertDialog dialog = new AppAlertDialog(this.getActivity());
+        dialog.showCustomDialog(4,"Pin",null,false,textInputLayout,new View.OnClickListener(){
             @Override
-            public void onClick( DialogInterface dialog,int which)
-            {
-                pin.setText(textInputLayout.getEditText().getText().toString());
+            public void onClick(View v) {
+                Button button = (Button) v;
+                if(button.getText().equals("Ok"))
+                {
+                    pin.setText(textInputLayout.getEditText().getText().toString());
+                    dialog.dismiss();
+                }
+                if(button.getText().equals("Cancel"))
+                {
+                    dialog.dismiss();
+                }
             }
         });
-        builder.setNegativeButton("SKIP", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog,int which)
-            {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        layoutParams.copyFrom(dialog.getWindow().getAttributes());
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_alert_dialog);
-        dialog.getWindow().setAttributes(layoutParams);
-        dialog.setView(textInputLayout);
         dialog.show();
+        return;
     }
 }

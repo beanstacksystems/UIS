@@ -56,18 +56,17 @@ public class UIUtil {
         button.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
         return button;
     }
-    public static TextInputLayout getTextInputLayout(Context object, int id, int height, int width, int inputtType, String hint) {
+    public static TextInputLayout getTextInputLayout(Context object, int id, int inputType, String hint) {
         TextInputLayout textInputLayout = new TextInputLayout(object,null,R.style.TextInputLayoutStyleBox);
         LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        editTextParams.topMargin = 20;
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        textInputLayout.setLayoutParams(editTextParams);
+        editTextParams.setMargins(5,5,5,5);
         textInputLayout.setHint(hint);
         TextInputEditText textInputEditText = new TextInputEditText(object);
-        textInputEditText.setHeight(height);
-        textInputEditText.setWidth(width);
         textInputEditText.setGravity(Gravity.CENTER);
         textInputEditText.setId(id);
-        textInputEditText.setInputType(inputtType);
+        textInputEditText.setInputType(inputType);
         textInputLayout.addView(textInputEditText, editTextParams);
         return textInputLayout;
     }
