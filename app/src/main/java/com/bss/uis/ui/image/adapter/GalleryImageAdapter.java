@@ -59,12 +59,12 @@ public class GalleryImageAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     .transition(DrawableTransitionOptions.withCrossFade(500))
                     .into(viewHolder.image);
 
-            if (imageList.get(position).isSelected()) {;
+            if (imageList.get(position).isSelected()) {
                 viewHolder.checkBox.setChecked(true);
-            } else {;
+            } else {
                 viewHolder.checkBox.setChecked(false);
             }
-        } else {;
+        } else {
             ImagePickerViewHolder viewHolder = (ImagePickerViewHolder) holder;
             viewHolder.image.setImageResource(imageList.get(position).getResImg());
             viewHolder.title.setText(imageList.get(position).getTitle());

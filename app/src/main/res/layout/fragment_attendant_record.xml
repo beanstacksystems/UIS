@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             app:tabTextColor="@color/orange"
             app:tabIndicatorColor="@color/greenlite"
-            app:tabGravity="fill"
             android:background="@color/white"
             app:tabMode="scrollable"
             tools:ignore="MissingConstraints">

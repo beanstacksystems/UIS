@@ -17,12 +17,6 @@ import com.beanstack.utility.stepprogress.StepProgressBar.StateNumber;
 import com.beanstack.utility.viewpagerutil.CustomViewPagerNoTouchNoSwipe;
 import com.beanstack.utility.viewpagerutil.ZoomOutPageTransformer;
 import com.bss.uis.R;
-import com.bss.uis.database.entity.Address;
-import com.bss.uis.database.entity.MedicalHistory;
-import com.bss.uis.database.entity.Patient;
-import com.bss.uis.database.entity.PatientAttendant;
-import com.bss.uis.database.entity.PatientImages;
-import com.bss.uis.database.relation.PatientDetailData;
 import com.bss.uis.dto.PatientDTO;
 import com.bss.uis.ui.UIUtil;
 import com.bss.uis.util.AppUtil;
@@ -36,7 +30,6 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     protected Button nextBtn,backBtn;
     protected StepProgressBar stepProgressBar;
     protected ImageView backArrow;
-    private PatientDetailData patientDetailData;
     private PatientDTO patientDTO;
     private static final int NUM_PAGES = 5;
 
@@ -49,7 +42,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        initPatientDetails();
+        patientDTO = AppUtil.getPatientDTO();
         textWithIconHeaderView = findViewById(R.id.fragmentTitle);
         backArrow = findViewById(R.id.back);
         backArrow.setColorFilter(R.color.black);
@@ -90,16 +83,19 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
         }
     }
 
+    public PatientDTO getPatientDTO()
+    {
+        return patientDTO;
+    }
     @Override
     public void onClick(View v) {
-        int state = stepProgressBar.getCurrentStateNumber();
         ScreenSlidePagerAdapter adapter = (ScreenSlidePagerAdapter)mPager.getAdapter();
         BaseFragment curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem());
         if(v==nextBtn)
         {
             if(curfragment.isValidDetails())
             {
-                curfragment.updatePatientDTO(AppUtil.getPatientDTO());
+                curfragment.updatePatientDTO(patientDTO);
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
                 stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
                 if(curfragment.getFragmentTitle().equals("Address Details") ||
@@ -164,6 +160,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
     public void updateFragmentView(int currentFragmentIndex) {
         UIUtil.updateButtonStatus(nextBtn,true,R.color.colorPrimary,getResources().getString(R.string.next));
         UIUtil.updateButtonStatus(backBtn,true,R.color.colorPrimary,null);
+        mPager.getRootView().clearFocus();
         mPager.setCurrentItem(currentFragmentIndex,true);
         textWithIconHeaderView.setHeaderTitle(String.valueOf(mPager.getAdapter().getPageTitle(currentFragmentIndex)));
         if(currentFragmentIndex==mPager.getAdapter().getCount()-1)
@@ -172,17 +169,7 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
             UIUtil.updateButtonStatus(backBtn,false,R.color.colorAccent,null);
     }
 
-    public void initPatientDetails()
-    {
-        Patient patient = new Patient();
-        List<PatientImages> patientImages = new ArrayList<>();
-        List<PatientAttendant> patientAttendants = new ArrayList<>();
-        MedicalHistory medicalHistory = new MedicalHistory();
-        Address address = new Address();
-        patientDetailData = new PatientDetailData(patient,patientImages,
-                address,medicalHistory,patientAttendants);
 
-    }
 
 
 }

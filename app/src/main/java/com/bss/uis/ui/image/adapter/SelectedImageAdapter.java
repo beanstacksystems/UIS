@@ -16,14 +16,15 @@ import com.bss.uis.R;
 import com.bss.uis.ui.image.FullImageViewActivity;
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdapter.ViewHolder>{
 
     Context context;
-    ArrayList<String> stringArrayList;
 
-    public SelectedImageAdapter(Context context, ArrayList<String> stringArrayList) {
+    List<String> stringArrayList;
+
+    public SelectedImageAdapter(Context context, List<String> stringArrayList) {
         this.context = context;
         this.stringArrayList = stringArrayList;
     }
@@ -37,7 +38,7 @@ public class SelectedImageAdapter extends RecyclerView.Adapter<SelectedImageAdap
 
 
     @Override
-     public  void onBindViewHolder(@NonNull SelectedImageAdapter.ViewHolder holder, final int position) {
+     public  void onBindViewHolder(@NonNull SelectedImageAdapter.ViewHolder holder, int position) {
         Glide.with(context)
                 .load(stringArrayList.get(position))
                 .placeholder(R.color.codeGray)
