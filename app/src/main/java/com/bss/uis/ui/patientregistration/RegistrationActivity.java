@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -97,12 +98,13 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
             {
                 curfragment.updatePatientDTO(patientDTO);
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
-                stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
-                if(curfragment.getFragmentTitle().equals("Address Details") ||
-                        curfragment.getFragmentTitle().equals("Attendant Details"))
-                    curfragment.onFragmentVisible();
+//                stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
+//                if(curfragment.getFragmentTitle().equals("Address Details") ||
+//                        curfragment.getFragmentTitle().equals("Attendant Details"))
+//                    curfragment.onFragmentVisible();
                 if(((Button) v).getText()=="Submit")
                 {
+                    Toast.makeText(getApplicationContext(), "submit", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 updateFragmentView(mPager.getCurrentItem()+1);

@@ -53,6 +53,7 @@ public class AttendantFragment extends BaseFragment {
         AttendantFragment fragment = new AttendantFragment();
         fragment.fragmentTitle = fragmentTitle;
         fragment.setProgressState(progressState);
+
         return fragment;
     }
     @Override

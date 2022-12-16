@@ -3,13 +3,13 @@ apply plugin: 'com.google.gms.google-services'
 final VERSION_NAME = '1.0.0'
 final VERSION_CODE = 10
 android {
-    compileSdkVersion 29
+    compileSdkVersion 31
 
     defaultConfig {
         resValue "string", "version_name", VERSION_NAME
         applicationId "com.bss.uis"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
