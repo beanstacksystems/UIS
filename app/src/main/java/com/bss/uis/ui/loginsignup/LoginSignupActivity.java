@@ -266,8 +266,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                     nameLayout.setError(null);
                     if(null == text || text.isEmpty())
                         nameLayout.setError("Name cannot be empty");
-                    else if(!UIUtil.isContainsValidCharacter(text))
-                        nameLayout.setError("Only alphanumeric characters allowed");
+
                 }
 
             }
@@ -354,7 +353,12 @@ public class LoginSignupActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        try {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        }catch (Exception e){
+            Log.d("faceBookException",e.getMessage());
+        }
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
