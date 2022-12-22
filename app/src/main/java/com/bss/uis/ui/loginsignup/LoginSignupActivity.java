@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -174,13 +176,30 @@ public class LoginSignupActivity extends AppCompatActivity {
         resetPwd = findViewById(R.id.forgotpwd);
         fbImage = findViewById(R.id.fbCustomButton);
         gImage = findViewById(R.id.googleCustom);
-        fbImage.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick( View v)
-            {
-                fbLoginButton.performClick();
-            }
-        });
+//        emailTxt.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+[a-z]+";
+//                if (editable.toString().matches(emailPattern) && editable.length() != 0){
+//                    emailTxt.setError(null);
+//                }else{
+//                    emailTxt.setError("Please input a valid Email");
+//                }
+//
+//
+//            }
+//        });
+        fbImage.setOnClickListener(v -> fbLoginButton.performClick());
         gImage.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick( View v)
@@ -247,8 +266,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                     nameLayout.setError(null);
                     if(null == text || text.isEmpty())
                         nameLayout.setError("Name cannot be empty");
-                    else if(!UIUtil.isContainsValidCharacter(text))
-                        nameLayout.setError("Only alphanumeric characters allowed");
+
                 }
 
             }
@@ -264,7 +282,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                     emailLayout.setError("Field cannot be empty");
                 else if((isRegister)?!(UIUtil.isEmailValid(text)):(!UIUtil.isEmailValid(text)
                 && !UIUtil.isContainsValidCharacter(text)))
-                    emailLayout.setError("Only alphanumeric characters allowed");
+                    emailLayout.setError("Please input a valid Email");
             }
         });
         pwdTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
@@ -335,7 +353,12 @@ public class LoginSignupActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        try {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        }catch (Exception e){
+            Log.d("faceBookException",e.getMessage());
+        }
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);

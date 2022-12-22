@@ -1,5 +1,7 @@
 package com.bss.uis.ui.image;
 
+import static com.bss.uis.constant.AppConstants.SELECT_GALLERY_REQUEST;
+
 import android.Manifest;
 import android.Manifest.permission;
 import android.app.Activity;
@@ -38,11 +40,12 @@ import java.util.Date;
 
 public class ProfileImageFragment extends Fragment {
 
-    ImageView imageView,resultImageView;
+    ImageView imageView, resultImageView;
     File imageFile;
     String imagePath;
     String selectedImagePath;
     String[] projection = {MediaStore.MediaColumns.DATA};
+
     public ProfileImageFragment() {
         // Required empty public constructor
 
@@ -80,23 +83,20 @@ public class ProfileImageFragment extends Fragment {
         askCameraPermision();
         return view;
     }
+
     public void selectImage() {
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @RequiresApi(api = VERSION_CODES.M)
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Take Photo")) {
                     takePicture();
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
+                } else if (options[item].equals("Choose from Gallery")) {
                     getPickImageIntent();
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -104,24 +104,27 @@ public class ProfileImageFragment extends Fragment {
         builder.show();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AppConstants.ID_SCAN_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             addImage(imagePath);
         }
-        if (requestCode == AppConstants.SELECT_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
-            if(data.getData() != null) {
+        if (requestCode == SELECT_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (data.getData() != null) {
                 Uri uri = data.getData();
                 getImageFilePath(uri);
             }
         }
     }
+
     public void getPickImageIntent() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(intent, AppConstants.SELECT_GALLERY_REQUEST);
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        startActivityForResult(intent, SELECT_GALLERY_REQUEST);
     }
+
     // start the image capture Intent
     public void takePicture() {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -134,6 +137,7 @@ public class ProfileImageFragment extends Fragment {
             startActivityForResult(cameraIntent, AppConstants.ID_SCAN_CAMERA_REQUEST);
         }
     }
+
     public File createImageFile() {
         // Create an image file name
         String dateTime = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -148,6 +152,7 @@ public class ProfileImageFragment extends Fragment {
         imagePath = "file:" + imageFile.getAbsolutePath();
         return imageFile;
     }
+
     // add image in selectedImageList and imageList
     public void addImage(final String filePath) {
         selectedImagePath = filePath;
@@ -166,7 +171,7 @@ public class ProfileImageFragment extends Fragment {
 
     // Get image file path
     public void getImageFilePath(Uri uri) {
-        String absolutePathOfImage = AppUtil.getImagePath(getActivity(),uri);//cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
+        String absolutePathOfImage = AppUtil.getImagePath(getActivity(), uri);//cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA));
         if (absolutePathOfImage != null)
             checkImage(absolutePathOfImage);
         else
@@ -176,8 +181,9 @@ public class ProfileImageFragment extends Fragment {
     // add image in selectedImageList and imageList
     public void checkImage(String filePath) {
         // Check before adding a new image to ArrayList to avoid duplicate images
-            addImage(filePath);
+        addImage(filePath);
     }
+
     public boolean askCameraPermision() {
         int CAMERA_PERM = ContextCompat.checkSelfPermission(UISApplicationContext.getInstance().getContext(), permission.CAMERA);
         if ((CAMERA_PERM != PackageManager.PERMISSION_GRANTED)) {
@@ -186,6 +192,7 @@ public class ProfileImageFragment extends Fragment {
         }
         return true;
     }
+
     public boolean askStoragePermissionGranted() {
         int ACCESS_EXTERNAL_STORAGE = ContextCompat.checkSelfPermission(UISApplicationContext.getInstance().getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if ((ACCESS_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED)) {
@@ -195,14 +202,18 @@ public class ProfileImageFragment extends Fragment {
         return true;
     }
 
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == AppConstants.STORAGE_PERMISSION && grantResults.length > 0
-                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-        }
-    }
-    public String getSelectedImagePath()
-    {
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (requestCode == AppConstants.STORAGE_PERMISSION && grantResults.length > 0
+//                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//            if (requestCode == SELECT_GALLERY_REQUEST){
+//
+//            }
+//
+//        }
+//    }
+
+    public String getSelectedImagePath() {
         return selectedImagePath;
     }
 }

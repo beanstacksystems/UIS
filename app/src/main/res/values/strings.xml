@@ -5,6 +5,7 @@
     <string name="facebook_app_id">947730725995178</string>
     <string name="fb_login_protocol_scheme">fb947730725995178</string>
 
+
     <string name="splashscreen">SplashScreen</string>
     <string name="title_activity_drawer_main">DrawerMainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -58,7 +59,7 @@
     <string name="update">Update</string>
     <string name="register">Register</string>
     <string name="addAddress">Add Address</string>
-    <string name="googleClientId">155649183928-evv6rhcnfccgah86h3kjj2osuokfj50q.apps.googleusercontent.com</string>
+    <string name="googleClientId">834647902002-9njpovn7hqq9a7rng5kqm4cf4efgbo3q.apps.googleusercontent.com</string>
 
     <string name="biometric_title">Login</string>
     <string name="biometric_subtitle">Login to your account</string>
