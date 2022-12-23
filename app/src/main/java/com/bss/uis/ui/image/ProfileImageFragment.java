@@ -1,5 +1,7 @@
 package com.bss.uis.ui.image;
 
+import static com.bss.uis.constant.AppConstants.SELECT_GALLERY_REQUEST;
+
 import android.Manifest;
 import android.Manifest.permission;
 import android.app.Activity;
@@ -109,8 +111,8 @@ public class ProfileImageFragment extends Fragment {
         if (requestCode == AppConstants.ID_SCAN_CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             addImage(imagePath);
         }
-        if (requestCode == AppConstants.SELECT_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
-            if(data.getData() != null) {
+        if (requestCode == SELECT_GALLERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (data.getData() != null) {
                 Uri uri = data.getData();
                 getImageFilePath(uri);
             }
@@ -120,7 +122,7 @@ public class ProfileImageFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        startActivityForResult(intent, AppConstants.SELECT_GALLERY_REQUEST);
+        startActivityForResult(intent, SELECT_GALLERY_REQUEST);
     }
     // start the image capture Intent
     public void takePicture() {

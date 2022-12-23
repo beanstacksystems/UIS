@@ -200,6 +200,7 @@ public class AttendantFragment extends BaseFragment {
             }
         });
         initSpinnerView(tabview);
+        initSpinnerViewGender(tabview);
     }
     private void initSpinnerView(View fragmentView)
     {
@@ -231,5 +232,16 @@ public class AttendantFragment extends BaseFragment {
             transaction.addToBackStack(null);
         transaction.commit();
         return fragment;
+    }
+    private void initSpinnerViewGender(View fragmentView){
+        gender = fragmentView.findViewById(R.id.spinner_gender_personDetail);
+        genderLayout =fragmentView.findViewById(R.id.spinner_occupation_layout);
+        ArrayList<String> genderList = new ArrayList<>();
+        genderList.add("Others");
+        genderList.add("Male");
+        genderList.add("female");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, genderList);
+        gender.setAdapter(adapter);
+        gender.setValidator(new AutoCompleteTextValidtor(genderLayout,genderList));
     }
 }
