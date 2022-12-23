@@ -262,9 +262,7 @@ public class LoginSignupActivity extends AppCompatActivity {
                 emailLayout.setError(null);
                 if(null == text || text.isEmpty())
                     emailLayout.setError("Field cannot be empty");
-                else if((isRegister)?!(UIUtil.isEmailValid(text)):(!UIUtil.isEmailValid(text)
-                && !UIUtil.isContainsValidCharacter(text)))
-                    emailLayout.setError("Only alphanumeric characters allowed");
+
             }
         });
         pwdTxt.setOnFocusChangeListener(new TextInputLayoutFocusChangeListener
@@ -335,7 +333,12 @@ public class LoginSignupActivity extends AppCompatActivity {
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        try {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }catch (Exception e){
+            Log.d("facebook",e.getMessage());
+
+        }
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);

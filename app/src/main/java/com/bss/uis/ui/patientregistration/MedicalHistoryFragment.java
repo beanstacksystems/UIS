@@ -1,6 +1,8 @@
 package com.bss.uis.ui.patientregistration;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -107,6 +109,9 @@ public class MedicalHistoryFragment extends BaseFragment {
                 cancerTypeInputLayout.setError(null);
                 TextInputEditText textInputEditText = (TextInputEditText)v;
                 String text = textInputEditText.getText().toString();
+                if (text.equals("other_cancer")){
+                    enterOtherCancerTypeDailog(v);
+                }
                 if(null == text || text.isEmpty())
                     cancerTypeInputLayout.setError("CancerType can not be empty.");
                 if(hasFocus) {
@@ -166,6 +171,34 @@ public class MedicalHistoryFragment extends BaseFragment {
     @Override
     public void updatePatientDTO(PatientDTO patientDTO) {
 
+    }
+    public void enterOtherCancerTypeDailog(View view) {
+
+        final TextInputEditText etOtherCancer = new TextInputEditText(view.getContext());
+        etOtherCancer.setHint("Enter your Cancer Type");
+        AlertDialog.Builder otherCancerDailog = new AlertDialog.Builder(view.getContext());
+        otherCancerDailog.setTitle("Other Cancer Type");
+//        otherCancerDailog.setMessage("Enter your Cancer Type");
+        otherCancerDailog.setView(etOtherCancer);
+
+        otherCancerDailog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+//                String cancerType = etOtherCancer.getText().toString();
+                TextInputEditText textInputEditText = (TextInputEditText)view;
+                textInputEditText.setText(etOtherCancer.getText().toString());
+                otherCancerDailog.create().dismiss();
+            }
+        });
+
+//        passwordResetDialog.setNegativeButton("no", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//
+//            }
+//        });
+
+        otherCancerDailog.create().show();
     }
 
 }

@@ -168,6 +168,7 @@
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/panAdharval"
+                                    android:maxLength="15"
                                     style="@style/TextInputStyleBox" />
 
                             </com.google.android.material.textfield.TextInputLayout>
