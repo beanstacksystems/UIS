@@ -160,7 +160,9 @@ public class UserServiceImpl implements UserService {
         UISApplicationContext.getInstance().setAuthResponse(authResponse);
         ContextPreferenceManager.saveLoginDetails(authResponse.getToken(),authResponse.getRefreshtoken(),source,authResponse.getExpires_in());
         Log.w(TAG, String.valueOf(authResponse));
-        if(isRegister)pullmasterData();
+        if(isRegister){
+            pullmasterData();
+        }
         pullUserData(navigationService);
     }
     private Callback<AuthResponse> getCallBack(NavigationService navigationService,String source,int validationMsg,int failedMsg,boolean isRegister)

@@ -9,28 +9,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bss.uis.R;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class AdminFragment extends Fragment {
 
-    private AdminViewModel mViewModel;
-
-    public static AdminFragment newInstance() {
-        return new AdminFragment();
-    }
-
+    private List<String> entityList;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.admin_fragment, container, false);
+        View view = inflater.inflate(R.layout.admin_fragment, container, false);
+        entityList = Arrays.asList("Counseller", "Admin","Doctor","SuperAdmin","guest", "chairman","Member", "Patient");
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.rv_user_list);
+        UsernameListAdapter adapter = new UsernameListAdapter(entityList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+        return  view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(AdminViewModel.class);
-        // TODO: Use the ViewModel
-    }
+
 
 }

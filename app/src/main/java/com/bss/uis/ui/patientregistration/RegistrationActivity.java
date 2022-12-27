@@ -93,8 +93,8 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
         BaseFragment curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem());
         if(v==nextBtn)
         {
-            if(curfragment.isValidDetails())
-            {
+//            if(curfragment.isValidDetails())
+//            {
                 curfragment.updatePatientDTO(patientDTO);
                 curfragment = (BaseFragment) adapter.getItem(mPager.getCurrentItem()+1);
                 stepProgressBar.setCurrentStateNumber(StateNumber.valueOf(curfragment.getProgressState()));
@@ -107,9 +107,9 @@ public class RegistrationActivity extends FragmentActivity implements View.OnCli
                 }
                 updateFragmentView(mPager.getCurrentItem()+1);
             }
-           else
-               System.out.println("Not ok");
-        }
+//           else
+//               System.out.println("Not ok");
+//        }
         if(v==backBtn)
         {
             updateFragmentView(mPager.getCurrentItem()-1);

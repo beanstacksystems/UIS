@@ -1,5 +1,6 @@
 package com.bss.uis.ui.loginsignup;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.beanstack.biometric.BiometricUtils;
@@ -331,9 +333,13 @@ public class LoginSignupActivity extends AppCompatActivity {
         else
             navigationService = new NavigationServiceImpl(LoginSignupActivity.this, DrawerMainActivity.class);
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
+//             PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext
+//             ,requestCode,data,PendingIntent.FLAG_IMMUTABLE);
+
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }catch (Exception e){
             Log.d("facebook",e.getMessage());
